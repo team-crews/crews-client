@@ -1,4 +1,4 @@
-import Header from "./components/shared/Header";
+import Header from './components/shared/Header';
 
 interface MainLayoutProps {
   children: React.ReactNode;
