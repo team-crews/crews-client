@@ -1,4 +1,4 @@
-import autoprefixer from "autoprefixer";
+import autoprefixer from 'autoprefixer';
 
 const plugins = [autoprefixer];
 

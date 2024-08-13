@@ -1,5 +1,11 @@
+import MainLayout from './MainLayout';
+
 function App() {
-  return <div></div>;
+  return (
+    <MainLayout>
+      <div>Router</div>
+    </MainLayout>
+  );
 }
 
 export default App;
