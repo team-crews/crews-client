@@ -1,4 +1,5 @@
-import type {Config} from 'tailwindcss';
+import type { Config } from 'tailwindcss';
+import { CrewsColors } from './src/styles/color';
 
 const config = {
   darkMode: ['class'],
@@ -31,6 +32,10 @@ const config = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      colors: CrewsColors,
+      fontFamily: {
+        pretendard: 'Pretendard-Regular',
       },
     },
   },
