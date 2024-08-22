@@ -3,6 +3,7 @@ import Typography from '../../shared/typography';
 const ClipboardSection = () => {
   return (
     <section className="flex justify-center">
+      {/* TODO: add auth code copy logic */}
       <Typography className="cursor-pointer text-[1.375rem] font-bold text-crews-b06 underline">
         여기
       </Typography>
