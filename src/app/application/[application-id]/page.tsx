@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ApplicationWaitPage from '../../../components/application/application-wait/ApplicationWaitPage';
+import ApplicationWaitPage from '../../../components/application/application-wait/application-wait-page';
 import Container from '../../../components/shared/container';
 
 const Page = () => {
@@ -27,7 +27,7 @@ const Page = () => {
     }
   };
 
-  return <Container>{renderPage()}</Container>;
+  return <Container className="flex justify-center">{renderPage()}</Container>;
 };
 
 export default Page;
