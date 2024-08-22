@@ -3,15 +3,16 @@
 @tailwind utilities;
 
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 #root {
-    width: 100dvw;
-    height: 100dvh;
+  width: 100dvw;
+  height: 100dvh;
 }
