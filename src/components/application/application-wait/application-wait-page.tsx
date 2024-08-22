@@ -7,7 +7,7 @@ const ApplicationWaitPage = () => {
   return (
     <div className="w-[43.75rem]">
       <HeaderSection />
-      <div className="my-[9.375rem] flex flex-col gap-[6.25rem]">
+      <div className="flex flex-col gap-[6.25rem] py-[6rem]">
         <ClipboardSection />
         <ApplicantSection />
         <DeadlineSection />
