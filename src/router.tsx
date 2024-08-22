@@ -10,6 +10,7 @@ import HomePage from './app/page.tsx';
 import RecruitmentPage from './app/recruitment/[recruitmentId]/page.tsx';
 import RecruitPage from './app/recruit/[recruitment-id]/page.tsx';
 import ApplyPage from './app/apply/[recruitment-id]/page.tsx';
+import ApplicationPage from './app/application/[application-id]/page.tsx';
 
 const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,13 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
 
       <Route element={<RequireAuth availableRoles={['applicant']} />}>
         <Route path="apply/:recruitment-id" element={<ApplyPage />} />
+      </Route>
+
+      <Route element={<RequireAuth availableRoles={['applicant']} />}>
+        <Route
+          path="application/:application-id"
+          element={<ApplicationPage />}
+        />
       </Route>
     </Route>,
   ),
