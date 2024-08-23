@@ -3,6 +3,7 @@ import { formatNumberTime, formateDateTime } from '../../../lib/utils/time';
 import Typography from '../../shared/typography';
 
 const DeadlineSection = () => {
+  // TODO: get deadline from server
   const deadline = new Date('2024-11-11T20:00:00');
   const [today, setToday] = useState(new Date());
 
