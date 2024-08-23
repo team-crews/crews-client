@@ -1,4 +1,5 @@
 import FooterContainer from '../../shared/footer-container';
+import { Button } from '../../ui/button';
 import ApplicantSection from './applicant-section';
 import ClipboardSection from './clipboard-section';
 import DeadlineSection from './deadline-section';
@@ -13,7 +14,9 @@ const ApplicationWaitPage = () => {
         <ApplicantSection />
         <DeadlineSection />
       </div>
-      <FooterContainer></FooterContainer>
+      <FooterContainer className="flex w-full justify-end">
+        <Button variant={'default'}>마감 연장하기</Button>
+      </FooterContainer>
     </div>
   );
 };
