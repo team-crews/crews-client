@@ -1,5 +1,7 @@
 import type { Config } from 'tailwindcss';
+
 import { CrewsColors } from './src/styles/color';
+import { CrewsBreakpoints } from './src/styles/breakpoints';
 
 const config = {
   darkMode: ['class'],
@@ -18,12 +20,7 @@ const config = {
         '2xl': '1400px',
       },
     },
-    screens: {
-      sm: '576px',
-      md: '768px',
-      lg: '1024px',
-      xl: '1280px',
-    },
+    screens: CrewsBreakpoints,
     extend: {
       keyframes: {
         'accordion-down': {
