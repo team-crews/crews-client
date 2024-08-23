@@ -15,7 +15,13 @@ const ApplicationWaitPage = () => {
         <DeadlineSection />
       </div>
       <FooterContainer className="flex w-full justify-end">
-        <Button variant={'default'}>마감 연장하기</Button>
+        {/* TODO: add onclick event */}
+        <Button
+          className="h-[3.125rem] w-[12.5rem] rounded-[0.625rem]"
+          variant={'default'}
+        >
+          마감기간 연장하기
+        </Button>
       </FooterContainer>
     </div>
   );
