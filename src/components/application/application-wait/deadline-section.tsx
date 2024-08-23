@@ -19,9 +19,9 @@ const DeadlineSection = () => {
   }, []);
 
   return (
-    <section className="flex w-full items-center justify-center gap-[0.625rem] rounded-[0.625rem] bg-crews-b01 px-[9rem] py-[1.5rem]">
+    <section className="flex w-full items-center justify-center gap-[0.625rem] rounded-[0.625rem] bg-crews-b01 px-[6rem] py-[1.5rem]">
       <div className="flex flex-col items-center justify-center gap-[0.75rem]">
-        <div className="flex items-center justify-center gap-[3.125rem]">
+        <div className="flex flex-col items-center justify-center md:flex-row md:gap-[3.125rem]">
           <Typography className="text-[1.875rem] font-semibold text-crews-bk02">
             {`D-${day}`}
           </Typography>
