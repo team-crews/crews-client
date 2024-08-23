@@ -1,3 +1,4 @@
+import FooterContainer from '../../shared/footer-container';
 import ApplicantSection from './applicant-section';
 import ClipboardSection from './clipboard-section';
 import DeadlineSection from './deadline-section';
@@ -12,6 +13,7 @@ const ApplicationWaitPage = () => {
         <ApplicantSection />
         <DeadlineSection />
       </div>
+      <FooterContainer></FooterContainer>
     </div>
   );
 };
