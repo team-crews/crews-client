@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { formatNumberTime, formateDateTime } from '../../../lib/utils/time';
+import { formatNumberTime } from '../../../lib/utils/time';
 import Typography from '../../shared/typography';
+import dayjs from 'dayjs';
 
 const DeadlineSection = () => {
   // TODO: get deadline from server
@@ -30,7 +31,7 @@ const DeadlineSection = () => {
           </Typography>
         </div>
         <Typography className="text-[1.25rem] text-crews-g05">
-          {`마감일자 : ${formateDateTime(deadline)}`}
+          {`마감일자 : ${dayjs(deadline).format('YYYY-MM-DD HH:mm:ss')}`}
         </Typography>
       </div>
     </section>
