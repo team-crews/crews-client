@@ -1,10 +1,6 @@
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-} from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 
-import RequireAuth from './components/require-auth.tsx';
+import RequireAuth from './components/wrapper/require-auth.tsx';
 import RootLayout from './app/layout.tsx';
 import HomePage from './app/page.tsx';
 import RecruitmentPage from './app/recruitment/[recruitmentId]/page.tsx';
@@ -24,8 +20,8 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
       <Route element={<RequireAuth availableRoles={['applicant']} />}>
         <Route path="apply/:recruitment-id" element={<ApplyPage />} />
       </Route>
-    </Route>,
-  ),
+    </Route>
+  )
 );
 
 export default router;
