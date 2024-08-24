@@ -34,10 +34,18 @@ const config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        shake: {
+          '0%': { transform: 'translateX(0)' }, // 시작 위치
+          '25%': { transform: 'translateX(-5px)' }, // 왼쪽으로 이동
+          '50%': { transform: 'translateX(5px)' }, // 오른쪽으로 이동
+          '75%': { transform: 'translateX(-5px)' }, // 왼쪽으로 다시 이동
+          '100%': { transform: 'translateX(0)' }, // 원래 위치로 복귀
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        shake: 'shake 0.25s linear',
       },
       colors: CrewsColors,
       fontFamily: {
