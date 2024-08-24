@@ -1,98 +1,37 @@
 import Container from '../components/shared/container.tsx';
-import Seperator from '../components/shared/seperator.tsx';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import Input from '../components/shared/input.tsx';
-import { useNavigate } from 'react-router-dom';
 import AnchorIcon from '../assets/icons/anchor-icon.tsx';
-
-type RecruitmentInput = {
-  recruitmentCode: string;
-};
-
-type RecruiterInputs = {
-  recruiterName: string;
-  recruiterPassword: string;
-};
+import Seperator from '../components/shared/seperator.tsx';
+import LookupRecruitmentForm from './_components/lookup-recruitment-form.tsx';
+import RecruitForm from './_components/recruit-form.tsx';
 
 const Page = () => {
-  const navigate = useNavigate();
-
-  const {
-    register: recruitmentRegister,
-    resetField: recruitmentResetField,
-    handleSubmit: recruitmentHandleSubmit,
-  } = useForm<RecruitmentInput>({
-    defaultValues: {
-      recruitmentCode: '',
-    },
-  });
-  const onRecruitmentSubmit: SubmitHandler<RecruitmentInput> = ({
-    recruitmentCode,
-  }) => {
-    navigate(`/recruitment/${recruitmentCode}`);
-  };
-
-  const {
-    register: recruiterRegister,
-    resetField: recruiterResetField,
-    handleSubmit: recruiterHandleSubmit,
-  } = useForm<RecruiterInputs>({
-    defaultValues: {
-      recruiterName: '',
-      recruiterPassword: '',
-    },
-  });
-  const onRecruiterSubmit: SubmitHandler<RecruiterInputs> = (data) => {
-    console.log(data);
-  };
-
   return (
     <Container className="flex items-center justify-center">
-      <div>
-        <div>
-          <p>누구나 쉽게 모집 · 지원</p>
-          <h1>Crews</h1>
-          <AnchorIcon className="h-4 w-4" />
+      <section className="mb-10 w-full max-w-[375px]">
+        <div className="mb-6 flex flex-col">
+          <p className="text-lg font-semibold">누구나 쉽게 모집 · 지원</p>
+          <div className="flex items-center gap-2 font-bold text-crews-b05">
+            <h1 className="text-4xl">Crews</h1>
+            <AnchorIcon className="h-8 w-8" />
+          </div>
         </div>
 
-        <form onSubmit={recruitmentHandleSubmit(onRecruitmentSubmit)}>
-          <fieldset>
-            <legend>지원하기</legend>
-            <Input
-              registerReturns={recruitmentRegister('recruitmentCode', {
-                required: true,
-              })}
-              handleXClick={() => recruitmentResetField('recruitmentCode')}
-              placeholder="모집공고 코드"
-            />
-          </fieldset>
-          <button>지원하기</button>
-        </form>
+        <LookupRecruitmentForm />
 
-        <Seperator orientation="horizontal" className="bg-black" />
+        <div className="my-8 flex w-full items-center gap-2">
+          <Seperator
+            orientation="horizontal"
+            className="flex-grow bg-crews-g02"
+          />
+          <p className="text-xs text-crews-g02">or</p>
+          <Seperator
+            orientation="horizontal"
+            className="flex-grow bg-crews-g02"
+          />
+        </div>
 
-        <form onSubmit={recruiterHandleSubmit(onRecruiterSubmit)}>
-          <fieldset>
-            <legend>모집하기</legend>
-            <Input
-              registerReturns={recruiterRegister('recruiterName', {
-                required: true,
-              })}
-              handleXClick={() => recruiterResetField('recruiterName')}
-              placeholder="동아리명"
-            />
-            <Input
-              type="password"
-              registerReturns={recruiterRegister('recruiterPassword', {
-                required: true,
-              })}
-              handleXClick={() => recruiterResetField('recruiterPassword')}
-              placeholder="비밀번호"
-            />
-          </fieldset>
-          <button>모집하기</button>
-        </form>
-      </div>
+        <RecruitForm />
+      </section>
     </Container>
   );
 };
