@@ -26,7 +26,8 @@ const RequireAuth = ({ availableRoles }: { availableRoles: IRole[] }) => {
   return (
     <>
       {availableRoles.map((role: IRole) => (
-        <p>{role}만 출입 가능</p>
+        // TODO: remove role
+        <p>{role}만 출입 가능 </p>
       ))}
       <Outlet />
     </>
