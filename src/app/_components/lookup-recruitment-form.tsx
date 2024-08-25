@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Input from '../../components/shared/input.tsx';
-import Button from '../../components/shared/button.tsx';
+import { Button } from '../../components/ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useToast } from '../../hooks/use-toast.tsx';
 import { useNavigate } from 'react-router-dom';
@@ -74,11 +74,9 @@ const LookupRecruitmentForm = () => {
           placeholder="모집공고 코드"
         />
       </fieldset>
-      <Button>지원하기</Button>
-      {/*
-        ToDo
-        error state가 true 일 경우 button disable 및 관련 스타일링
-       */}
+      <Button className="w-full" disabled={error}>
+        모집하기
+      </Button>
     </form>
   );
 };

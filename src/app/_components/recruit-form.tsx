@@ -1,5 +1,5 @@
 import Input from '../../components/shared/input.tsx';
-import Button from '../../components/shared/button.tsx';
+import { Button } from '../../components/ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputState, LocalLegend } from './lookup-recruitment-form.tsx';
 import { useToast } from '../../hooks/use-toast.tsx';
@@ -89,11 +89,10 @@ const RecruitForm = () => {
           placeholder="비밀번호"
         />
       </fieldset>
-      <Button>모집하기</Button>
-      {/*
-        ToDo
-        error state가 true 일 경우 button disable 및 관련 스타일링
-       */}
+
+      <Button className="w-full" disabled={error}>
+        모집하기
+      </Button>
     </form>
   );
 };
