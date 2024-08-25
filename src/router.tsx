@@ -15,14 +15,18 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<RootLayout />}>
       <Route path="/" element={<HomePage />} />
-      <Route path="recruitment/:recruitment-id" element={<RecruitmentPage />} />
+
+      <Route
+        path="recruitment/:recruitment-code"
+        element={<RecruitmentPage />}
+      />
 
       <Route element={<RequireAuth availableRoles={['applicant']} />}>
-        <Route path="apply/:recruitment-id" element={<ApplyPage />} />
+        <Route path="apply/:recruitment-code" element={<ApplyPage />} />
       </Route>
 
       <Route element={<RequireAuth availableRoles={['recruiter']} />}>
-        <Route path="recruit/:recruitment-id" element={<RecruitPage />} />
+        <Route path="recruit" element={<RecruitPage />} />
       </Route>
     </Route>,
   ),
