@@ -1,4 +1,4 @@
-import { IRole } from '../lib/model/i-role.ts';
+import { IRole } from '../../lib/model/i-role.ts';
 import { Outlet } from 'react-router-dom';
 
 const RequireAuth = ({ availableRoles }: { availableRoles: IRole[] }) => {

@@ -2,14 +2,17 @@ import { useState } from 'react';
 import ApplicationWaitPage from '../../../components/application/application-wait/application-wait-page';
 import Container from '../../../components/shared/container';
 
+type Status = 'make' | 'wait' | 'eval';
+
 const Page = () => {
   /**TODO: 모집 코드 input get 요청 후 status 처리 (커스텀 훅 api 작성)
    * 1. make
    * 2. wait
    * 3. eval
    */
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [status, setStatus] = useState('wait');
+  const [status, _setStatus] = useState<Status>();
 
   const renderPage = () => {
     switch (status) {
