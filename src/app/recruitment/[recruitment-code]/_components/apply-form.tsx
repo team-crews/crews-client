@@ -1,28 +1,27 @@
-import Input, { InputState } from '../../components/shared/input.tsx';
-import { Button } from '../../components/ui/button.tsx';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { LocalLegend } from './lookup-recruitment-form.tsx';
-import { useToast } from '../../hooks/use-toast.tsx';
+import { useToast } from '../../../../hooks/use-toast.tsx';
 import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import Input, { InputState } from '../../../../components/shared/input.tsx';
+import { Button } from '../../../../components/ui/button.tsx';
 
-type RecruitInputs = {
-  recruitName: string;
-  recruitPassword: string;
+type ApplyInputs = {
+  email: string;
+  password: string;
 };
 
-const RecruitForm = () => {
+const ApplyForm = () => {
   const { toast } = useToast();
   const [error, setError] = useState<boolean>(false);
 
   const { register, resetField, handleSubmit, formState } =
-    useForm<RecruitInputs>({
+    useForm<ApplyInputs>({
       defaultValues: {
-        recruitName: '',
-        recruitPassword: '',
+        email: '',
+        password: '',
       },
     });
 
-  const onSubmit: SubmitHandler<RecruitInputs> = (data) => {
+  const onSubmit: SubmitHandler<ApplyInputs> = (data) => {
     /*
       ToDo
       * 길이 유효성 검사
@@ -43,47 +42,49 @@ const RecruitForm = () => {
     console.log(data);
   };
 
-  const inputState: Record<keyof RecruitInputs, InputState> = {
-    recruitName: error
+  const inputState: Record<keyof ApplyInputs, InputState> = {
+    email: error ? 'error' : formState.dirtyFields.email ? 'filled' : 'empty',
+    password: error
       ? 'error'
-      : formState.dirtyFields.recruitName
-        ? 'filled'
-        : 'empty',
-    recruitPassword: error
-      ? 'error'
-      : formState.dirtyFields.recruitPassword
+      : formState.dirtyFields.password
         ? 'filled'
         : 'empty',
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <p className="mb-4 text-center font-medium">
+        <span className="text-2xl font-bold text-crews-b05">
+          Crews 1기 기획진 모집
+        </span>{' '}
+        에 지원해 주세요 😃
+      </p>
       <fieldset className="mb-3">
-        <LocalLegend>모집하기</LocalLegend>
         <Input
-          state={inputState.recruitName}
+          type="email"
+          state={inputState.email}
           className="mb-3"
-          registerReturns={register('recruitName', {
+          registerReturns={register('email', {
             onChange: () => {
               setError(false);
             },
           })}
           clearInput={() => {
-            resetField('recruitName');
+            resetField('email');
             setError(false);
           }}
-          placeholder="동아리명"
+          placeholder="이메일"
         />
         <Input
-          state={inputState.recruitPassword}
+          state={inputState.password}
           type="password"
-          registerReturns={register('recruitPassword', {
+          registerReturns={register('password', {
             onChange: () => {
               setError(false);
             },
           })}
           clearInput={() => {
-            resetField('recruitPassword');
+            resetField('password');
             setError(false);
           }}
           placeholder="비밀번호"
@@ -97,4 +98,4 @@ const RecruitForm = () => {
   );
 };
 
-export default RecruitForm;
+export default ApplyForm;

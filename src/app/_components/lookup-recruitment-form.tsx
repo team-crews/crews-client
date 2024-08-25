@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Input from '../../components/shared/input.tsx';
+import Input, { InputState } from '../../components/shared/input.tsx';
 import { Button } from '../../components/ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useToast } from '../../hooks/use-toast.tsx';
@@ -8,8 +8,6 @@ import { useNavigate } from 'react-router-dom';
 type LookUpRecruitmentInput = {
   recruitmentCode: string;
 };
-
-export type InputState = 'error' | 'filled' | 'empty';
 
 const LookupRecruitmentForm = () => {
   const { toast } = useToast();

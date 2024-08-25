@@ -7,6 +7,8 @@ import EyeIcon from '../../assets/icons/eye-icon.svg?react';
 
 import { cva, VariantProps } from 'class-variance-authority';
 
+export type InputState = 'error' | 'filled' | 'empty';
+
 const variants = cva(
   'w-full rounded-md p-2.5 text-sm font-medium outline-2 placeholder:font-normal placeholder:text-crews-g04 focus:bg-crews-b02 focus:outline focus:outline-crews-b04',
   {
