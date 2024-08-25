@@ -1,4 +1,4 @@
-import useBreakpoints from '../../../hooks/useBreakpoints';
+import useBreakpoints from '../../../hooks/use-breakpoints.tsx';
 import Typography from '../../shared/typography';
 
 const ApplicantSection = () => {
