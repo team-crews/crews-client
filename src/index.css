@@ -3,13 +3,14 @@
 @tailwind utilities;
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Pretendard-Regular;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 svg {
@@ -21,6 +22,6 @@ input {
 }
 
 #root {
-  width: 100dvw;
-  height: 100dvh;
+    width: 100dvw;
+    height: 100dvh;
 }
