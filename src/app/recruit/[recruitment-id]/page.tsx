@@ -1,11 +1,37 @@
+import { useState } from 'react';
+
+import Container from '../../../components/shared/container';
+import RecruitWaitPage from './_components/recruit-wait/recruit-wait-page';
+
+type Status = 'make' | 'wait' | 'eval';
+
 const Page = () => {
-  return (
-    <div>
-      ToDO * 모집자(동아리장)이 본인의 모집공고를 관리하는 페이지 * 본인의 모집
-      공고가 아닌 recruitment-id url로 들어오지 못하게 막기 * 서버에 현재 모집
-      공고의 상태(모집전,모집중,평가)를 받아 상태에 따라 화면 출력
-    </div>
-  );
+  /**TODO: 모집 코드 input get 요청 후 status 처리 (커스텀 훅 api 작성)
+   * 1. make
+   * 2. wait
+   * 3. eval
+   */
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [status, _setStatus] = useState<Status>('wait');
+
+  const renderPage = () => {
+    switch (status) {
+      case 'make':
+        // return <ApplicationMakePage/>;
+        return <></>;
+      case 'wait':
+        return <RecruitWaitPage />;
+      case 'eval':
+        // return <ApplicationEvalPage/>;
+        return <></>;
+      default:
+        //TODO: apply shared error page
+        return <div>error 페이지</div>;
+    }
+  };
+
+  return <Container className="flex justify-center">{renderPage()}</Container>;
 };
 
 export default Page;

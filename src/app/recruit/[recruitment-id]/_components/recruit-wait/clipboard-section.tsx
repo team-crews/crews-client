@@ -1,4 +1,4 @@
-import Typography from '../../shared/typography';
+import Typography from '../../../../../components/shared/typography';
 
 const ClipboardSection = () => {
   return (

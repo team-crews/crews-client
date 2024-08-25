@@ -1,11 +1,11 @@
-import FooterContainer from '../../shared/footer-container';
-import { Button } from '../../ui/button';
+import FooterContainer from '../../../../../components/shared/footer-container';
+import { Button } from '../../../../../components/ui/button';
 import ApplicantSection from './applicant-section';
 import ClipboardSection from './clipboard-section';
 import DeadlineSection from './deadline-section';
 import HeaderSection from './header-section';
 
-const ApplicationWaitPage = () => {
+const RecruitWaitPage = () => {
   return (
     <div className="w-[43.75rem]">
       <HeaderSection />
@@ -27,4 +27,4 @@ const ApplicationWaitPage = () => {
   );
 };
 
-export default ApplicationWaitPage;
+export default RecruitWaitPage;

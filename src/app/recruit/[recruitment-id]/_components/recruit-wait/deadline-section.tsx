@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { formatNumberTime } from '../../../lib/utils/time';
-import Typography from '../../shared/typography';
+import { formatNumberTime } from '../../../../../lib/utils/time';
+import Typography from '../../../../../components/shared/typography';
 import dayjs from 'dayjs';
 
 const DeadlineSection = () => {
