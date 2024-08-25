@@ -9,7 +9,7 @@ import RootLayout from './app/layout.tsx';
 import HomePage from './app/page.tsx';
 import RecruitmentPage from './app/recruitment/[recruitmentId]/page.tsx';
 import ApplyPage from './app/apply/[recruitment-id]/page.tsx';
-import ApplicationPage from './app/application/[application-id]/page.tsx';
+import RecruitPage from './app/recruit/[recruitment-id]/page.tsx';
 
 const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
   createRoutesFromElements(
@@ -21,16 +21,8 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
         <Route path="apply/:recruitment-id" element={<ApplyPage />} />
       </Route>
 
-      {/*
-          FixMe
-          - availableRoles : applicant -> recruiter
-          - url 및 페이지 명 고민하기
-        */}
-      <Route element={<RequireAuth availableRoles={['applicant']} />}>
-        <Route
-          path="application/:application-id"
-          element={<ApplicationPage />}
-        />
+      <Route element={<RequireAuth availableRoles={['recruiter']} />}>
+        <Route path="recruit/:recruitment-id" element={<RecruitPage />} />
       </Route>
     </Route>,
   ),

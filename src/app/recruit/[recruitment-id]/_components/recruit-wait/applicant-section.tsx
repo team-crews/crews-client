@@ -1,5 +1,5 @@
-import useBreakpoints from '../../../hooks/use-breakpoints.tsx';
-import Typography from '../../shared/typography';
+import useBreakpoints from '../../../../../hooks/use-breakpoints.tsx';
+import Typography from '../../../../../components/shared/typography.tsx';
 
 const ApplicantSection = () => {
   const { isSmaller } = useBreakpoints({ breakpoint: 'md' });
