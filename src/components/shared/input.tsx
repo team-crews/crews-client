@@ -26,7 +26,7 @@ const variants = cva(
 
 type InputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
-  'className'
+  'className' | 'onFocus'
 > & {
   className?: string;
   registerReturns: UseFormRegisterReturn;

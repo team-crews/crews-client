@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Input from '../../components/shared/input.tsx';
-import { Button } from '../../components/ui/button.tsx';
+import Input from '../shared/input.tsx';
+import { Button } from '../ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useToast } from '../../hooks/use-toast.tsx';
 import { useNavigate } from 'react-router-dom';
@@ -35,15 +35,16 @@ const LookupRecruitmentForm = () => {
       길이 및 문자 정도의 유효성 검사만을 수행해 서버에 부하를 줄여보자.
      */
 
-    toast({
-      title: '문제가 발생했어요 😡',
-      description: '다시 시도해주세요.',
-    });
-
-    const isError = true;
+    const isError = false;
     setError(isError);
 
     !isError && navigate(`/recruitment/${recruitmentCode}`);
+
+    isError &&
+      toast({
+        title: '문제가 발생했어요 😡',
+        description: '다시 시도해주세요.',
+      });
   };
 
   useEffect(() => {
@@ -75,7 +76,7 @@ const LookupRecruitmentForm = () => {
         />
       </fieldset>
       <Button className="w-full" disabled={error}>
-        모집하기
+        지원하기
       </Button>
     </form>
   );

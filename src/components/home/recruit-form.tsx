@@ -1,5 +1,5 @@
-import Input from '../../components/shared/input.tsx';
-import { Button } from '../../components/ui/button.tsx';
+import Input from '../shared/input.tsx';
+import { Button } from '../ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputState, LocalLegend } from './lookup-recruitment-form.tsx';
 import { useToast } from '../../hooks/use-toast.tsx';

@@ -1,8 +1,8 @@
 import Container from '../components/shared/container.tsx';
 import AnchorIcon from '../assets/icons/anchor-icon.tsx';
 import Seperator from '../components/shared/seperator.tsx';
-import LookupRecruitmentForm from './_components/lookup-recruitment-form.tsx';
-import RecruitForm from './_components/recruit-form.tsx';
+import LookupRecruitmentForm from '../components/home/lookup-recruitment-form.tsx';
+import RecruitForm from '../components/home/recruit-form.tsx';
 
 const Page = () => {
   return (
