@@ -2,8 +2,8 @@ import { GetRecruitmentsReadyResponse } from './types';
 
 export const formMockData = {
   id: 1,
-  title: '공통섹션',
-  description: '공통섹션입니다잇',
+  title: '우주최강동아리',
+  description: '우주 최강만 들어오세요',
   recruitmentProgress: 'READY',
   sections: [
     {
