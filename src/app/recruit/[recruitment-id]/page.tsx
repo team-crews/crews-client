@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Container from '../../../components/shared/container';
 import RecruitWaitPage from './_components/recruit-wait/recruit-wait-page';
 import RecruitMakePage from './_components/recruit-make/recruit-make-page';
+import { RecruitFormProvider } from '../../../contexts/recruit-form-context';
 
 type Status = 'make' | 'wait' | 'eval';
 
@@ -14,13 +15,16 @@ const Page = () => {
    */
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [status, _setStatus] = useState<Status>('wait');
+  const [status, _setStatus] = useState<Status>('make');
 
   const renderPage = () => {
     switch (status) {
       case 'make':
-        return <RecruitMakePage />;
-        return <></>;
+        return (
+          <RecruitFormProvider>
+            <RecruitMakePage />
+          </RecruitFormProvider>
+        );
       case 'wait':
         return <RecruitWaitPage />;
       case 'eval':

@@ -1,24 +1,28 @@
 import { createContext } from 'react';
+import { GetRecruitmentsReadyResponse } from '../lib/types';
+import { formMockData } from '../lib/mock';
 
 export interface RecruitFormContextType {
-  test: string;
+  recruitment: GetRecruitmentsReadyResponse;
+  sections: GetRecruitmentsReadyResponse['sections'];
 }
 
 export const RecruitFormContext = createContext<
   RecruitFormContextType | undefined
 >(undefined);
 
-export const RecruitmentFormProvider = ({
+export const RecruitFormProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const test = 'test';
   // TODO: useQuery로 GET /recruitments/ready 요청
   //TODO: mutate로 post 요청
 
   return (
-    <RecruitFormContext.Provider value={{ test }}>
+    <RecruitFormContext.Provider
+      value={{ recruitment: formMockData, sections: formMockData.sections }}
+    >
       {children}
     </RecruitFormContext.Provider>
   );
