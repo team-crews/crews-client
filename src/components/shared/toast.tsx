@@ -3,7 +3,7 @@ import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 
-import FaceSadTearIcon from '../../assets/icons/face-sad-tear-icon.svg?react';
+import CircleXMarkIcon from '../../assets/icons/circle-x-mark-icon.svg?react';
 import CircleCheckIcon from '../../assets/icons/circle-check-icon.svg?react';
 import CircleInfoIcon from '../../assets/icons/circle-info-icon.svg?react';
 import TriangleCheckIcon from '../../assets/icons/triangle-exclamation-icon.svg?react';
@@ -58,7 +58,7 @@ const Toast = React.forwardRef<
       case 'warning':
         return <TriangleCheckIcon className="h-3.5 w-3.5" />;
       case 'error':
-        return <FaceSadTearIcon className="h-3.5 w-3.5" />;
+        return <CircleXMarkIcon className="h-3.5 w-3.5" />;
     }
   };
 
