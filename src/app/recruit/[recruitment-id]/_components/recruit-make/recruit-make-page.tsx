@@ -6,7 +6,7 @@ import { PostRecruitmentsBody } from '../../../../../lib/types';
 
 const RecruitMakePage = () => {
   const methods = useForm<PostRecruitmentsBody>({
-    // FIXME: api 연결 시 defaultValues 삭제
+    // FIXME: api 연결 시 defaultValues mock data 삭제
     defaultValues: formMockData,
   });
 

@@ -1,5 +1,7 @@
 import { PostRecruitmentsBody } from './types';
 
+// FIXME: api 연동 후 삭제
+
 export const formMockData = {
   id: 1,
   title: '우주최강동아리',
