@@ -4,7 +4,7 @@ import {
   ToastTitle,
   ToastViewport,
 } from '../shared/toast.tsx';
-import { useToast } from '../../hooks/use-toast.tsx';
+import { useToast } from '../../hooks/use-toast.ts';
 
 export function Toaster() {
   const { toasts } = useToast();
