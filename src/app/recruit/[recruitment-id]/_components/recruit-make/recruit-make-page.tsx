@@ -16,7 +16,6 @@ const RecruitMakePage = () => {
     // reset
   } = methods;
 
-  // sections 필드를 관리하기 위해 useFieldArray를 사용합니다.
   const {
     fields: sectionFields,
     append: appendSection,
