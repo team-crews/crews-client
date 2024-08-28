@@ -1,4 +1,4 @@
-import { useToast } from '../../../../hooks/use-toast.tsx';
+import { useToast } from '../../../../hooks/use-toast.ts';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Input, { InputState } from '../../../../components/shared/input.tsx';
