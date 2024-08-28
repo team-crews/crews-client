@@ -37,12 +37,13 @@ const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
             key={question.id}
             sectionIndex={sectionIndex}
             questionIndex={questionIndex}
+            removeQuestion={removeQuestion}
           />
         ))}
       </div>
       <button
         onClick={() =>
-          appendQuestion(sectionIndex, {
+          appendQuestion({
             id: null,
             type: 'NARRATIVE',
             content: '',

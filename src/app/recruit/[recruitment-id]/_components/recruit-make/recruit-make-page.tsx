@@ -53,15 +53,14 @@ const RecruitMakePage = () => {
             ))}
           </div>
           <button
-            onClick={() => {
+            onClick={() =>
               appendSection({
                 id: null,
                 name: '새로운 섹션',
                 description: '새로운섹션 설명',
                 questions: [],
-              });
-              console.log(sectionFields);
-            }}
+              })
+            }
           >
             {'섹션 추가'}
           </button>
