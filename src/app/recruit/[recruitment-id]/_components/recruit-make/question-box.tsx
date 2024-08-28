@@ -38,35 +38,71 @@ const QuestionBox = ({
         )}
         placeholder="질문 내용"
       />
-      <select
-        className="bg-cyan-300"
-        {...register(
-          `sections.${sectionIndex}.questions.${questionIndex}.type`,
+      <div className="border-[0.125rem] border-lime-600">
+        {questionType === 'NARRATIVE' && (
+          <div className="flex">
+            <input
+              className="w-[4rem] underline"
+              {...register(
+                `sections.${sectionIndex}.questions.${questionIndex}.wordLimit`,
+              )}
+              placeholder="단어 제한"
+            />
+            <span>자 이내</span>
+          </div>
         )}
-      >
-        <option value="NARRATIVE">서술형</option>
-        <option value="SELECTIVE">선택형</option>
-      </select>
-      <button
-        className="border-[0.125rem] border-crews-b06"
-        type="button"
-        onClick={() => removeQuestion(questionIndex)}
-      >
-        질문 삭제
-      </button>
+        <div className="flex">
+          <input
+            type="checkbox"
+            {...register(
+              `sections.${sectionIndex}.questions.${questionIndex}.necessity`,
+            )}
+          />
+          <span>응답 필수</span>
+        </div>
+        <select
+          className="bg-cyan-300"
+          {...register(
+            `sections.${sectionIndex}.questions.${questionIndex}.type`,
+          )}
+        >
+          <option value="NARRATIVE">서술형</option>
+          <option value="SELECTIVE">선택형</option>
+        </select>
+        <button
+          className="border-[0.125rem] border-crews-b06"
+          type="button"
+          onClick={() => removeQuestion(questionIndex)}
+        >
+          질문 삭제
+        </button>
+      </div>
 
       {questionType === 'SELECTIVE' && (
         <div>
+          <div>최소 선택, 최대 선택</div>
+          <input
+            className="bg-indigo-400"
+            {...register(
+              `sections.${sectionIndex}.questions.${questionIndex}.minimumSelection`,
+            )}
+          />
+          <input
+            className="bg-sky-500"
+            {...register(
+              `sections.${sectionIndex}.questions.${questionIndex}.minimumSelection`,
+            )}
+          />
           {choiceFields.map((choice, choiceIndex) => (
             <div key={choice.id}>
               <input
                 {...register(
                   `sections.${sectionIndex}.questions.${questionIndex}.choices.${choiceIndex}.content`,
                 )}
-                placeholder="Choice Content"
+                placeholder="선택지 내용"
               />
               <button type="button" onClick={() => removeChoice(choiceIndex)}>
-                선택지 삭제
+                x
               </button>
             </div>
           ))}
