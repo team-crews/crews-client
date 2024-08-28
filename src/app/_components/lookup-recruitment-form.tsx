@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Input, { InputState } from '../../components/shared/input.tsx';
 import { Button } from '../../components/ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useToast } from '../../hooks/use-toast.tsx';
+import { useToast } from '../../hooks/use-toast.ts';
 import { useNavigate } from 'react-router-dom';
+import { validateRecruitmentCode } from '../../lib/utils/regex.ts';
 
 type LookUpRecruitmentInput = {
   recruitmentCode: string;
@@ -24,25 +25,16 @@ const LookupRecruitmentForm = () => {
   const onSubmit: SubmitHandler<LookUpRecruitmentInput> = ({
     recruitmentCode,
   }) => {
-    /*
-      ToDo
-      * 길이 유효성 검사
-      * 문자 유효성 검사
-
-      recruitment id는 "d6d46725-0297-442e-b942-f2b898437680"와 같은 식으로 정해진 길이 및 정해진 문자만을 포함한다.
-      길이 및 문자 정도의 유효성 검사만을 수행해 서버에 부하를 줄여보자.
-     */
-
-    const isError = false;
-    setError(isError);
-
-    !isError && navigate(`/recruitment/${recruitmentCode}`);
-
-    isError &&
+    const toastMsg: string = validateRecruitmentCode(recruitmentCode);
+    if (toastMsg) {
       toast({
-        title: '문제가 발생했어요 😡',
-        description: '다시 시도해주세요.',
+        title: toastMsg,
+        state: 'error',
       });
+      setError(true);
+      return;
+    }
+    navigate(`/recruitment/${recruitmentCode}`);
   };
 
   useEffect(() => {

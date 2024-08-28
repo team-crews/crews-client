@@ -2,12 +2,17 @@ import Input, { InputState } from '../../components/shared/input.tsx';
 import { Button } from '../../components/ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { LocalLegend } from './lookup-recruitment-form.tsx';
-import { useToast } from '../../hooks/use-toast.tsx';
+import { useToast } from '../../hooks/use-toast.ts';
 import { useState } from 'react';
+import { adminLogin } from '../../apis/auth-api.ts';
+import { useNavigate } from 'react-router-dom';
+import useSession from '../../hooks/use-session.ts';
+import handleError from '../../lib/utils/error.ts';
+import { validateClubName, validatePassword } from '../../lib/utils/regex.ts';
 
 type RecruitInputs = {
-  recruitName: string;
-  recruitPassword: string;
+  clubName: string;
+  password: string;
 };
 
 const RecruitForm = () => {
@@ -17,41 +22,50 @@ const RecruitForm = () => {
   const { register, resetField, handleSubmit, formState } =
     useForm<RecruitInputs>({
       defaultValues: {
-        recruitName: '',
-        recruitPassword: '',
+        clubName: '',
+        password: '',
       },
     });
 
-  const onSubmit: SubmitHandler<RecruitInputs> = (data) => {
-    /*
-      ToDo
-      * 길이 유효성 검사
-      * 문자 유효성 검사
-      * 로그인 처리
-      * 페이지 네비게이션
+  const navigate = useNavigate();
+  const { setSession } = useSession();
+  const onSubmit: SubmitHandler<RecruitInputs> = async (data) => {
+    const clubNameValidation = validateClubName(data.clubName);
+    const passwordValidation = validatePassword(data.password);
 
-      유효성 검사 어느정도로 할지 생각해봐야 할듯
-     */
+    if (clubNameValidation || passwordValidation) {
+      toast({
+        title: clubNameValidation || passwordValidation,
+        state: 'error',
+      });
+      setError(true);
+      return;
+    }
 
-    toast({
-      title: '문제가 발생했어요 😡',
-      description: '다시 시도해주세요.',
-    });
+    try {
+      const { accessToken } = await adminLogin(data);
+      setSession(accessToken);
+      navigate('/recruit');
+    } catch (e) {
+      handleError(e, 'adminLogin', 'PRINT');
+      setError(true);
 
-    setError(true);
-
-    console.log(data);
+      toast({
+        title: '문제가 발생했습니다',
+        state: 'error',
+      });
+    }
   };
 
   const inputState: Record<keyof RecruitInputs, InputState> = {
-    recruitName: error
+    clubName: error
       ? 'error'
-      : formState.dirtyFields.recruitName
+      : formState.dirtyFields.clubName
         ? 'filled'
         : 'empty',
-    recruitPassword: error
+    password: error
       ? 'error'
-      : formState.dirtyFields.recruitPassword
+      : formState.dirtyFields.password
         ? 'filled'
         : 'empty',
   };
@@ -61,29 +75,29 @@ const RecruitForm = () => {
       <fieldset className="mb-3">
         <LocalLegend>모집하기</LocalLegend>
         <Input
-          state={inputState.recruitName}
+          state={inputState.clubName}
           className="mb-3"
-          registerReturns={register('recruitName', {
+          registerReturns={register('clubName', {
             onChange: () => {
               setError(false);
             },
           })}
           clearInput={() => {
-            resetField('recruitName');
+            resetField('clubName');
             setError(false);
           }}
           placeholder="동아리명"
         />
         <Input
-          state={inputState.recruitPassword}
+          state={inputState.password}
           type="password"
-          registerReturns={register('recruitPassword', {
+          registerReturns={register('password', {
             onChange: () => {
               setError(false);
             },
           })}
           clearInput={() => {
-            resetField('recruitPassword');
+            resetField('password');
             setError(false);
           }}
           placeholder="비밀번호"
