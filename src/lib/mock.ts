@@ -1,4 +1,4 @@
-import { GetRecruitmentsReadyResponse } from './types';
+import { PostRecruitmentsBody } from './types';
 
 export const formMockData = {
   id: 1,
@@ -7,12 +7,12 @@ export const formMockData = {
   recruitmentProgress: 'READY',
   sections: [
     {
-      id: 2,
+      id: 1,
       name: 'FRONTEND',
       description: '프론트엔드만 대답하세용',
       questions: [
         {
-          id: 2,
+          id: 1,
           type: 'SELECTIVE',
           content: '장점을 골라주세요',
           necessity: true,
@@ -54,7 +54,7 @@ export const formMockData = {
       description: '백엔드만 대답하세용',
       questions: [
         {
-          id: 1,
+          id: 3,
           type: 'SELECTIVE',
           content: '장점을 골라주세요',
           necessity: true,
@@ -78,7 +78,7 @@ export const formMockData = {
           ],
         },
         {
-          id: 1,
+          id: 4,
           type: 'NARRATIVE',
           content: '자기소개해주세요',
           necessity: true,
@@ -93,4 +93,4 @@ export const formMockData = {
   ],
   deadline: '2030-09-05T18:00:00',
   code: 'fbf0d84f-85c5-40d3-b2b5-48e109f5c9c7',
-} as GetRecruitmentsReadyResponse;
+} as PostRecruitmentsBody;
