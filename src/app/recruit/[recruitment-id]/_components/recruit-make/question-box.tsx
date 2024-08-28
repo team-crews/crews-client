@@ -90,7 +90,7 @@ const QuestionBox = ({
           <input
             className="bg-sky-500"
             {...register(
-              `sections.${sectionIndex}.questions.${questionIndex}.minimumSelection`,
+              `sections.${sectionIndex}.questions.${questionIndex}.maximumSelection`,
             )}
           />
           {choiceFields.map((choice, choiceIndex) => (
