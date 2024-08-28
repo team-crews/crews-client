@@ -1,10 +1,14 @@
+import { useFormContext } from 'react-hook-form';
 import { PostRecruitmentsBody } from '../../../../../lib/types';
 
 interface QuestionBoxProps {
-  question: PostRecruitmentsBody['sections'][number]['questions'][number];
+  sectionIndex: number;
+  questionIndex: number;
 }
 
-const QuestionBox = ({ question }: QuestionBoxProps) => {
+const QuestionBox = ({ sectionIndex, questionIndex }: QuestionBoxProps) => {
+  const { control, register } = useFormContext();
+
   const renderChoicesSection = () => {
     if (question.choices === null) {
       return null;
@@ -21,13 +25,12 @@ const QuestionBox = ({ question }: QuestionBoxProps) => {
 
   return (
     <div className="border-[0.125rem] border-crews-r02">
-      <input
-        type="text"
-        value={question.content}
-        placeholder="질문"
-        className="underline"
+      {/* <input
+        {...register(
+          `sections.${sectionIndex}.questions.${questionIndex}.choices.${choiceIndex}.content`,
+        )}
       />
-      {renderChoicesSection()}
+      {renderChoicesSection()} */}
     </div>
   );
 };

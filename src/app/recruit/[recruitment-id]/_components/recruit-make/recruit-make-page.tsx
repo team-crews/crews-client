@@ -1,14 +1,20 @@
-import { useFieldArray, useForm } from 'react-hook-form';
-import Typography from '../../../../../components/shared/typography';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
 import SectionBox from './section-box';
 import { formMockData } from '../../../../../lib/mock';
 
 const RecruitMakePage = () => {
-  const { control, handleSubmit, register, reset } = useForm({
+  const methods = useForm({
     // FIXME: api 연결 시 defaultValues 삭제
     defaultValues: formMockData,
   });
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    // reset
+  } = methods;
 
   // sections 필드를 관리하기 위해 useFieldArray를 사용합니다.
   const {
@@ -21,27 +27,49 @@ const RecruitMakePage = () => {
   });
 
   // TODO: react query로 get 요청 후 default 값으로 reset
-  // const { data, isLoading, error } = useQuery(['recruitmentData'], fetchRecruitmentData, {
+  // const { data, isLoading, error } = useQuery(['getRecruitmentsReady'], getRecruitmentsReady, {
   //   onSuccess: (data) => {
-  //     reset(data); // 가져온 데이터를 폼의 기본 값으로 설정
+  //     reset(data);
   //   },
   // });
 
   return (
     <div className="w-[47.5rem]">
-      <form onSubmit={handleSubmit((data) => console.log(data))}>
-        <div className="flex flex-col gap-[0.5rem]">
-          <input {...register('title')} />
-          <input {...register('description')} />
-          {/* TODO: deadline은 따로 patch해야함 */}
-          <div>{`마감기한: ${formMockData.deadline}`}</div>
-        </div>
-        <div className="mt-[0.5rem] flex flex-col gap-[0.5rem]">
-          {sectionFields.map((section) => (
-            <SectionBox key={section.id} section={section} />
-          ))}
-        </div>
-      </form>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit((data) => console.log(data))}>
+          <div className="flex flex-col gap-[0.5rem]">
+            <input {...register('title')} />
+            <input {...register('description')} />
+            {/* TODO: deadline은 따로 patch해야함 */}
+            <div>{`마감기한: ${formMockData.deadline}`}</div>
+          </div>
+          <div className="mt-[0.5rem] flex flex-col gap-[0.5rem]">
+            {sectionFields.map((section, sectionIndex) => (
+              <SectionBox
+                key={section.id}
+                sectionIndex={sectionIndex}
+                removeSection={removeSection}
+              />
+            ))}
+          </div>
+          <button
+            onClick={() => {
+              appendSection({
+                id: null,
+                name: '새로운 섹션',
+                description: '새로운섹션 설명',
+                questions: [],
+              });
+              console.log(sectionFields);
+            }}
+          >
+            {'섹션 추가'}
+          </button>
+          <button className="border-[0.125rem] border-crews-b06" type="submit">
+            {'제출'}
+          </button>
+        </form>
+      </FormProvider>
     </div>
   );
 };
