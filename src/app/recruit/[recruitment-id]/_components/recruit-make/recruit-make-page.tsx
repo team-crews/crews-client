@@ -2,9 +2,10 @@ import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
 import SectionBox from './section-box';
 import { formMockData } from '../../../../../lib/mock';
+import { PostRecruitmentsBody } from '../../../../../lib/types';
 
 const RecruitMakePage = () => {
-  const methods = useForm({
+  const methods = useForm<PostRecruitmentsBody>({
     // FIXME: api 연결 시 defaultValues 삭제
     defaultValues: formMockData,
   });
