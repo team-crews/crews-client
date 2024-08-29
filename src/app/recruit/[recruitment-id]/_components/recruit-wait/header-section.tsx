@@ -1,4 +1,4 @@
-import QuestionIcon from '@/assets/icons/question-icon.svg';
+import QuestionIcon from '../../../../../assets/icons/question-icon.svg';
 import SvgIcon from '../../../../../components/shared/svg-icon';
 import Typography from '../../../../../components/shared/typography';
 

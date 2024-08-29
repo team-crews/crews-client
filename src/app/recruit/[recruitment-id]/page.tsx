@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import Container from '../../../components/shared/container';
 import RecruitWaitPage from './_components/recruit-wait/recruit-wait-page';
+import RecruitMakePage from './_components/recruit-make/recruit-make-page';
 
 type Status = 'make' | 'wait' | 'eval';
 
@@ -13,13 +14,12 @@ const Page = () => {
    */
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [status, _setStatus] = useState<Status>('wait');
+  const [status, _setStatus] = useState<Status>('make');
 
   const renderPage = () => {
     switch (status) {
       case 'make':
-        // return <ApplicationMakePage/>;
-        return <></>;
+        return <RecruitMakePage />;
       case 'wait':
         return <RecruitWaitPage />;
       case 'eval':
