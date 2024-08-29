@@ -9,6 +9,7 @@ const useRefreshToken = () => {
     try {
       const response = await baseInstance.post<{ accessToken: string }>(
         '/auth/refresh',
+        {},
         {
           withCredentials: true,
         },
