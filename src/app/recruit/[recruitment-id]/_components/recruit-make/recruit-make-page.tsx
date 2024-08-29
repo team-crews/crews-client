@@ -2,7 +2,7 @@ import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
 import SectionBox from './section-box';
 import { formMockData } from '../../../../../lib/mock';
-import { PostRecruitmentsBody } from '../../../../../lib/types';
+import { PostRecruitmentsBody } from '../../../../../lib/types/recruitments';
 
 const RecruitMakePage = () => {
   const methods = useForm<PostRecruitmentsBody>({

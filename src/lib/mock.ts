@@ -1,4 +1,4 @@
-import { PostRecruitmentsBody } from './types';
+import { PostRecruitmentsBody } from './types/recruitments';
 
 // FIXME: api 연동 후 삭제
 
