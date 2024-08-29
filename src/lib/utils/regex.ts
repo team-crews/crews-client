@@ -39,6 +39,7 @@ function validateClubName(targetString: string): string {
   /*
     ToDo
     - 동아리명 유효성 검사 필요
+    - 특수 문자 제외..?
    */
 
   return '';
