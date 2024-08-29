@@ -3,6 +3,11 @@ import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 
+import CircleXMarkIcon from '../../assets/icons/circle-x-mark-icon.svg?react';
+import CircleCheckIcon from '../../assets/icons/circle-check-icon.svg?react';
+import CircleInfoIcon from '../../assets/icons/circle-info-icon.svg?react';
+import TriangleCheckIcon from '../../assets/icons/triangle-exclamation-icon.svg?react';
+
 import { cn } from '../../lib/utils';
 
 const ToastProvider = ToastPrimitives.Provider;
@@ -23,21 +28,18 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  /*
-    ToDo
-    toast 종류에 따른 스타일링 필요
-   */
-  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-y-0 data-[swipe=end]:translate-y-[100%] data-[swipe=move]:translate-y-[var(--radix-toast-swipe-move-y)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-bottom-full data-[state=open]:slide-in-from-bottom-full',
+  'flex items-center gap-2 rounded-lg border-2 px-3 py-2.5',
   {
     variants: {
-      variant: {
-        default: 'border bg-background text-foreground',
-        destructive:
-          'destructive group border-destructive bg-destructive text-destructive-foreground',
+      state: {
+        success: 'border-crews-t02 bg-crews-t01 text-crews-t02',
+        information: 'border-crews-sb02 bg-crews-sb01 text-crews-sb02',
+        warning: 'border-crews-o02 bg-crews-o01 text-crews-o02',
+        error: 'border-crews-p02 bg-crews-p01 text-crews-p02',
       },
     },
     defaultVariants: {
-      variant: 'default',
+      state: 'success',
     },
   },
 );
@@ -46,13 +48,34 @@ const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
     VariantProps<typeof toastVariants>
->(({ className, variant, ...props }, ref) => {
+>(({ className, state = 'success', ...props }, ref) => {
+  const Icon = (state: string) => {
+    switch (state) {
+      case 'success':
+        return <CircleCheckIcon className="h-3.5 w-3.5" />;
+      case 'information':
+        return <CircleInfoIcon className="h-3.5 w-3.5" />;
+      case 'warning':
+        return <TriangleCheckIcon className="h-3.5 w-3.5" />;
+      case 'error':
+        return <CircleXMarkIcon className="h-3.5 w-3.5" />;
+    }
+  };
+
   return (
     <ToastPrimitives.Root
       ref={ref}
-      className={cn(toastVariants({ variant }), className)}
+      className={cn(
+        className,
+        'overflow-hidden rounded-lg shadow-lg transition-all data-[swipe=cancel]:translate-y-0 data-[swipe=end]:translate-y-[100%] data-[swipe=move]:translate-y-[var(--radix-toast-swipe-move-y)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-bottom-full data-[state=open]:slide-in-from-bottom-full',
+      )}
       {...props}
-    />
+    >
+      <div className={cn(toastVariants({ state: state || 'success' }))}>
+        {Icon(state || 'success')}
+        {props.children}
+      </div>
+    </ToastPrimitives.Root>
   );
 });
 Toast.displayName = ToastPrimitives.Root.displayName;

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { cn } from '../../lib/utils.ts';
-import CircleXMarkIcon from '../../assets/icons/circle-x-mark-icon.tsx';
-import EyeSlashIcon from '../../assets/icons/eye-slash-icon.tsx';
-import EyeIcon from '../../assets/icons/eye-icon.tsx';
+import CircleXMarkIcon from '../../assets/icons/circle-x-mark-icon.svg?react';
+import EyeSlashIcon from '../../assets/icons/eye-slash-icon.svg?react';
+import EyeIcon from '../../assets/icons/eye-icon.svg?react';
 
 import { cva, VariantProps } from 'class-variance-authority';
+
+export type InputState = 'error' | 'filled' | 'empty';
 
 const variants = cva(
   'w-full rounded-md p-2.5 text-sm font-medium outline-2 placeholder:font-normal placeholder:text-crews-g04 focus:bg-crews-b02 focus:outline focus:outline-crews-b04',
