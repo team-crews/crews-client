@@ -1,34 +1,24 @@
 import { IRole } from '../../lib/model/i-role.ts';
 import { Outlet } from 'react-router-dom';
+import useSession from '../../hooks/use-session.ts';
 
 const RequireAuth = ({ availableRoles }: { availableRoles: IRole[] }) => {
-  // const { auth } = useAuth();
-  // const currentLocation = useLocation();
-  // const available = auth?.roles?.filter((it) => availRole.includes(it))?.length;
+  const { accessToken, role } = useSession();
+  const isAvailable = availableRoles.includes(role);
 
-  // if (!auth?.accessToken)
-  //   return (
-  //     <Navigate
-  //       to={redirectUrl}
-  //       state={{ from: currentLocation }}
-  //       replace={true}
-  //     />
-  //   );
-  // else if (!available) return <UnauthenticatedPage />;
-  // else if (available)
-  //   return (
-  //     <>
-  //       <AuthHeader />
-  //       <Outlet />
-  //     </>
-  //   );
+  /*
+      ToDo
+      - 두 경우에 대한 redirection 혹은 에러 페이지 필요
+     */
+  if (!accessToken) return <div>로그인 필요</div>;
+  if (!isAvailable) return <div>접근 불가</div>;
 
   return (
     <>
-      {availableRoles.map((role: IRole) => (
-        // TODO: remove role
-        <p>{role}만 출입 가능 </p>
-      ))}
+      {/*
+        ToDo
+        - <AuthHeader> 필요
+         */}
       <Outlet />
     </>
   );

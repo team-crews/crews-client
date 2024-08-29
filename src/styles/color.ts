@@ -25,6 +25,22 @@ export const CrewsColors = {
   'crews-r02': '#DB4242',
   'crews-r03': '#FB3D3D',
 
+  // Brand Pink
+  'crews-p01': '#feeeef',
+  'crews-p02': '#f37584',
+
+  // Brand Orange
+  'crews-o01': '#fff7ec',
+  'crews-o02': '#f18136',
+
+  // Brand teal
+  'crews-t01': '#f3ffff',
+  'crews-t02': '#0e9a93',
+
+  // Brand SkyBlue
+  'crews-sb01': '#e7f8ff',
+  'crews-sb02': '#179ad1',
+
   // Brand White
   'crews-w01': '#FFFFFF',
 };

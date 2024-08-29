@@ -1,5 +1,5 @@
 import Container from '../components/shared/container.tsx';
-import AnchorIcon from '../assets/icons/anchor-icon.tsx';
+import AnchorIcon from '../assets/icons/anchor-icon.svg?react';
 import Seperator from '../components/shared/seperator.tsx';
 import LookupRecruitmentForm from './_components/lookup-recruitment-form.tsx';
 import RecruitForm from './_components/recruit-form.tsx';
