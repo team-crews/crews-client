@@ -4,6 +4,11 @@ import {
   useFormContext,
 } from 'react-hook-form';
 
+import CheckIcon from '../../../../../assets/icons/circle-check-icon.svg?react';
+import TextIcon from '../../../../../assets/icons/text.svg?react';
+import { cn } from '../../../../../lib/utils';
+import { QuestionType } from '../../../../../lib/enums';
+
 interface QuestionBoxProps {
   sectionIndex: number;
   questionIndex: number;
@@ -15,7 +20,7 @@ const QuestionBox = ({
   questionIndex,
   removeQuestion,
 }: QuestionBoxProps) => {
-  const { control, register, watch } = useFormContext();
+  const { control, register, watch, setValue } = useFormContext();
 
   const {
     fields: choiceFields,
@@ -30,8 +35,30 @@ const QuestionBox = ({
     `sections.${sectionIndex}.questions.${questionIndex}.type`,
   );
 
+  const handleTypeClick = (type: QuestionType) => {
+    setValue(`sections.${sectionIndex}.questions.${questionIndex}.type`, type);
+  };
+
   return (
-    <div className="border-[0.125rem] border-crews-r02">
+    <div>
+      <div className="flex w-fit items-center gap-[0.5rem] rounded-t-[0.625rem] border-l-[1px] border-r-[1px] border-t-[1px] border-crews-g02 bg-crews-w01 p-[0.75rem]">
+        <CheckIcon
+          className={cn('w-[1.25rem] cursor-pointer', {
+            'text-crews-b05': questionType === QuestionType.SELECTIVE,
+          })}
+          onClick={() => {
+            handleTypeClick(QuestionType.SELECTIVE);
+          }}
+        />
+        <TextIcon
+          className={cn('w-[1.25rem] cursor-pointer', {
+            'text-crews-b05': questionType === QuestionType.NARRATIVE,
+          })}
+          onClick={() => {
+            handleTypeClick(QuestionType.NARRATIVE);
+          }}
+        />
+      </div>
       <input
         {...register(
           `sections.${sectionIndex}.questions.${questionIndex}.content`,
@@ -39,7 +66,7 @@ const QuestionBox = ({
         placeholder="질문 내용"
       />
       <div className="border-[0.125rem] border-lime-600">
-        {questionType === 'NARRATIVE' && (
+        {questionType === QuestionType.NARRATIVE && (
           <div className="flex">
             <input
               className="w-[4rem] underline"
@@ -78,7 +105,7 @@ const QuestionBox = ({
         </button>
       </div>
 
-      {questionType === 'SELECTIVE' && (
+      {questionType === QuestionType.SELECTIVE && (
         <div>
           <div>최소 선택, 최대 선택</div>
           <input

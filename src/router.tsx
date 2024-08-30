@@ -27,9 +27,9 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
           <Route path="apply/:recruitment-code" element={<ApplyPage />} />
         </Route>
 
-        <Route element={<RequireAuth availableRoles={['ADMIN']} />}>
-          <Route path="recruit" element={<RecruitPage />} />
-        </Route>
+        {/* <Route element={<RequireAuth availableRoles={['ADMIN']} />}> */}
+        <Route path="recruit" element={<RecruitPage />} />
+        {/* </Route> */}
       </Route>
     </Route>,
   ),
