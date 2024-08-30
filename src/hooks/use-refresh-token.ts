@@ -17,7 +17,7 @@ const useRefreshToken = () => {
 
       const accessToken = response.data.accessToken;
       setSession(accessToken);
-      return accessToken;
+      return `Bearer ${accessToken}`;
     } catch (e) {
       handleError(e, 'refresh', 'THROW');
     }

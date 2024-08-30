@@ -11,7 +11,7 @@ const useSession = () => {
   function setSession(accessToken: string) {
     const role = extractRole(accessToken);
 
-    updateAccessToken(accessToken);
+    updateAccessToken(`Bearer ${accessToken}`);
     updateRole(role);
   }
 
