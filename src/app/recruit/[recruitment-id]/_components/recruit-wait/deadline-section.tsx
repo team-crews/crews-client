@@ -1,39 +1,30 @@
 import { useEffect, useState } from 'react';
 import { formatNumberTime } from '../../../../../lib/utils/time';
-import Typography from '../../../../../components/shared/typography';
 import dayjs from 'dayjs';
 
-const DeadlineSection = () => {
-  // TODO: get deadline from server
-  const deadline = new Date('2024-11-11T20:00:00');
-  const [today, setToday] = useState(new Date());
-
-  const diff = deadline.getTime() - today.getTime();
+const DeadlineSection = ({ deadline }: { deadline: Date }) => {
+  const [diff, setDiff] = useState<number>(dayjs(deadline).diff(dayjs()));
   const day = Math.floor(diff / (1000 * 60 * 60 * 24));
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setToday(new Date());
+      setDiff(dayjs(deadline).diff(dayjs()));
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="flex w-full items-center justify-center gap-[0.625rem] rounded-[0.625rem] bg-crews-b01 px-[4rem] py-[1.5rem]">
-      <div className="flex flex-col items-center justify-center gap-[0.75rem]">
-        <div className="flex flex-col items-center justify-center md:flex-row md:gap-[3.125rem]">
-          <Typography className="text-[1.875rem] font-semibold text-crews-bk02">
-            {`D-${day}`}
-          </Typography>
-          <Typography className="text-[2.5rem] font-bold text-crews-b05">
-            {formatNumberTime(diff)}
-          </Typography>
-        </div>
-        <Typography className="text-[1.25rem] text-crews-g05">
-          {`마감일자 : ${dayjs(deadline).format('YYYY-MM-DD HH:mm:ss')}`}
-        </Typography>
+    <section className="flex w-full flex-col items-center justify-center gap-4 rounded-lg bg-crews-b01 py-6">
+      <div className="flex flex-col items-center justify-center md:flex-row md:gap-4">
+        <p className="text-2xl font-semibold text-crews-bk01">{`D-${day}`}</p>
+        <p className="text-3xl font-bold text-crews-b05">
+          {formatNumberTime(diff)}
+        </p>
       </div>
+      <p className="text-crews-g04">
+        {`마감일자 : ${dayjs(deadline).format('YYYY-MM-DD HH:mm:ss')}`}
+      </p>
     </section>
   );
 };
