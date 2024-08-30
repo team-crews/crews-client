@@ -19,19 +19,23 @@ const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
   });
 
   return (
-    <section className="border-[0.125rem] border-crews-b06">
-      <div className="flex flex-col bg-crews-b03">
-        <input
-          {...register(`sections.${sectionIndex}.name`)}
-          placeholder="섹션 이름"
-        />
+    <section className="rounded-t-[0.625rem]">
+      <div className="flex flex-col rounded-t-[0.625rem] bg-crews-b04 p-[1.25rem]">
+        <div className="flex justify-between">
+          <input
+            {...register(`sections.${sectionIndex}.name`)}
+            className="bg-crews-b04 font-pretendard text-[1.375rem] font-bold text-crews-w01"
+            placeholder="섹션 이름"
+          />
+          <button onClick={() => removeSection(sectionIndex)}>섹션 삭제</button>
+        </div>
         <input
           {...register(`sections.${sectionIndex}.description`)}
+          className="bg-crews-b04 font-pretendard text-[0.875rem] text-crews-w01 underline"
           placeholder="섹션 설명"
         />
-        <button onClick={() => removeSection(sectionIndex)}>섹션 삭제</button>
       </div>
-      <div className="flex flex-col gap-[0.5rem] p-[0.5rem]">
+      <div className="flex flex-col gap-[1.5rem] bg-crews-b01 px-[1.25rem] py-[1.5rem]">
         {questionFields.map((question, questionIndex) => (
           <QuestionBox
             key={question.id}
