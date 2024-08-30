@@ -38,11 +38,17 @@ function validateClubName(targetString: string): string {
 
   /*
     ToDo
-    - 동아리명 유효성 검사 필요
-    - 특수 문자 제외..?
+    - 특수 문자 제외 / (-,_)만 허용
+    - 띄어쓰기 제외
    */
 
   return '';
+}
+
+function validatePublicRoute(pathname: string) {
+  const patterns = [/^\/$/, /^\/recruitment\/.+$/];
+
+  return patterns.some((pattern) => pattern.test(pathname));
 }
 
 export {
@@ -50,4 +56,5 @@ export {
   validateEmail,
   validatePassword,
   validateClubName,
+  validatePublicRoute,
 };
