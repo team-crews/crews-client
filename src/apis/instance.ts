@@ -31,7 +31,6 @@ const useAuthInstance = () => {
         return config;
       },
       (e) => {
-        console.log('[requestIntercept]', e);
         clearSession();
         return Promise.reject(e);
       },
