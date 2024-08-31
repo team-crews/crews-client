@@ -1,34 +1,31 @@
 import Container from '../../components/shared/container.tsx';
-import RecruitWaitPage from './[recruitment-id]/_components/recruit-wait/recruit-wait-page.tsx';
+import RecruitWaitPage from './_components/recruit-wait/recruit-wait-page.tsx';
 import { IProgress } from '../../lib/model/i-progress.ts';
 import RecruitCompletePage from './_components/recruit-complete/recruit-complete-page.tsx';
+import RecruitMakePage from './_components/recruit-make/recruit-make-page.tsx';
+import QueryWrapper from '../../components/wrapper/query-wrapper.tsx';
+import useAdminApi from '../../apis/admin-api.ts';
+import { useQuery } from '@tanstack/react-query';
 
 const Page = () => {
-  // const { readRecruitmentProgress } = useAdminApi();
-  // const queryResults = useQuery({
-  //   queryKey: ['recruitmentProgress'],
-  //   queryFn: readRecruitmentProgress,
-  // });
+  const { readRecruitmentProgress } = useAdminApi();
+  const queryResults = useQuery({
+    queryKey: ['recruitmentProgress'],
+    queryFn: readRecruitmentProgress,
+  });
 
   return (
-    <Container className="py-12">
-      <RenderByProgress progress="COMPLETION" />
-    </Container>
+    <QueryWrapper
+      queryResults={queryResults}
+      queryFnName="readRecruitmentProgress"
+    >
+      {queryResults.data && (
+        <Container className="py-12">
+          <RenderByProgress progress={queryResults.data.recruitmentProgress} />
+        </Container>
+      )}
+    </QueryWrapper>
   );
-
-  // return (
-  //   <QueryWrapper
-  //     queryResults={queryResults}
-  //     queryFnName="readRecruitmentProgress"
-  //   >
-  //     {queryResults.data && (
-  //       <Container className="py-12">
-  //         <RenderByProgress progress={queryResults.data.recruitmentProgress} />
-  //         <RenderByProgress progress="IN_PROGRESS" />
-  //       </Container>
-  //     )}
-  //   </QueryWrapper>
-  // );
 };
 
 const RenderByProgress = ({ progress }: { progress: IProgress }) => {
@@ -38,7 +35,7 @@ const RenderByProgress = ({ progress }: { progress: IProgress }) => {
     - [참고](https://react.dev/learn/your-first-component#nesting-and-organizing-components)
    */
 
-  if (progress === 'READY') return <div>지원서 생성중</div>;
+  if (progress === 'READY') return <RecruitMakePage />;
   if (progress === 'IN_PROGRESS')
     return (
       <Container className="mx-auto w-[768px]">
