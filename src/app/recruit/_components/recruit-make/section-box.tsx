@@ -1,5 +1,5 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import QuestionBox from './question-box';
+import QuestionBox from './question-box.tsx';
 
 interface SectionBoxProps {
   sectionIndex: number;

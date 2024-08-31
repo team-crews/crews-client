@@ -1,4 +1,4 @@
-import useBreakpoints from '../../../../../hooks/use-breakpoints.ts';
+import useBreakpoints from '../../../../hooks/use-breakpoints.ts';
 
 const ApplicantSection = ({
   applicationCount,

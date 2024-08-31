@@ -1,4 +1,4 @@
-import ThumbTackIcon from '../../../../../assets/icons/thumbtack-icon.svg?react';
+import ThumbTackIcon from '../../../../assets/icons/thumbtack-icon.svg?react';
 
 const HeaderSection = () => {
   return (

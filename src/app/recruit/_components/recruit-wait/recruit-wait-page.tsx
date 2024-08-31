@@ -1,12 +1,12 @@
-import HeaderSection from './header-section';
-import Container from '../../../../../components/shared/container.tsx';
+import HeaderSection from './header-section.tsx';
+import Container from '../../../../components/shared/container.tsx';
 import ApplicantSection from './applicant-section.tsx';
 import DeadlineSection from './deadline-section.tsx';
-import FooterContainer from '../../../../../components/shared/footer-container.tsx';
-import { Button } from '../../../../../components/ui/button.tsx';
-import useAdminApi from '../../../../../apis/admin-api.ts';
+import FooterContainer from '../../../../components/shared/footer-container.tsx';
+import { Button } from '../../../../components/ui/button.tsx';
+import useAdminApi from '../../../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
-import QueryWrapper from '../../../../../components/wrapper/query-wrapper.tsx';
+import QueryWrapper from '../../../../components/wrapper/query-wrapper.tsx';
 
 const RecruitWaitPage = () => {
   const { readRecruitmentInProgressDetail } = useAdminApi();

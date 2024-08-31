@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { formatNumberTime } from '../../../../../lib/utils/time';
+import { formatNumberTime } from '../../../../lib/utils/time.ts';
 import dayjs from 'dayjs';
 
 const DeadlineSection = ({ deadline }: { deadline: Date }) => {
