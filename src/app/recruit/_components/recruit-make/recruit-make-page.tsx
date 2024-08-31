@@ -1,8 +1,8 @@
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
-import SectionBox from './section-box';
-import { formMockData } from '../../../../../lib/mock';
-import { PostRecruitmentsBody } from '../../../../../lib/types/recruitments';
+import SectionBox from './section-box.tsx';
+import { formMockData } from '../../../../lib/mock.ts';
+import { PostRecruitmentsBody } from '../../../../lib/types/recruitments.ts';
 
 const RecruitMakePage = () => {
   const methods = useForm<PostRecruitmentsBody>({

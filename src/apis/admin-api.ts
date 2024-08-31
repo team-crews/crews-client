@@ -1,6 +1,12 @@
-import { IProgress } from '../lib/model/i-progress.ts';
 import { IApplicationOverview } from '../lib/model/i-application.ts';
 import useAuthInstance from './instance.ts';
+import { throwCustomError } from '../lib/utils/error.ts';
+import {
+  IReadRecruitmentInProgressDetailResponse,
+  IReadRecruitmentProgressResponse,
+  isIReadRecruitmentInProgressDetailResponse,
+  isIRecruitmentProgressResponse,
+} from '../lib/model/i-response-body.ts';
 
 const useAdminApi = () => {
   const { authInstance } = useAuthInstance();
@@ -13,11 +19,24 @@ const useAdminApi = () => {
     Assume role check is completed in require-auth wrapper
    */
 
-  async function readRecruitmentProgress(): Promise<{
-    recruitmentProgress: IProgress;
-  }> {
+  async function readRecruitmentProgress(): Promise<IReadRecruitmentProgressResponse> {
     const response = await authInstance.get('/recruitments/progress');
-    return response.data;
+
+    if (isIRecruitmentProgressResponse(response.data)) return response.data;
+    else
+      throwCustomError('readRecruitmentProgress', 'Unexpected response format');
+  }
+
+  async function readRecruitmentInProgressDetail(): Promise<IReadRecruitmentInProgressDetailResponse> {
+    const response = await authInstance.get('/recruitments/in-progress');
+
+    if (isIReadRecruitmentInProgressDetailResponse(response.data))
+      return response.data;
+    else
+      throwCustomError(
+        'readRecruitmentInProgress',
+        'Unexpected response format',
+      );
   }
 
   /*
@@ -42,14 +61,6 @@ const useAdminApi = () => {
 
   async function startRecruitment() {
     const response = await authInstance.patch('recruitments/in-progress');
-    return response.data;
-  }
-
-  async function readRecruitmentInProgressDetail(): Promise<{
-    applicationCount: number;
-    deadline: string;
-  }> {
-    const response = await authInstance.get('/recruitments/in-progress');
     return response.data;
   }
 
