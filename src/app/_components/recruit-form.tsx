@@ -47,13 +47,15 @@ const RecruitForm = () => {
       setSession(accessToken);
       navigate('/recruit');
     } catch (e) {
-      handleError(e, 'adminLogin', 'PRINT');
-      setError(true);
+      const errorStatus = handleError(e, 'adminLogin', 'PRINT');
 
+      let title = '예기치 못한 문제가 발생했습니다.';
+      if (errorStatus === 401) title = '잘못된 비밀번호입니다.';
       toast({
-        title: '문제가 발생했습니다',
+        title,
         state: 'error',
       });
+      setError(true);
     }
   };
 
