@@ -65,7 +65,7 @@ const QuestionBox = ({
           onClick={() => removeQuestion(questionIndex)}
         />
       </div>
-      <div className="bg-crews-w01 px-[1.25rem] py-[1.5rem]">
+      <div className="rounded-b-[0.625rem] rounded-tr-[0.625rem] bg-crews-w01 px-[1.25rem] py-[1.5rem]">
         <QuestionTextarea
           sectionIndex={sectionIndex}
           questionIndex={questionIndex}

@@ -41,6 +41,7 @@ const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
           placeholder="섹션에 대한 설명을 작성해주세요"
         />
       </div>
+
       <div className="flex flex-col gap-[1.5rem] rounded-b-[0.625rem] bg-crews-b01 px-[1.25rem] py-[1.5rem]">
         {questionFields.map((question, questionIndex) => (
           <QuestionBox
