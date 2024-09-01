@@ -34,7 +34,7 @@ const QuestionBox = ({
     setValue(`sections.${sectionIndex}.questions.${questionIndex}.type`, type);
   };
 
-  const sectionProps = {
+  const indexProps = {
     sectionIndex: sectionIndex,
     questionIndex: questionIndex,
   };
@@ -66,19 +66,16 @@ const QuestionBox = ({
         />
       </div>
       <div className="rounded-b-[0.625rem] rounded-tr-[0.625rem] bg-crews-w01 px-[1.25rem] py-[1.5rem]">
-        <QuestionTextarea
-          sectionIndex={sectionIndex}
-          questionIndex={questionIndex}
-        />
+        <QuestionTextarea {...indexProps} />
 
         {questionType === QuestionType.SELECTIVE && (
           <>
-            <ChoiceSection {...sectionProps} />
+            <ChoiceSection {...indexProps} />
             <div className="mt-[1rem] h-[1px] w-full bg-crews-g03" />
           </>
         )}
 
-        <OptionSection {...sectionProps} />
+        <OptionSection {...indexProps} />
       </div>
     </Container>
   );
