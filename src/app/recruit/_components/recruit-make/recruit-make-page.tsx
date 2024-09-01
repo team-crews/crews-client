@@ -16,6 +16,13 @@ import { ICreatedRecruitment } from '../../../../lib/model/i-recruitment.ts';
 import handleError from '../../../../lib/utils/error.ts';
 import { useToast } from '../../../../hooks/use-toast.ts';
 
+const DEFAULT_SECTION = {
+  id: null,
+  name: '새로운 섹션',
+  description: '새로운 섹션의 설명을 작성해주세요',
+  questions: [],
+};
+
 const RecruitMakePage = () => {
   const methods = useForm<PostRecruitmentsBody>({
     // FIXME: api 연결 시 defaultValues mock data 삭제
@@ -25,7 +32,7 @@ const RecruitMakePage = () => {
   const {
     control,
     register,
-    handleSubmit,
+    // handleSubmit,
     // reset
   } = methods;
 
@@ -44,6 +51,18 @@ const RecruitMakePage = () => {
   //     reset(data);
   //   },
   // });
+
+  // const handleTempSave = () => {
+  //   handleSubmit(async (data) => {
+  //     console.log('임시 저장 로직 실행:', data);
+  //   })();
+  // };
+  //
+  // const handleStartRecruitment = () => {
+  //   handleSubmit(async (data) => {
+  //     console.log('모집 시작 로직 실행:', data);
+  //   })();
+  // };
 
   const queryClient = useQueryClient();
   const { saveRecruitment, startRecruitment } = useAdminApi();
@@ -82,7 +101,7 @@ const RecruitMakePage = () => {
     <Container>
       <HeaderSection />
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit((data) => console.log(data))}>
+        <form className="pb-[6rem]">
           <div className="flex flex-col gap-[0.5rem]">
             <input {...register('title')} />
             <input {...register('description')} />
@@ -98,21 +117,14 @@ const RecruitMakePage = () => {
               />
             ))}
           </div>
-          <button
-            onClick={() =>
-              appendSection({
-                id: null,
-                name: '새로운 섹션',
-                description: '새로운섹션 설명',
-                questions: [],
-              })
-            }
-          >
-            {'섹션 추가'}
-          </button>
-          <button className="border-[0.125rem] border-crews-b06" type="submit">
-            {'제출'}
-          </button>
+          <div className="flex w-full justify-center">
+            <button
+              className="mt-[2rem] border-b-[1px] border-crews-g06 text-[1.125rem] leading-[1.5rem] text-crews-g06"
+              onClick={() => appendSection(DEFAULT_SECTION)}
+            >
+              섹션 추가
+            </button>
+          </div>
         </form>
       </FormProvider>
       <FooterContainer className="flex w-full justify-end">
