@@ -9,6 +9,8 @@ interface ChoiceSectionProps {
   questionIndex: number;
 }
 
+const DEFAULT_CHOICE = { id: null, content: '' };
+
 const ChoiceSection = ({ sectionIndex, questionIndex }: ChoiceSectionProps) => {
   const { control, register } = useFormContext();
 
@@ -33,7 +35,7 @@ const ChoiceSection = ({ sectionIndex, questionIndex }: ChoiceSectionProps) => {
                 {...register(
                   `sections.${sectionIndex}.questions.${questionIndex}.choices.${choiceIndex}.content`,
                 )}
-                placeholder="선택지 내용"
+                placeholder="새로운 옵션"
               />
             </div>
             <XMarkIcon
@@ -46,7 +48,7 @@ const ChoiceSection = ({ sectionIndex, questionIndex }: ChoiceSectionProps) => {
       <button
         className="mt-[1rem] flex items-center gap-[0.5rem]"
         type="button"
-        onClick={() => appendChoice({ id: null, content: '' })}
+        onClick={() => appendChoice(DEFAULT_CHOICE)}
       >
         <PlusIcon className="h-[1rem] w-[1rem] cursor-pointer text-crews-g03" />
         <Typography className="text-crews-g05">옵션 추가</Typography>

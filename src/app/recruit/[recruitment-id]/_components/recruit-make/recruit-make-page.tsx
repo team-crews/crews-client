@@ -6,6 +6,13 @@ import { PostRecruitmentsBody } from '../../../../../lib/types/recruitments';
 import FooterContainer from '../../../../../components/shared/footer-container';
 import { Button } from '../../../../../components/ui/button';
 
+const DEFAULT_SECTION = {
+  id: null,
+  name: '새로운 섹션',
+  description: '새로운 섹션의 설명을 작성해주세요',
+  questions: [],
+};
+
 const RecruitMakePage = () => {
   const methods = useForm<PostRecruitmentsBody>({
     // FIXME: api 연결 시 defaultValues mock data 삭제
@@ -68,15 +75,8 @@ const RecruitMakePage = () => {
           </div>
           <div className="flex w-full justify-center">
             <button
-              className="mt-[2rem] border-b-[1px] border-crews-g06 pb-[1px] text-[1.125rem] leading-[1.5rem] text-crews-g06"
-              onClick={() =>
-                appendSection({
-                  id: null,
-                  name: '새로운 섹션',
-                  description: '새로운 섹션의 설명을 작성해주세요',
-                  questions: [],
-                })
-              }
+              className="mt-[2rem] border-b-[1px] border-crews-g06 text-[1.125rem] leading-[1.5rem] text-crews-g06"
+              onClick={() => appendSection(DEFAULT_SECTION)}
             >
               섹션 추가
             </button>

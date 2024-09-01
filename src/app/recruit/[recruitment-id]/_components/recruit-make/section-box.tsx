@@ -9,6 +9,17 @@ interface SectionBoxProps {
   removeSection: (index: number) => void;
 }
 
+const DEFAULT_QUESTION = {
+  id: null,
+  type: 'NARRATIVE',
+  content: '',
+  necessity: true,
+  wordLimit: 100,
+  minimumSelection: null,
+  maximumSelection: null,
+  choices: [],
+};
+
 const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
   const { control, register } = useFormContext();
 
@@ -55,15 +66,8 @@ const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
           className="w-fit bg-crews-b04 p-[1rem]"
           onClick={() =>
             appendQuestion({
-              id: null,
-              type: 'NARRATIVE',
-              content: '',
-              necessity: true,
+              ...DEFAULT_QUESTION,
               order: questionFields.length + 1,
-              wordLimit: 100,
-              minimumSelection: null,
-              maximumSelection: null,
-              choices: [],
             })
           }
         >
