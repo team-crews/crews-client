@@ -12,6 +12,7 @@ import { Switch } from '../../../../../components/ui/switch';
 import Typography from '../../../../../components/shared/typography';
 import Container from '../../../../../components/shared/container';
 import QuestionTextarea from './question-textarea';
+import WordLimitInput from './word-limit-input';
 // import QuestionTextarea from './question-textarea';
 
 interface QuestionBoxProps {
@@ -93,14 +94,9 @@ const QuestionBox = ({
               <Typography className="text-[0.875rem] text-crews-g06">
                 글자 수 제한
               </Typography>
-
-              <input
-                className="text-[0.875rem] font-bold underline"
-                type="number"
-                {...register(
-                  `sections.${sectionIndex}.questions.${questionIndex}.wordLimit`,
-                )}
-                placeholder="000"
+              <WordLimitInput
+                sectionIndex={sectionIndex}
+                questionIndex={questionIndex}
               />
 
               <Typography className="text-[0.875rem] text-crews-g06">
