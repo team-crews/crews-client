@@ -1,14 +1,17 @@
-import Input, { InputState } from '../../components/shared/input.tsx';
-import { Button } from '../../components/ui/button.tsx';
+import Input, { InputState } from '../../../components/shared/input.tsx';
+import { Button } from '../../../components/ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { LocalLegend } from './lookup-recruitment-form.tsx';
-import { useToast } from '../../hooks/use-toast.ts';
+import { useToast } from '../../../hooks/use-toast.ts';
 import { useState } from 'react';
-import { adminLogin } from '../../apis/auth-api.ts';
+import { adminLogin } from '../../../apis/auth-api.ts';
 import { useNavigate } from 'react-router-dom';
-import useSession from '../../hooks/use-session.ts';
-import handleError from '../../lib/utils/error.ts';
-import { validateClubName, validatePassword } from '../../lib/utils/regex.ts';
+import useSession from '../../../hooks/use-session.ts';
+import handleError from '../../../lib/utils/error.ts';
+import {
+  validateClubName,
+  validatePassword,
+} from '../../../lib/utils/regex.ts';
 
 type RecruitInputs = {
   clubName: string;
