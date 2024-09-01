@@ -1,3 +1,5 @@
+import { QuestionType } from '../enums';
+
 export interface GetRecruitmentsReadyResponse {
   id: number;
   title: string;
@@ -38,7 +40,7 @@ export interface PostRecruitmentsBody {
     description: string;
     questions: {
       id: number | null;
-      type: 'SELECTIVE' | 'NARRATIVE';
+      type: QuestionType;
       content: string;
       necessity: boolean;
       order: number;

@@ -1,8 +1,17 @@
-import {
-  UseFieldArrayRemove,
-  useFieldArray,
-  useFormContext,
-} from 'react-hook-form';
+import { UseFieldArrayRemove, useFormContext } from 'react-hook-form';
+
+import CheckIcon from '../../../../../assets/icons/circle-check-icon.svg?react';
+import TextIcon from '../../../../../assets/icons/text.svg?react';
+import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
+
+import { cn } from '../../../../../lib/utils';
+import { QuestionType } from '../../../../../lib/enums';
+
+import Container from '../../../../../components/shared/container';
+
+import QuestionTextarea from './question-textarea';
+import ChoiceSection from './choice-section';
+import OptionSection from './option-section';
 
 interface QuestionBoxProps {
   sectionIndex: number;
@@ -15,106 +24,60 @@ const QuestionBox = ({
   questionIndex,
   removeQuestion,
 }: QuestionBoxProps) => {
-  const { control, register, watch } = useFormContext();
-
-  const {
-    fields: choiceFields,
-    append: appendChoice,
-    remove: removeChoice,
-  } = useFieldArray({
-    control,
-    name: `sections.${sectionIndex}.questions.${questionIndex}.choices`,
-  });
+  const { watch, setValue } = useFormContext();
 
   const questionType = watch(
     `sections.${sectionIndex}.questions.${questionIndex}.type`,
   );
 
-  return (
-    <div className="border-[0.125rem] border-crews-r02">
-      <input
-        {...register(
-          `sections.${sectionIndex}.questions.${questionIndex}.content`,
-        )}
-        placeholder="질문 내용"
-      />
-      <div className="border-[0.125rem] border-lime-600">
-        {questionType === 'NARRATIVE' && (
-          <div className="flex">
-            <input
-              className="w-[4rem] underline"
-              {...register(
-                `sections.${sectionIndex}.questions.${questionIndex}.wordLimit`,
-              )}
-              placeholder="단어 제한"
-            />
-            <span>자 이내</span>
-          </div>
-        )}
-        <div className="flex">
-          <input
-            type="checkbox"
-            {...register(
-              `sections.${sectionIndex}.questions.${questionIndex}.necessity`,
-            )}
-          />
-          <span>응답 필수</span>
-        </div>
-        <select
-          className="bg-cyan-300"
-          {...register(
-            `sections.${sectionIndex}.questions.${questionIndex}.type`,
-          )}
-        >
-          <option value="NARRATIVE">서술형</option>
-          <option value="SELECTIVE">선택형</option>
-        </select>
-        <button
-          className="border-[0.125rem] border-crews-b06"
-          type="button"
-          onClick={() => removeQuestion(questionIndex)}
-        >
-          질문 삭제
-        </button>
-      </div>
+  const handleTypeClick = (type: QuestionType) => {
+    setValue(`sections.${sectionIndex}.questions.${questionIndex}.type`, type);
+  };
 
-      {questionType === 'SELECTIVE' && (
-        <div>
-          <div>최소 선택, 최대 선택</div>
-          <input
-            className="bg-indigo-400"
-            {...register(
-              `sections.${sectionIndex}.questions.${questionIndex}.minimumSelection`,
-            )}
-          />
-          <input
-            className="bg-sky-500"
-            {...register(
-              `sections.${sectionIndex}.questions.${questionIndex}.maximumSelection`,
-            )}
-          />
-          {choiceFields.map((choice, choiceIndex) => (
-            <div key={choice.id}>
-              <input
-                {...register(
-                  `sections.${sectionIndex}.questions.${questionIndex}.choices.${choiceIndex}.content`,
-                )}
-                placeholder="선택지 내용"
-              />
-              <button type="button" onClick={() => removeChoice(choiceIndex)}>
-                x
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => appendChoice({ id: null, content: '' })}
-          >
-            선택지 추가
-          </button>
-        </div>
-      )}
-    </div>
+  const indexProps = {
+    sectionIndex: sectionIndex,
+    questionIndex: questionIndex,
+  };
+
+  return (
+    <Container>
+      <div className="flex w-fit items-center gap-[0.5rem] rounded-t-[0.625rem] border-crews-g02 bg-crews-w01 p-[0.75rem]">
+        <CheckIcon
+          className={cn('w-[1.25rem] cursor-pointer', {
+            'text-crews-b05': questionType === QuestionType.SELECTIVE,
+            'text-crews-g06': questionType !== QuestionType.SELECTIVE,
+          })}
+          onClick={() => {
+            handleTypeClick(QuestionType.SELECTIVE);
+          }}
+        />
+        <TextIcon
+          className={cn('w-[1.25rem] cursor-pointer', {
+            'text-crews-b05': questionType === QuestionType.NARRATIVE,
+            'text-crews-g06': questionType !== QuestionType.NARRATIVE,
+          })}
+          onClick={() => {
+            handleTypeClick(QuestionType.NARRATIVE);
+          }}
+        />
+        <XMarkIcon
+          className="w-[1rem] cursor-pointer text-crews-g06"
+          onClick={() => removeQuestion(questionIndex)}
+        />
+      </div>
+      <div className="rounded-b-[0.625rem] rounded-tr-[0.625rem] bg-crews-w01 px-[1.25rem] py-[1.5rem]">
+        <QuestionTextarea {...indexProps} />
+
+        {questionType === QuestionType.SELECTIVE && (
+          <>
+            <ChoiceSection {...indexProps} />
+            <div className="mt-[1rem] h-[1px] w-full bg-crews-g03" />
+          </>
+        )}
+
+        <OptionSection {...indexProps} />
+      </div>
+    </Container>
   );
 };
 
