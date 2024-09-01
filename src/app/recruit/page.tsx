@@ -37,8 +37,8 @@ const RenderByProgress = ({ progress }: { progress: IProgress }) => {
 
   if (progress === 'READY') return <RecruitMakePage />;
   if (progress === 'IN_PROGRESS') return <RecruitWaitPage />;
-  if (progress === 'COMPLETION') return <RecruitCompletePage />;
-  if (progress === 'ANNOUNCED') return <div>지원서 알림 완료</div>;
+  if (progress === 'COMPLETION' || progress === 'ANNOUNCED')
+    return <RecruitCompletePage progress={progress} />;
 };
 
 export default Page;
