@@ -22,12 +22,12 @@ const ChoiceSection = ({ sectionIndex, questionIndex }: ChoiceSectionProps) => {
   });
 
   return (
-    <section>
+    <section className="mt-[1rem]">
       <div className="flex flex-col gap-[1rem]">
         {choiceFields.map((choice, choiceIndex) => (
           <div key={choice.id} className="flex items-center justify-between">
             <div className="flex items-center gap-[0.5rem]">
-              <div className="h-[1.25rem] w-[1.25rem] rounded-full border-[0.125rem] border-crews-g03" />
+              <div className="h-[1.25rem] w-[1.25rem] rounded-full border-[1px] border-crews-g03" />
               <input
                 className="text-[1rem]"
                 {...register(
