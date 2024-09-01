@@ -2,6 +2,8 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import QuestionBox from './question-box';
 import { Button } from '../../../../../components/ui/button';
 
+import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
+
 interface SectionBoxProps {
   sectionIndex: number;
   removeSection: (index: number) => void;
@@ -22,13 +24,16 @@ const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
   return (
     <section>
       <div className="flex flex-col rounded-t-[0.625rem] bg-crews-b04 p-[1.25rem]">
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <input
             {...register(`sections.${sectionIndex}.name`)}
             className="bg-crews-b04 font-pretendard text-[1.375rem] font-bold text-crews-w01"
             placeholder="섹션 이름"
           />
-          <button onClick={() => removeSection(sectionIndex)}>섹션 삭제</button>
+          <XMarkIcon
+            className="h-[1.25rem] w-[1.25rem] cursor-pointer text-crews-w01"
+            onClick={() => removeSection(sectionIndex)}
+          />
         </div>
         <input
           {...register(`sections.${sectionIndex}.description`)}
