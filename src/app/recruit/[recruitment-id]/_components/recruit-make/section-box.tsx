@@ -37,8 +37,8 @@ const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
         </div>
         <input
           {...register(`sections.${sectionIndex}.description`)}
-          className="bg-crews-b04 font-pretendard text-[0.875rem] text-crews-w01 underline"
-          placeholder="섹션 설명"
+          className="bg-crews-b04 font-pretendard text-[0.875rem] text-crews-w01 underline placeholder:text-crews-w01"
+          placeholder="섹션에 대한 설명을 작성해주세요"
         />
       </div>
       <div className="flex flex-col gap-[1.5rem] rounded-b-[0.625rem] bg-crews-b01 px-[1.25rem] py-[1.5rem]">
