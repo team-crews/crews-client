@@ -11,6 +11,7 @@ import { QuestionType } from '../../../../../lib/enums';
 import { Switch } from '../../../../../components/ui/switch';
 import Typography from '../../../../../components/shared/typography';
 import Container from '../../../../../components/shared/container';
+import QuestionTextarea from './question-textarea';
 // import QuestionTextarea from './question-textarea';
 
 interface QuestionBoxProps {
@@ -64,10 +65,10 @@ const QuestionBox = ({
         />
       </div>
       <div className="bg-crews-w01 px-[1.25rem] py-[1.5rem]">
-        {/* <QuestionTextarea
+        <QuestionTextarea
           sectionIndex={sectionIndex}
           questionIndex={questionIndex}
-        /> */}
+        />
 
         <div className="flex items-center gap-[1rem]">
           <div className="flex items-center gap-[0.375rem]">
