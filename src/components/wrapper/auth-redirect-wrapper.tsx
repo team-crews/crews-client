@@ -29,10 +29,14 @@ const AuthRedirectWrapper = () => {
       if (accessToken) {
         switch (role) {
           case 'ADMIN':
-            location.pathname !== 'recruit' && navigate('/recruit');
+            location.pathname !== 'recruit' &&
+              location.pathname !== 'error' &&
+              navigate('/recruit');
             break;
           case 'APPLICANT':
-            !/^\/apply\/.+$/.test(location.pathname) && navigate('/apply');
+            !/^\/apply\/.+$/.test(location.pathname) &&
+              location.pathname !== 'error' &&
+              navigate('/apply');
             break;
         }
         setLoading(false);

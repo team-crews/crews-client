@@ -25,7 +25,6 @@ const RecruitWaitPage = () => {
 
   const queryClient = useQueryClient();
   const handleEvaluateRecruitmentClick = async () => {
-    console.log('test');
     await queryClient.invalidateQueries({
       queryKey: ['recruitmentProgress'],
     });
