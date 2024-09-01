@@ -6,6 +6,7 @@ import {
   isISaveApplicationResponse,
 } from '../lib/model/i-response-body.ts';
 import { ICreatedApplication } from '../lib/model/i-application.ts';
+import { throwCustomError } from '../lib/utils/error.ts';
 
 const useApplicantAPi = (recruitmentCode: string) => {
   const { authInstance } = useAuthInstance();
@@ -20,21 +21,29 @@ const useApplicantAPi = (recruitmentCode: string) => {
    */
 
   async function readApplication(): Promise<IReadApplicationResponse> {
-    const response = await authInstance.get(
-      `/applications/mine?code=${recruitmentCode}`,
-    );
+    try {
+      const response = await authInstance.get(
+        `/applications/mine?code=${recruitmentCode}`,
+      );
 
-    if (isIReadApplicationResponse(response.data)) return response.data;
-    throw new Error('[ResponseTypeMismatch] Unexpected response format');
+      if (isIReadApplicationResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'readApplication');
+    }
   }
 
   async function saveApplication(
     requestBody: ICreatedApplication,
   ): Promise<ISaveApplicationResponse> {
-    const response = await authInstance.post('applications', requestBody);
+    try {
+      const response = await authInstance.post('applications', requestBody);
 
-    if (isISaveApplicationResponse(response.data)) return response.data;
-    throw new Error('[ResponseTypeMismatch] Unexpected response format');
+      if (isISaveApplicationResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'saveApplication');
+    }
   }
 
   return { readApplication, saveApplication };
