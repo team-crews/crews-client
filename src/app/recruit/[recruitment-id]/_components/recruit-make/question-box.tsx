@@ -6,6 +6,7 @@ import {
 
 import CheckIcon from '../../../../../assets/icons/circle-check-icon.svg?react';
 import TextIcon from '../../../../../assets/icons/text.svg?react';
+import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
 import { cn } from '../../../../../lib/utils';
 import { QuestionType } from '../../../../../lib/enums';
 import { Switch } from '../../../../../components/ui/switch';
@@ -13,7 +14,6 @@ import Typography from '../../../../../components/shared/typography';
 import Container from '../../../../../components/shared/container';
 import QuestionTextarea from './question-textarea';
 import WordLimitInput from './word-limit-input';
-// import QuestionTextarea from './question-textarea';
 
 interface QuestionBoxProps {
   sectionIndex: number;
@@ -51,6 +51,7 @@ const QuestionBox = ({
         <CheckIcon
           className={cn('w-[1.25rem] cursor-pointer', {
             'text-crews-b05': questionType === QuestionType.SELECTIVE,
+            'text-crews-g06': questionType !== QuestionType.SELECTIVE,
           })}
           onClick={() => {
             handleTypeClick(QuestionType.SELECTIVE);
@@ -59,10 +60,15 @@ const QuestionBox = ({
         <TextIcon
           className={cn('w-[1.25rem] cursor-pointer', {
             'text-crews-b05': questionType === QuestionType.NARRATIVE,
+            'text-crews-g06': questionType !== QuestionType.NARRATIVE,
           })}
           onClick={() => {
             handleTypeClick(QuestionType.NARRATIVE);
           }}
+        />
+        <XMarkIcon
+          className="w-[1rem] cursor-pointer text-crews-g06"
+          onClick={() => removeQuestion(questionIndex)}
         />
       </div>
       <div className="bg-crews-w01 px-[1.25rem] py-[1.5rem]">
@@ -105,13 +111,6 @@ const QuestionBox = ({
             </div>
           )}
         </div>
-        <button
-          className="border-[0.125rem] border-crews-b06"
-          type="button"
-          onClick={() => removeQuestion(questionIndex)}
-        >
-          질문 삭제
-        </button>
 
         {questionType === QuestionType.SELECTIVE && (
           <div>
