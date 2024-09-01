@@ -21,11 +21,4 @@ function handleError(
   } else throw new Error(errorMessage);
 }
 
-export function throwCustomError(
-  errorFunctionName: string,
-  errorMessage: string,
-): never {
-  throw new Error(`[${errorFunctionName}] ${errorMessage}`);
-}
-
 export default handleError;

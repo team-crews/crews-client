@@ -7,7 +7,7 @@ import FooterContainer from '../../../../components/shared/footer-container.tsx'
 
 const RecruitCompletePage = () => {
   return (
-    <Container className="flex h-fit flex-col py-10">
+    <Container>
       <HeaderSection />
       <div className="my-8 flex flex-col gap-8">
         <CompetitionRateSection />

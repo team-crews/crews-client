@@ -32,7 +32,6 @@ export interface PostRecruitmentsBody {
   id: number;
   title: string;
   description: string;
-  recruitmentProgress: string;
   sections: {
     id: number | null;
     name: string;
