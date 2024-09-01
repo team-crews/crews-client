@@ -1,17 +1,15 @@
 import { UseFieldArrayRemove, useFormContext } from 'react-hook-form';
 
-import CheckIcon from '../../../../../assets/icons/circle-check-icon.svg?react';
-import TextIcon from '../../../../../assets/icons/text.svg?react';
-import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
-
-import { cn } from '../../../../../lib/utils';
-import { QuestionType } from '../../../../../lib/enums';
-
-import Container from '../../../../../components/shared/container';
+import CheckIcon from '../../../../assets/icons/circle-check-icon.svg?react';
+import TextIcon from '../../../../assets/icons/text.svg?react';
+import XMarkIcon from '../../../../assets/icons/x-mark.svg?react';
 
 import QuestionTextarea from './question-textarea';
 import ChoiceSection from './choice-section';
 import OptionSection from './option-section';
+import Container from '../../../../components/shared/container.tsx';
+import { QuestionType } from '../../../../lib/enums.ts';
+import { cn } from '../../../../lib/utils.ts';
 
 interface QuestionBoxProps {
   sectionIndex: number;

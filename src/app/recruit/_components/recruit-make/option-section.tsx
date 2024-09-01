@@ -1,9 +1,8 @@
 import { useFormContext } from 'react-hook-form';
-import Typography from '../../../../../components/shared/typography';
-
-import { Switch } from '../../../../../components/ui/switch';
-import { QuestionType } from '../../../../../lib/enums';
 import LimitedNumberInput from './limited-number-input';
+import Typography from '../../../../components/shared/typography.tsx';
+import { Switch } from '../../../../components/ui/switch.tsx';
+import { QuestionType } from '../../../../lib/enums.ts';
 
 interface OptionSectionProps {
   sectionIndex: number;

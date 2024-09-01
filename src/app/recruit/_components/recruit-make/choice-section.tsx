@@ -1,8 +1,8 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import Typography from '../../../../../components/shared/typography';
 
-import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
-import PlusIcon from '../../../../../assets/icons/plus.svg?react';
+import XMarkIcon from '../../../../assets/icons/x-mark.svg?react';
+import PlusIcon from '../../../../assets/icons/plus.svg?react';
+import Typography from '../../../../components/shared/typography.tsx';
 
 interface ChoiceSectionProps {
   sectionIndex: number;

@@ -1,8 +1,8 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Button } from '../../../../../components/ui/button';
 
-import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
+import XMarkIcon from '../../../../assets/icons/x-mark.svg?react';
 import QuestionBox from './question-box.tsx';
+import { Button } from '../../../../components/ui/button.tsx';
 
 interface SectionBoxProps {
   sectionIndex: number;

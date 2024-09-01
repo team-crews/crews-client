@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
-import { cn } from '../../../../../lib/utils';
 import { useEffect, useState } from 'react';
+import { cn } from '../../../../lib/utils.ts';
 
 interface LimitedNumberInputProps {
   name: string;
