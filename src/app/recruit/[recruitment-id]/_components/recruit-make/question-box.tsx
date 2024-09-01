@@ -72,9 +72,11 @@ const QuestionBox = ({
         />
 
         {questionType === QuestionType.SELECTIVE && (
-          <ChoiceSection {...sectionProps} />
+          <>
+            <ChoiceSection {...sectionProps} />
+            <div className="mt-[1rem] h-[1px] w-full bg-crews-g03" />
+          </>
         )}
-        <div className="my-[1rem] h-[1px] w-full bg-crews-g03" />
 
         <OptionSection {...sectionProps} />
       </div>

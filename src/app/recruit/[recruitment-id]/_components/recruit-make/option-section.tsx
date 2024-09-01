@@ -19,7 +19,7 @@ const OptionSection = ({ sectionIndex, questionIndex }: OptionSectionProps) => {
   );
 
   return (
-    <section className="flex w-full justify-end">
+    <section className="mt-[1rem] flex w-full justify-end">
       <div className="flex items-end gap-[0.5rem]">
         <div className="flex items-center gap-[1rem]">
           <div className="flex items-center gap-[0.375rem]">
