@@ -20,7 +20,7 @@ const Page = () => {
       queryFnName="readRecruitmentProgress"
     >
       {queryResults.data && (
-        <Container className="py-12">
+        <Container className="mx-auto w-[768px] py-24">
           <RenderByProgress progress={queryResults.data.recruitmentProgress} />
         </Container>
       )}
@@ -36,19 +36,9 @@ const RenderByProgress = ({ progress }: { progress: IProgress }) => {
    */
 
   if (progress === 'READY') return <RecruitMakePage />;
-  if (progress === 'IN_PROGRESS')
-    return (
-      <Container className="mx-auto w-[768px]">
-        <RecruitWaitPage />
-      </Container>
-    );
-  if (progress === 'COMPLETION')
-    return (
-      <Container className="mx-auto w-[768px]">
-        <RecruitCompletePage />
-      </Container>
-    );
-  if (progress === 'ANNOUNCED') return <div>지원서 알림 완료</div>;
+  if (progress === 'IN_PROGRESS') return <RecruitWaitPage />;
+  if (progress === 'COMPLETION' || progress === 'ANNOUNCED')
+    return <RecruitCompletePage progress={progress} />;
 };
 
 export default Page;

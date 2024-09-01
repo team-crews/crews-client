@@ -1,14 +1,17 @@
-import Input, { InputState } from '../../components/shared/input.tsx';
-import { Button } from '../../components/ui/button.tsx';
+import Input, { InputState } from '../../../components/shared/input.tsx';
+import { Button } from '../../../components/ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { LocalLegend } from './lookup-recruitment-form.tsx';
-import { useToast } from '../../hooks/use-toast.ts';
+import { useToast } from '../../../hooks/use-toast.ts';
 import { useState } from 'react';
-import { adminLogin } from '../../apis/auth-api.ts';
+import { adminLogin } from '../../../apis/auth-api.ts';
 import { useNavigate } from 'react-router-dom';
-import useSession from '../../hooks/use-session.ts';
-import handleError from '../../lib/utils/error.ts';
-import { validateClubName, validatePassword } from '../../lib/utils/regex.ts';
+import useSession from '../../../hooks/use-session.ts';
+import handleError from '../../../lib/utils/error.ts';
+import {
+  validateClubName,
+  validatePassword,
+} from '../../../lib/utils/regex.ts';
 
 type RecruitInputs = {
   clubName: string;
@@ -47,13 +50,15 @@ const RecruitForm = () => {
       setSession(accessToken);
       navigate('/recruit');
     } catch (e) {
-      handleError(e, 'adminLogin', 'PRINT');
-      setError(true);
+      const errorStatus = handleError(e, 'adminLogin', 'PRINT');
 
+      let title = '예기치 못한 문제가 발생했습니다.';
+      if (errorStatus === 401) title = '잘못된 비밀번호입니다.';
       toast({
-        title: '문제가 발생했습니다',
+        title,
         state: 'error',
       });
+      setError(true);
     }
   };
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Input, { InputState } from '../../components/shared/input.tsx';
-import { Button } from '../../components/ui/button.tsx';
+import Input, { InputState } from '../../../components/shared/input.tsx';
+import { Button } from '../../../components/ui/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useToast } from '../../hooks/use-toast.ts';
+import { useToast } from '../../../hooks/use-toast.ts';
 import { useNavigate } from 'react-router-dom';
-import { validateRecruitmentCode } from '../../lib/utils/regex.ts';
+import { validateRecruitmentCode } from '../../../lib/utils/regex.ts';
 
 type LookUpRecruitmentInput = {
   recruitmentCode: string;

@@ -5,6 +5,7 @@ import useRefreshToken from '../../hooks/use-refresh-token';
 import handleError from '../../lib/utils/error';
 import { validatePublicRoute } from '../../lib/utils/regex.ts';
 import Header from '../shared/header.tsx';
+import Loading from '../shared/loading.tsx';
 
 const AuthRedirectWrapper = () => {
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ const AuthRedirectWrapper = () => {
           await refresh();
         } catch (e) {
           handleError(e, 'redirectByAuth', 'PRINT');
-          !validatePublicRoute(location.pathname) && navigate('/');
+          !validatePublicRoute(location.pathname) && navigate('/sign-in');
           setLoading(false);
         }
       }
@@ -28,10 +29,14 @@ const AuthRedirectWrapper = () => {
       if (accessToken) {
         switch (role) {
           case 'ADMIN':
-            location.pathname !== 'recruit' && navigate('/recruit');
+            location.pathname !== 'recruit' &&
+              location.pathname !== 'error' &&
+              navigate('/recruit');
             break;
           case 'APPLICANT':
-            !/^\/apply\/.+$/.test(location.pathname) && navigate('/apply');
+            !/^\/apply\/.+$/.test(location.pathname) &&
+              location.pathname !== 'error' &&
+              navigate('/apply');
             break;
         }
         setLoading(false);
@@ -41,7 +46,7 @@ const AuthRedirectWrapper = () => {
     (async () => await redirectByAuth())();
   }, [location.pathname, accessToken]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
   if (!accessToken) return <Outlet />;
   if (accessToken)
     return (

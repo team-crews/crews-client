@@ -2,23 +2,49 @@ import Container from '../../../../components/shared/container.tsx';
 import HeaderSection from './header-section.tsx';
 import CompetitionRateSection from './competition-rate-section.tsx';
 import ApplicationOverviewSection from './application-overview-section.tsx';
-import { Button } from '../../../../components/ui/button.tsx';
-import FooterContainer from '../../../../components/shared/footer-container.tsx';
+import { useQuery } from '@tanstack/react-query';
+import useAdminApi from '../../../../apis/admin-api.ts';
+import usePassedApplicationIds from './usePassedApplicationIds.ts';
+import { IProgress } from '../../../../lib/model/i-progress.ts';
+import Loading from '../../../../components/shared/loading.tsx';
+import FooterSection from './footer-section.tsx';
 
-const RecruitCompletePage = () => {
-  return (
-    <Container className="flex h-fit flex-col py-10">
-      <HeaderSection />
-      <div className="my-8 flex flex-col gap-8">
-        <CompetitionRateSection />
-        <ApplicationOverviewSection />
-      </div>
-      <FooterContainer className="flex w-full justify-end">
-        <Button size="lg">임시 저장</Button>
-        <Button size="lg">평가 완료</Button>
-      </FooterContainer>
-    </Container>
+const RecruitCompletePage = ({ progress }: { progress: IProgress }) => {
+  const { readApplicationOverviews } = useAdminApi();
+  const queryResults = useQuery({
+    queryKey: ['applicationOverviews'],
+    queryFn: readApplicationOverviews,
+  });
+
+  const { passApplicationIds, passId, unpassId } = usePassedApplicationIds(
+    queryResults.data ?? null,
   );
+
+  if (queryResults.isFetching || !passApplicationIds || !queryResults.data)
+    return <Loading />;
+  else
+    return (
+      <Container>
+        <HeaderSection />
+        <div className="my-8 flex flex-col gap-8">
+          <CompetitionRateSection
+            passedNumber={passApplicationIds.length}
+            totalNumber={queryResults.data.length}
+          />
+          <ApplicationOverviewSection
+            progress={progress}
+            applicationOverviews={queryResults.data}
+            passedApplicationIds={passApplicationIds}
+            passId={passId}
+            unpassId={unpassId}
+          />
+        </div>
+        <FooterSection
+          progress={progress}
+          passApplicationIds={passApplicationIds}
+        />
+      </Container>
+    );
 };
 
 export default RecruitCompletePage;

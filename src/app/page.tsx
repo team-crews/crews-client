@@ -1,37 +1,28 @@
 import Container from '../components/shared/container.tsx';
 import AnchorIcon from '../assets/icons/anchor-icon.svg?react';
-import Seperator from '../components/shared/seperator.tsx';
-import LookupRecruitmentForm from './_components/lookup-recruitment-form.tsx';
-import RecruitForm from './_components/recruit-form.tsx';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Page = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate('/sign-in');
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Container className="flex items-center justify-center">
-      <section className="mb-10 w-full max-w-[375px]">
-        <div className="mb-6 flex flex-col">
-          <p className="text-lg font-semibold">누구나 쉽게 모집 · 지원</p>
-          <div className="flex items-center gap-2 font-bold text-crews-b05">
-            <h1 className="text-4xl">Crews</h1>
-            <AnchorIcon className="h-8 w-8" />
-          </div>
+      <div className="animate-fadeIn mb-6 flex flex-col">
+        <p className="text-xl font-semibold">누구나 쉽게 모집 · 지원</p>
+        <div className="flex items-center gap-2 font-bold text-crews-b05">
+          <h1 className="text-6xl">Crews</h1>
+          <AnchorIcon className="h-12 w-12" />
         </div>
-
-        <LookupRecruitmentForm />
-
-        <div className="my-8 flex w-full items-center gap-2">
-          <Seperator
-            orientation="horizontal"
-            className="flex-grow bg-crews-g02"
-          />
-          <p className="text-xs text-crews-g02">or</p>
-          <Seperator
-            orientation="horizontal"
-            className="flex-grow bg-crews-g02"
-          />
-        </div>
-
-        <RecruitForm />
-      </section>
+      </div>
     </Container>
   );
 };

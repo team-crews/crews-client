@@ -1,6 +1,6 @@
 import { baseInstance } from '../apis/instance.ts';
 import useSession from './use-session.ts';
-import handleError from '../lib/utils/error.ts';
+import { throwCustomError } from '../lib/utils/error.ts';
 
 const useRefreshToken = () => {
   const { setSession } = useSession();
@@ -19,7 +19,7 @@ const useRefreshToken = () => {
       setSession(accessToken);
       return `Bearer ${accessToken}`;
     } catch (e) {
-      handleError(e, 'refresh', 'THROW');
+      throwCustomError(e, 'refresh');
     }
   };
 

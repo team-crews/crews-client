@@ -1,4 +1,5 @@
 import { PostRecruitmentsBody } from './types/recruitments';
+import { ICreatedRecruitment } from './model/i-recruitment.ts';
 
 // FIXME: api 연동 후 삭제
 
@@ -96,3 +97,77 @@ export const formMockData = {
   deadline: '2030-09-05T18:00:00',
   code: 'fbf0d84f-85c5-40d3-b2b5-48e109f5c9c7',
 } as PostRecruitmentsBody;
+
+export const CREATED_RECRUITMENT_MOCK: ICreatedRecruitment = {
+  id: null,
+  title: '변경된 모집 공고 제목',
+  description: 'DESCRIPTION',
+  deadline: '2024-09-01T12:00',
+  sections: [
+    {
+      id: null,
+      name: '변경된 섹션 이름',
+      description: 'DESCRIPTION',
+      questions: [
+        {
+          id: null,
+          type: 'SELECTIVE',
+          content: '변경된 질문 내용',
+          necessity: true,
+          order: 2,
+          wordLimit: null,
+          minimumSelection: 1,
+          maximumSelection: 2,
+          choices: [
+            {
+              id: null,
+              content: '변경된 선택지 내용',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: null,
+      name: '새로운 섹션 이름',
+      description: 'DESCRIPTION',
+      questions: [
+        {
+          id: null,
+          type: 'NARRATIVE',
+          content: '자기소개해주세요',
+          necessity: true,
+          order: 1,
+          wordLimit: 100,
+          minimumSelection: null,
+          maximumSelection: null,
+          choices: [],
+        },
+        {
+          id: null,
+          type: 'SELECTIVE',
+          content: '장점을 골라주세요',
+          necessity: true,
+          order: 2,
+          wordLimit: null,
+          minimumSelection: 1,
+          maximumSelection: 2,
+          choices: [
+            {
+              id: null,
+              content: '성실함',
+            },
+            {
+              id: null,
+              content: '밝음',
+            },
+            {
+              id: null,
+              content: '꼼꼼함',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};

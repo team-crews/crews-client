@@ -1,12 +1,28 @@
-import { IApplicationOverview } from '../lib/model/i-application.ts';
 import useAuthInstance from './instance.ts';
-import { throwCustomError } from '../lib/utils/error.ts';
 import {
+  IChangeDeadlineResponse,
+  IReadApplicationDetailResponse,
+  IReadApplicationOverviewsResponse,
   IReadRecruitmentInProgressDetailResponse,
   IReadRecruitmentProgressResponse,
+  IReadRecruitmentResponse,
+  ISaveEvaluationResponse,
+  ISaveRecruitmentResponse,
+  ISendEvaluationMailResponse,
+  isIChangeDeadlineResponse,
+  isIReadApplicationDetailResponse,
+  isIReadApplicationOverviewsResponse,
   isIReadRecruitmentInProgressDetailResponse,
+  isIReadRecruitmentResponse,
   isIRecruitmentProgressResponse,
+  isISaveEvaluationResponse,
+  isISaveRecruitmentResponse,
+  isISendEvaluationMailResponse,
+  isIStartRecruitmentResponse,
+  IStartRecruitmentResponse,
 } from '../lib/model/i-response-body.ts';
+import { ICreatedRecruitment } from '../lib/model/i-recruitment.ts';
+import { throwCustomError } from '../lib/utils/error.ts';
 
 const useAdminApi = () => {
   const { authInstance } = useAuthInstance();
@@ -20,83 +36,129 @@ const useAdminApi = () => {
    */
 
   async function readRecruitmentProgress(): Promise<IReadRecruitmentProgressResponse> {
-    const response = await authInstance.get('/recruitments/progress');
+    try {
+      const response = await authInstance.get('/recruitments/progress');
 
-    if (isIRecruitmentProgressResponse(response.data)) return response.data;
-    else
-      throwCustomError('readRecruitmentProgress', 'Unexpected response format');
+      if (isIRecruitmentProgressResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'readRecruitmentProgress');
+    }
   }
 
   async function readRecruitmentInProgressDetail(): Promise<IReadRecruitmentInProgressDetailResponse> {
-    const response = await authInstance.get('/recruitments/in-progress');
+    try {
+      const response = await authInstance.get('/recruitments/in-progress');
 
-    if (isIReadRecruitmentInProgressDetailResponse(response.data))
-      return response.data;
-    else
-      throwCustomError(
-        'readRecruitmentInProgress',
-        'Unexpected response format',
+      if (isIReadRecruitmentInProgressDetailResponse(response.data))
+        return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'readRecruitmentInProgressDetail');
+    }
+  }
+
+  async function readRecruitment(): Promise<IReadRecruitmentResponse> {
+    try {
+      const response = await authInstance.get('/recruitments/ready');
+
+      if (isIReadRecruitmentResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'readRecruitment');
+    }
+  }
+
+  async function saveRecruitment(
+    requestBody: ICreatedRecruitment,
+  ): Promise<ISaveRecruitmentResponse> {
+    try {
+      const response = await authInstance.post('/recruitments', requestBody);
+
+      if (isISaveRecruitmentResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'saveRecruitment');
+    }
+  }
+
+  async function startRecruitment(): Promise<IStartRecruitmentResponse> {
+    try {
+      const response = await authInstance.patch('recruitments/in-progress');
+
+      if (isIStartRecruitmentResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'startRecruitment');
+    }
+  }
+
+  async function changeDeadline(requestBody: {
+    deadline: string;
+  }): Promise<IChangeDeadlineResponse> {
+    try {
+      const response = await authInstance.patch(
+        '/recruitments/deadline',
+        requestBody,
       );
+
+      if (isIChangeDeadlineResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'changeDeadline');
+    }
   }
 
-  /*
-    ToDo
-    - readRecruitment response 타입 정의
-   */
-  async function readRecruitment() {
-    const response = await authInstance.get('/recruitments/ready');
-    return response.data;
+  async function sendEvaluationMail(): Promise<ISendEvaluationMailResponse> {
+    try {
+      const response = await authInstance.post('/recruitments/announcement');
+
+      if (isISendEvaluationMailResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'sendEvaluationMail');
+    }
   }
 
-  /*
-    ToDo
-    - saveRecruitment requestBody 타입 정의
-   */
+  async function readApplicationOverviews(): Promise<IReadApplicationOverviewsResponse> {
+    try {
+      const response = await authInstance.get('/applications');
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function saveRecruitment(requestBody: any) {
-    const response = await authInstance.post('/recruitments', requestBody);
-    return response.data;
+      if (isIReadApplicationOverviewsResponse(response.data))
+        return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'readApplicationOverviews');
+    }
   }
 
-  async function startRecruitment() {
-    const response = await authInstance.patch('recruitments/in-progress');
-    return response.data;
+  async function readApplicationDetail(
+    applicationId: number,
+  ): Promise<IReadApplicationDetailResponse> {
+    try {
+      const response = await authInstance.get(`/applications/${applicationId}`);
+
+      if (isIReadApplicationDetailResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'readApplicationDetail');
+    }
   }
 
-  async function changeDeadline(requestBody: { deadline: string }) {
-    const response = await authInstance.patch(
-      '/recruitments/deadline',
-      requestBody,
-    );
-    return response.data;
-  }
+  async function saveEvaluation(requestBody: {
+    passApplicationIds: number[];
+  }): Promise<ISaveEvaluationResponse> {
+    try {
+      const response = await authInstance.post(
+        'applications/evaluation',
+        requestBody,
+      );
 
-  async function sendEvaluationMail() {
-    const response = await authInstance.post('/recruitments/announcement');
-    return response.data;
-  }
-
-  async function readApplicationOverviews(): Promise<IApplicationOverview[]> {
-    const response = await authInstance.get('/applications');
-    return response.data;
-  }
-
-  /*
-    ToDo
-    - readApplicationDetail response 타입 정의
-   */
-  async function readApplicationDetail(applicationId: string) {
-    const response = await authInstance.get(`/applications/${applicationId}`);
-    return response.data;
-  }
-
-  async function saveEvaluation(requestBody: { passApplicationIds: number[] }) {
-    const response = await authInstance.post(
-      'applications/evaluation',
-      requestBody,
-    );
-    return response.data;
+      if (isISaveEvaluationResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'saveEvaluation');
+    }
   }
 
   return {

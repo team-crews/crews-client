@@ -1,4 +1,12 @@
 import useAuthInstance from './instance.ts';
+import {
+  IReadApplicationResponse,
+  ISaveApplicationResponse,
+  isIReadApplicationResponse,
+  isISaveApplicationResponse,
+} from '../lib/model/i-response-body.ts';
+import { ICreatedApplication } from '../lib/model/i-application.ts';
+import { throwCustomError } from '../lib/utils/error.ts';
 
 const useApplicantAPi = (recruitmentCode: string) => {
   const { authInstance } = useAuthInstance();
@@ -12,26 +20,30 @@ const useApplicantAPi = (recruitmentCode: string) => {
     Assume role check is completed in require-auth wrapper.
    */
 
-  /*
-    ToDo
-    - readApplication response 타입 정의
-   */
-  async function readApplication() {
-    const response = await authInstance.get(
-      `/applications/mine?code=${recruitmentCode}`,
-    );
-    return response.data;
+  async function readApplication(): Promise<IReadApplicationResponse> {
+    try {
+      const response = await authInstance.get(
+        `/applications/mine?code=${recruitmentCode}`,
+      );
+
+      if (isIReadApplicationResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'readApplication');
+    }
   }
 
-  /*
-    ToDo
-    - readApplication requestBody 타입 정의
-   */
+  async function saveApplication(
+    requestBody: ICreatedApplication,
+  ): Promise<ISaveApplicationResponse> {
+    try {
+      const response = await authInstance.post('applications', requestBody);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function saveApplication(requestBody: any) {
-    const response = await authInstance.post('applications', requestBody);
-    return response.data;
+      if (isISaveApplicationResponse(response.data)) return response.data;
+      throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    } catch (e) {
+      throwCustomError(e, 'saveApplication');
+    }
   }
 
   return { readApplication, saveApplication };
