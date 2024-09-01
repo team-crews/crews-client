@@ -25,7 +25,6 @@ const QuestionTextarea = ({
     ) as HTMLTextAreaElement;
 
     if (textarea) {
-      console.log(textarea.scrollHeight, value);
       textarea.style.height = 'auto';
 
       textarea.style.height = `${textarea.scrollHeight / 16}rem`;
