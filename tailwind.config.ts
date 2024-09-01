@@ -38,11 +38,25 @@ const config = {
           '75%': { transform: 'translateX(-5px)' }, // 왼쪽으로 다시 이동
           '100%': { transform: 'translateX(0)' }, // 원래 위치로 복귀
         },
+        'shake-infinite': {
+          '0%': { transform: 'translateX(0)' }, // 시작 위치
+          '5%': { transform: 'translateX(-5px)' }, // 왼쪽으로 이동
+          '10%': { transform: 'translateX(5px)' }, // 오른쪽으로 이동
+          '15%': { transform: 'translateX(-5px)' }, // 왼쪽으로 다시 이동
+          '20%': { transform: 'translateX(0)' }, // 원래 위치로 복귀
+          '100%': { transform: 'translateX(0)' }, // 원래 위치로 복귀
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         shake: 'shake 0.25s linear',
+        'shake-infinite': 'shake-infinite 1.5s infinite linear',
+        fadeIn: 'fadeIn 1s linear',
       },
       colors: CrewsColors,
       fontFamily: {

@@ -46,7 +46,7 @@ function validateClubName(targetString: string): string {
 }
 
 function validatePublicRoute(pathname: string) {
-  const patterns = [/^\/$/, /^\/recruitment\/.+$/];
+  const patterns = [/^\/$/, /^\/recruitment\/.+$/, /^\/sign-in$/];
 
   return patterns.some((pattern) => pattern.test(pathname));
 }
