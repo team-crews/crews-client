@@ -23,7 +23,7 @@ type INarrativeQuestion = IBaseQuestion & {
   wordLimit: number;
   minimumSelection: null;
   maximumSelection: null;
-  choices: [];
+  choices: null;
 };
 
 type IQuestion = ISelectiveQuestion | INarrativeQuestion;
@@ -96,8 +96,7 @@ function isINarrativeQuestion(obj: any): obj is INarrativeQuestion {
     typeof obj.wordLimit === 'number' &&
     obj.minimumSelection === null &&
     obj.maximumSelection === null &&
-    Array.isArray(obj.choices) &&
-    obj.choices.length === 0
+    obj.choices === null
   );
 }
 

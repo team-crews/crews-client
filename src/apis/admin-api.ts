@@ -75,7 +75,10 @@ const useAdminApi = () => {
     try {
       const response = await authInstance.post('/recruitments', requestBody);
 
-      if (isISaveRecruitmentResponse(response.data)) return response.data;
+      if (isISaveRecruitmentResponse(response.data)) {
+        console.log(response.data.code);
+        return response.data;
+      }
       throw new Error('[ResponseTypeMismatch] Unexpected response format');
     } catch (e) {
       throwCustomError(e, 'saveRecruitment');

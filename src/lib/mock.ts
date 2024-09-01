@@ -103,7 +103,7 @@ export const CREATED_RECRUITMENT_MOCK: ICreatedRecruitment = {
   id: null,
   title: '변경된 모집 공고 제목',
   description: 'DESCRIPTION',
-  deadline: '2024-09-01T12:00',
+  deadline: '2024-09-03T12:00',
   sections: [
     {
       id: null,

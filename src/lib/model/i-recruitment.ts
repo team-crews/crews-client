@@ -8,7 +8,7 @@ import {
 } from './i-section.ts';
 
 export type IRecruitment = {
-  id: string;
+  id: number;
   title: string;
   description: string;
   recruitmentProgress: IProgress;
@@ -31,7 +31,7 @@ export function isIRecruitment(obj: any): obj is IRecruitment {
   return (
     typeof obj === 'object' &&
     obj !== null &&
-    typeof obj.id === 'string' &&
+    typeof obj.id === 'number' &&
     typeof obj.title === 'string' &&
     typeof obj.description === 'string' &&
     isIProgress(obj.recruitmentProgress) &&
@@ -47,7 +47,7 @@ export function isICreatedRecruitment(obj: any): obj is ICreatedRecruitment {
   return (
     typeof obj === 'object' &&
     obj !== null &&
-    (obj.id === null || typeof obj.id === 'string') &&
+    (obj.id === null || typeof obj.id === 'number') &&
     typeof obj.title === 'string' &&
     typeof obj.description === 'string' &&
     Array.isArray(obj.sections) &&
