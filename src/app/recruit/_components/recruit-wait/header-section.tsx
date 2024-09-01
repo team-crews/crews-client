@@ -10,15 +10,12 @@ const HeaderSection = () => {
         </div>
         <div className="flex flex-col gap-1 text-crews-g05">
           <p className="text-base font-normal">
-            모집 중인 모집 공고를 관리할 수 있습니다.{' '}
-            <span className="cursor-pointer font-semibold text-crews-b05 underline">
-              여기
-            </span>{' '}
-            를 눌러 모집 코드를 공유하세요!
+            모집 중인 모집 공고를 관리할 수 있습니다. 현재 지원한 지원자의 수를
+            확인해 보세요.
           </p>
           <p className="break-words text-base font-normal">
-            현재 지원한 지원자의 수를 확인하고, 필요 시 마감 기간을 연장하실 수
-            있습니다.
+            필요 시 마감 기간을 연장하실 수 있지만 일찍 마감은 불가하니
+            주의해주세요. 😔
           </p>
         </div>
       </div>
