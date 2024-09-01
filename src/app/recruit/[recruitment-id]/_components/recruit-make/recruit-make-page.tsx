@@ -52,18 +52,21 @@ const RecruitMakePage = () => {
               />
             ))}
           </div>
-          <button
-            onClick={() =>
-              appendSection({
-                id: null,
-                name: '새로운 섹션',
-                description: '새로운섹션 설명',
-                questions: [],
-              })
-            }
-          >
-            {'섹션 추가'}
-          </button>
+          <div className="flex w-full justify-center">
+            <button
+              className="mt-[2rem] border-b-[1px] border-crews-g06 pb-[1px] text-[1.125rem] leading-[1.5rem] text-crews-g06"
+              onClick={() =>
+                appendSection({
+                  id: null,
+                  name: '새로운 섹션',
+                  description: '새로운 섹션의 설명을 작성해주세요',
+                  questions: [],
+                })
+              }
+            >
+              섹션 추가
+            </button>
+          </div>
           <button className="border-[0.125rem] border-crews-b06" type="submit">
             {'제출'}
           </button>
