@@ -1,5 +1,6 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import QuestionBox from './question-box';
+import { Button } from '../../../../../components/ui/button';
 
 interface SectionBoxProps {
   sectionIndex: number;
@@ -19,7 +20,7 @@ const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
   });
 
   return (
-    <section className="rounded-t-[0.625rem]">
+    <section>
       <div className="flex flex-col rounded-t-[0.625rem] bg-crews-b04 p-[1.25rem]">
         <div className="flex justify-between">
           <input
@@ -35,7 +36,7 @@ const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
           placeholder="섹션 설명"
         />
       </div>
-      <div className="flex flex-col gap-[1.5rem] bg-crews-b01 px-[1.25rem] py-[1.5rem]">
+      <div className="flex flex-col gap-[1.5rem] rounded-b-[0.625rem] bg-crews-b01 px-[1.25rem] py-[1.5rem]">
         {questionFields.map((question, questionIndex) => (
           <QuestionBox
             key={question.id}
@@ -44,24 +45,25 @@ const SectionBox = ({ sectionIndex, removeSection }: SectionBoxProps) => {
             removeQuestion={removeQuestion}
           />
         ))}
+        <Button
+          className="w-fit bg-crews-b04 p-[1rem]"
+          onClick={() =>
+            appendQuestion({
+              id: null,
+              type: 'NARRATIVE',
+              content: '',
+              necessity: true,
+              order: questionFields.length + 1,
+              wordLimit: 100,
+              minimumSelection: null,
+              maximumSelection: null,
+              choices: [],
+            })
+          }
+        >
+          질문 추가
+        </Button>
       </div>
-      <button
-        onClick={() =>
-          appendQuestion({
-            id: null,
-            type: 'NARRATIVE',
-            content: '',
-            necessity: true,
-            order: questionFields.length + 1,
-            wordLimit: 100,
-            minimumSelection: null,
-            maximumSelection: null,
-            choices: [],
-          })
-        }
-      >
-        질문 추가
-      </button>
     </section>
   );
 };
