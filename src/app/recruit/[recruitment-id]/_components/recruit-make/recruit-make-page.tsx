@@ -3,6 +3,8 @@ import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import SectionBox from './section-box';
 import { formMockData } from '../../../../../lib/mock';
 import { PostRecruitmentsBody } from '../../../../../lib/types/recruitments';
+import FooterContainer from '../../../../../components/shared/footer-container';
+import { Button } from '../../../../../components/ui/button';
 
 const RecruitMakePage = () => {
   const methods = useForm<PostRecruitmentsBody>({
@@ -33,10 +35,22 @@ const RecruitMakePage = () => {
   //   },
   // });
 
+  const handleTempSave = () => {
+    handleSubmit(async (data) => {
+      console.log('임시 저장 로직 실행:', data);
+    })();
+  };
+
+  const handleStartRecruitment = () => {
+    handleSubmit(async (data) => {
+      console.log('모집 시작 로직 실행:', data);
+    })();
+  };
+
   return (
-    <div className="w-[47.5rem]">
+    <div className="w-[47.5rem] px-[1rem] md:px-[0rem]">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit((data) => console.log(data))}>
+        <form className="pb-[6rem]">
           <div className="flex flex-col gap-[0.5rem]">
             <input {...register('title')} />
             <input {...register('description')} />
@@ -67,10 +81,26 @@ const RecruitMakePage = () => {
               섹션 추가
             </button>
           </div>
-          <button className="border-[0.125rem] border-crews-b06" type="submit">
-            {'제출'}
-          </button>
         </form>
+        <FooterContainer className="flex w-full items-center justify-end">
+          <div className="flex items-center gap-[1rem]">
+            <Button
+              className="h-[3.125rem] w-[12.5rem] rounded-[0.625rem] bg-crews-b04"
+              variant="default"
+              onClick={handleTempSave}
+            >
+              임시 저장하기
+            </Button>
+            <Button
+              type="submit"
+              className="h-[3.125rem] w-[12.5rem] rounded-[0.625rem]"
+              variant="default"
+              onClick={handleStartRecruitment}
+            >
+              모집 시작하기
+            </Button>
+          </div>
+        </FooterContainer>
       </FormProvider>
     </div>
   );
