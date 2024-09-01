@@ -10,7 +10,7 @@ import { QuestionType } from '../../../../../lib/enums';
 import Container from '../../../../../components/shared/container';
 
 import QuestionTextarea from './question-textarea';
-import ChoiceSection from './\bchoice-section';
+import ChoiceSection from './choice-section';
 import OptionSection from './option-section';
 
 interface QuestionBoxProps {
