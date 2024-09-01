@@ -17,7 +17,7 @@ export const formMockData = {
           id: 1,
           type: 'SELECTIVE',
           content:
-            '아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 아주 긴 텍스트입니다.',
+            '아주 긴 텍스트입니다. 아주 긴 텍스트입니다. 텍스트입니다. 텍스트입니다. 텍스트입니다.',
           necessity: true,
           order: 2,
           wordLimit: null,
@@ -59,7 +59,7 @@ export const formMockData = {
         {
           id: 3,
           type: 'SELECTIVE',
-          content: '장점을 골라주세요',
+          content: '',
           necessity: true,
           order: 2,
           wordLimit: null,

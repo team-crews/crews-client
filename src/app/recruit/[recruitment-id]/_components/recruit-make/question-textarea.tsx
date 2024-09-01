@@ -1,6 +1,7 @@
 // import { useEffect, useRef } from 'react';
 
-import { useFormContext } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 interface QuestionTextareaProps {
   sectionIndex: number;
@@ -11,24 +12,31 @@ const QuestionTextarea = ({
   sectionIndex,
   questionIndex,
 }: QuestionTextareaProps) => {
-  const { register, setValue } = useFormContext();
+  const { register } = useFormContext();
 
-  // const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   const textarea = e.target;
+  const value = useWatch({
+    name: `sections.${sectionIndex}.questions.${questionIndex}.content`,
+  });
 
-  //   setValue(
-  //     `sections.${sectionIndex}.questions.${questionIndex}.content`,
-  //     textarea.value,
-  //   );
+  // useEffect로 textarea height 동적 설정
+  useEffect(() => {
+    const textarea = document.querySelector(
+      `textarea[name="sections.${sectionIndex}.questions.${questionIndex}.content"]`,
+    ) as HTMLTextAreaElement;
 
-  //   textarea.style.height = '1.75rem'; // 초기 높이 설정
-  //   textarea.style.height = `${textarea.scrollHeight / 16}rem`;
-  // };
+    if (textarea) {
+      console.log(textarea.scrollHeight, value);
+      textarea.style.height = 'auto';
+
+      textarea.style.height = `${textarea.scrollHeight / 16}rem`;
+    }
+  }, [questionIndex, sectionIndex, value]);
 
   return (
-    <div className="flex h-full w-full flex-col gap-[1rem]">
+    <div className="flex h-full w-full flex-col gap-[0.5rem]">
       <textarea
-        className="w-full bg-rose-300 text-[1.125rem] font-semibold text-crews-bk02"
+        className="h-auto w-full overflow-y-hidden text-[1.125rem] font-semibold text-crews-bk02"
+        rows={1}
         placeholder="질문을 작성해주세요."
         {...register(
           `sections.${sectionIndex}.questions.${questionIndex}.content`,
