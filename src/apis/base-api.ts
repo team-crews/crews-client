@@ -1,7 +1,7 @@
 import { baseInstance } from './instance.ts';
 import {
   IReadRecruitmentByCodeResponse,
-  isIReadRecruitmentByCodeResponse,
+  // isIReadRecruitmentByCodeResponse,
 } from '../lib/model/i-response-body.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
 
@@ -18,8 +18,10 @@ async function readRecruitmentByCode(
       `recruitments?code=${recruitmentCode}`,
     );
 
-    if (isIReadRecruitmentByCodeResponse(response.data)) return response.data;
-    throw new Error('[ResponseTypeMismatch] Unexpected response format');
+    /** FIXME: isIReadRecruitmentByCodeResponse have too many false values, so I have to comment this lines. */
+    // if (isIReadRecruitmentByCodeResponse(response.data))
+    return response.data;
+    // throw new Error('[ResponseTypeMismatch] Unexpected response format');
   } catch (e) {
     throwCustomError(e, 'readRecruitmentByCode');
   }

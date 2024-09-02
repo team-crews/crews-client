@@ -1,19 +1,18 @@
 import Container from '../../../components/shared/container.tsx';
 import ApplyForm from './_components/apply-form.tsx';
-import { Skeleton } from '../../../components/shared/skeleton.tsx';
+
+import InfoSection from './_components/info-section.tsx';
 
 const Page = () => {
   return (
-    <Container className="0 flex gap-10">
-      <section className="flex flex-grow items-center justify-center">
-        <div className="mb-10 w-full max-w-[375px]">
+    <Container className="flex flex-col md:flex-row">
+      <section className="mt-14 flex flex-1 items-center justify-center md:mt-0">
+        <div className="mb-10 w-full max-w-[375px] p-2 sm:p-0">
           <ApplyForm />
         </div>
       </section>
-      <section className="overflow-scroll">
-        <Skeleton className="mx-auto mb-12 mt-[120px] h-[500px] w-[600px]" />
-        <Skeleton className="mx-auto mb-12 h-[300px] w-[600px]" />
-        <Skeleton className="mx-auto h-96 w-[600px]" />
+      <section className="my-0 w-full flex-1 overflow-scroll md:my-[6rem]">
+        <InfoSection />
       </section>
     </Container>
   );
