@@ -1,19 +1,38 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { readRecruitmentByCode } from '../../../../apis/base-api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import NarrativeBox from '../../../../components/shared/narrative-box';
 import SectionBox from '../../../../components/shared/section-box';
 import SelectiveBox from '../../../../components/shared/selective-box';
 import { QuestionType } from '../../../../lib/enums';
 import { IQuestion } from '../../../../lib/model/i-section';
+import handleError from '../../../../lib/utils/error';
+import { useToast } from '../../../../hooks/use-toast';
 
 const InfoSection = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
   const { 'recruitment-code': recruitmentCode } = useParams();
 
   const { data } = useQuery({
     queryKey: ['readRecruitment', recruitmentCode],
-    queryFn: () => readRecruitmentByCode(recruitmentCode || ''),
+    queryFn: async () => {
+      try {
+        return await readRecruitmentByCode(recruitmentCode || '');
+      } catch (e) {
+        handleError(e, 'readRecruitmentByCode', 'PRINT');
+
+        toast({
+          title: '모집 정보를 불러오는 중 문제가 발생했습니다.',
+          state: 'error',
+        });
+
+        navigate('/');
+      }
+    },
+
     enabled: !!recruitmentCode,
   });
 
