@@ -5,10 +5,10 @@ import Typography from './typography';
 
 interface SelectiveBoxProps {
   question: IQuestion;
-  isViewOnly?: boolean;
 }
 
-const SelectiveBox = ({ question, isViewOnly = true }: SelectiveBoxProps) => {
+// 사용자가 선택을 할 수 없는 view-only 모드를 위한 컴포넌트입니다.
+const SelectiveBox = ({ question }: SelectiveBoxProps) => {
   return (
     <Container className="rounded-[0.625rem] bg-crews-w01 px-[1.25rem] py-[1.25rem]">
       <div className="flex flex-col gap-[1rem]">
@@ -31,15 +31,10 @@ const SelectiveBox = ({ question, isViewOnly = true }: SelectiveBoxProps) => {
         <div className="flex flex-col gap-[0.5rem]">
           {question.choices.map((choice) => (
             <div key={choice.id} className="flex items-center gap-[0.5rem]">
-              <input
-                type="radio"
-                className="h-[1rem] w-[1rem] rounded-full"
-                value={''}
-                // disabled={isViewOnly}
-              />
-              <label className="text-[0.875rem] text-crews-bk01">
+              <div className="h-[1rem] w-[1rem] rounded-full border-[1px] border-crews-g03" />
+              <div className="text-[0.875rem] text-crews-bk01">
                 {choice.content}
-              </label>
+              </div>
             </div>
           ))}
         </div>
