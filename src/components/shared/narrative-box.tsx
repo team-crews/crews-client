@@ -24,7 +24,6 @@ const NarrativeBox = ({ question }: NarrativeBoxProps) => {
           <Typography className="text-[1rem] font-bold text-crews-bk01">
             {question.content}
           </Typography>
-
           <Typography className="text-[0.875rem] text-crews-b06">
             {displayText}
           </Typography>

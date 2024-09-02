@@ -9,6 +9,19 @@ interface SelectiveBoxProps {
 
 // 사용자가 선택을 할 수 없는 view-only 모드를 위한 컴포넌트입니다.
 const SelectiveBox = ({ question }: SelectiveBoxProps) => {
+  const necessityText = question.necessity ? '응답 필수' : '';
+
+  const minText = question.minimumSelection
+    ? `최소 선택: ${question.minimumSelection}`
+    : '';
+  const maxText = question.maximumSelection
+    ? `최대 선택: ${question.maximumSelection}`
+    : '';
+
+  const displayText = [necessityText, minText, maxText]
+    .filter(Boolean)
+    .join(', ');
+
   return (
     <Container className="rounded-[0.625rem] bg-crews-w01 px-[1.25rem] py-[1.25rem]">
       <div className="flex flex-col gap-[1rem]">
@@ -16,17 +29,9 @@ const SelectiveBox = ({ question }: SelectiveBoxProps) => {
           <Typography className="text-[1.125rem] font-bold text-crews-bk01">
             {question.content}
           </Typography>
-
-          {question.necessity ? (
-            <Typography className="text-[0.875rem] text-crews-b06">
-              응답 필수
-            </Typography>
-          ) : null}
-          {question.wordLimit ? (
-            <Typography className="text-[0.875rem] text-crews-b06">
-              응답 필수
-            </Typography>
-          ) : null}
+          <Typography className="text-[0.875rem] text-crews-b06">
+            {displayText}
+          </Typography>
         </div>
         <div className="flex flex-col gap-[0.5rem]">
           {question.choices.map((choice) => (
