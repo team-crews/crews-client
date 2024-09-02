@@ -5,13 +5,13 @@ import InfoSection from './_components/info-section.tsx';
 
 const Page = () => {
   return (
-    <Container className="0 flex flex-col gap-10 lg:flex-row">
-      <section className="mt-14 flex flex-grow items-center justify-center lg:mt-0">
-        <div className="mb-10 w-full max-w-[375px]">
+    <Container className="flex flex-col md:flex-row">
+      <section className="mt-14 flex flex-1 items-center justify-center md:mt-0">
+        <div className="mb-10 w-full max-w-[375px] p-2 sm:p-0">
           <ApplyForm />
         </div>
       </section>
-      <section className="overflow-scroll">
+      <section className="my-0 w-full flex-1 overflow-scroll md:my-[6rem]">
         <InfoSection />
       </section>
     </Container>

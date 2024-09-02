@@ -30,7 +30,7 @@ const InfoSection = () => {
   };
 
   return (
-    <section className="my-[6rem] overflow-scroll px-[1rem]">
+    <section className="overflow-scroll px-[1rem]">
       <div className="flex flex-col gap-[1.5rem]">
         {data?.sections.map((section) => (
           <SectionBox
