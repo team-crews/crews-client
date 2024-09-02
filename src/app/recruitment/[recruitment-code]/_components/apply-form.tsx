@@ -69,8 +69,6 @@ const ApplyForm = () => {
     });
 
     setError(true);
-
-    console.log(data);
   };
 
   const inputState: Record<keyof ApplyInputs, InputState> = {
