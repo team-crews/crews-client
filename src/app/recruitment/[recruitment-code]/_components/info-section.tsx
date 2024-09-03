@@ -36,18 +36,6 @@ const InfoSection = () => {
     enabled: !!recruitmentCode,
   });
 
-  // 질문 타입별 확장성을 위한 컴포넌트 렌더링
-  const renderQuestionComponent = (question: IQuestion) => {
-    switch (question.type) {
-      case QuestionType.NARRATIVE:
-        return <NarrativeBox question={question} />;
-      case QuestionType.SELECTIVE:
-        return <SelectiveBox key={question.id} question={question} />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <section className="overflow-scroll px-[1rem]">
       <div className="flex flex-col gap-[1.5rem]">
@@ -58,15 +46,27 @@ const InfoSection = () => {
             description={section.description}
           >
             <div className="flex flex-col gap-[1.5rem]">
-              {section.questions.map((question) =>
-                renderQuestionComponent(question),
-              )}
+              {section.questions.map((question) => (
+                <RenderQuestion key={question.id} question={question} />
+              ))}
             </div>
           </SectionBox>
         ))}
       </div>
     </section>
   );
+};
+
+// 질문 타입별 확장성을 위한 컴포넌트 렌더링
+const RenderQuestion = ({ question }: { question: IQuestion }) => {
+  switch (question.type) {
+    case QuestionType.NARRATIVE:
+      return <NarrativeBox question={question} />;
+    case QuestionType.SELECTIVE:
+      return <SelectiveBox key={question.id} question={question} />;
+    default:
+      return null;
+  }
 };
 
 export default InfoSection;
