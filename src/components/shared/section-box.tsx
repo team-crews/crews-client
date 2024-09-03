@@ -6,7 +6,7 @@ interface SectionBoxProps extends Pick<ISection, 'name' | 'description'> {
 
 const SectionBox = ({ children, name, description }: SectionBoxProps) => {
   return (
-    <div>
+    <section>
       <div className="flex w-full flex-col rounded-t-[0.625rem] bg-crews-b04 p-[1.25rem]">
         <div className="flex items-center justify-between">
           <div className="bg-crews-b04 font-pretendard text-[1.375rem] font-bold text-crews-w01">
@@ -20,7 +20,7 @@ const SectionBox = ({ children, name, description }: SectionBoxProps) => {
       <div className="rounded-b-[0.625rem] bg-crews-b01 px-[1.25rem] py-[1.5rem]">
         {children}
       </div>
-    </div>
+    </section>
   );
 };
 
