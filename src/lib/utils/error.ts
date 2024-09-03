@@ -1,4 +1,4 @@
-import { isAxiosError } from 'axios';
+import { AxiosError, isAxiosError } from 'axios';
 
 type ErrorHandler = 'PRINT' | 'THROW';
 
@@ -28,6 +28,7 @@ export function printCustomError(
   let errorMessage: string;
 
   let errorStatus = null;
+
   if (isAxiosError(e) && e.response) {
     errorStatus = e.response.status;
     errorMessage = `[${errorFunctionName}] ${e.response.status} : ${e.response.data.message || e.response.data.detail || 'no  error message'}`;
@@ -44,7 +45,11 @@ export function throwCustomError(e: unknown, errorFunctionName: string): never {
     errorMessage = `[${errorFunctionName}] ${e.response.status} : ${e.response.data.message || e.response.data.detail || 'no  error message'}`;
   } else errorMessage = `[${errorFunctionName}] ${e}`;
 
-  throw new Error(errorMessage);
+  const error = isAxiosError(e)
+    ? new AxiosError(errorMessage)
+    : new Error(errorMessage);
+
+  throw error;
 }
 
 export default handleError;
