@@ -50,6 +50,9 @@ const ApplyForm = () => {
     try {
       const { accessToken } = await applicantLogin(data);
 
+      if (recruitmentCode)
+        localStorage.setItem('recruitmentCode', recruitmentCode);
+
       setSession(accessToken);
       navigate(`/apply/${recruitmentCode}`);
     } catch (e) {

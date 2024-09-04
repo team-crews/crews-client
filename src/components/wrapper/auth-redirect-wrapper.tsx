@@ -27,6 +27,8 @@ const AuthRedirectWrapper = () => {
       }
 
       if (accessToken) {
+        const recruitmentCode = localStorage.getItem('recruitmentCode');
+
         switch (role) {
           case 'ADMIN':
             location.pathname !== '/recruit' &&
@@ -36,7 +38,9 @@ const AuthRedirectWrapper = () => {
           case 'APPLICANT':
             !/^\/apply\/.+$/.test(location.pathname) &&
               location.pathname !== '/error' &&
-              navigate('/apply');
+              recruitmentCode &&
+              navigate(`/apply/${recruitmentCode}`);
+
             break;
         }
         setLoading(false);
