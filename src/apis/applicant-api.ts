@@ -8,7 +8,7 @@ import {
 import { ICreatedApplication } from '../lib/model/i-application.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
 
-const useApplicantAPi = (recruitmentCode: string) => {
+const useApplicantApi = (recruitmentCode: string) => {
   const { authInstance } = useAuthInstance();
 
   /*
@@ -49,4 +49,4 @@ const useApplicantAPi = (recruitmentCode: string) => {
   return { readApplication, saveApplication };
 };
 
-export default useApplicantAPi;
+export default useApplicantApi;

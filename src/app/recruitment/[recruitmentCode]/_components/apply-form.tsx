@@ -50,6 +50,9 @@ const ApplyForm = () => {
     try {
       const { accessToken } = await applicantLogin(data);
 
+      if (recruitmentCode)
+        localStorage.setItem('recruitmentCode', recruitmentCode);
+
       setSession(accessToken);
       navigate(`/apply/${recruitmentCode}`);
     } catch (e) {
@@ -61,14 +64,9 @@ const ApplyForm = () => {
         title,
         state: 'error',
       });
+
+      setError(true);
     }
-
-    toast({
-      title: '문제가 발생했어요 😡',
-      description: '다시 시도해주세요.',
-    });
-
-    setError(true);
   };
 
   const inputState: Record<keyof ApplyInputs, InputState> = {

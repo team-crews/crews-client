@@ -10,6 +10,7 @@ import { printCustomError } from '../../../lib/utils/error.ts';
 
 const Page = () => {
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
+
   const readQuery = useQuery({
     queryKey: ['recruitmentByCode'],
     queryFn: () => readRecruitmentByCode(recruitmentCode!),
@@ -20,7 +21,7 @@ const Page = () => {
     printCustomError(readQuery.error, 'readQuery');
     return <Navigate to="/error" replace />;
   }
-  console.log(readQuery.data);
+
   return (
     <Container className="0 flex gap-10">
       <section className="flex flex-grow items-center justify-center">
@@ -29,7 +30,7 @@ const Page = () => {
         </div>
       </section>
       <section className="my-0 w-full flex-1 overflow-scroll md:my-[6rem]">
-        <InfoSection />
+        <InfoSection recruitment={readQuery.data} />
       </section>
     </Container>
   );
