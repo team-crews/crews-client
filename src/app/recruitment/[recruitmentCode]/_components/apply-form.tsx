@@ -19,7 +19,7 @@ type ApplyInputs = {
 
 const ApplyForm = () => {
   const navigate = useNavigate();
-  const { 'recruitment-code': recruitmentCode } = useParams();
+  const { recruitmentCode } = useParams();
 
   const { toast } = useToast();
   const [error, setError] = useState<boolean>(false);
