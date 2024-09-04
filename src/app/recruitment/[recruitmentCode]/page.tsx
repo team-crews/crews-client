@@ -23,9 +23,9 @@ const Page = () => {
   }
 
   return (
-    <Container className="0 flex gap-10">
-      <section className="flex flex-grow items-center justify-center">
-        <div className="mb-10 w-full max-w-[375px]">
+    <Container className="flex flex-col md:flex-row">
+      <section className="mt-14 flex flex-1 items-center justify-center md:mt-0">
+        <div className="mb-10 w-full max-w-[375px] p-2 sm:p-0">
           <ApplyForm />
         </div>
       </section>
