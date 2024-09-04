@@ -1,6 +1,7 @@
 import Container from '../../../components/shared/container.tsx';
 import ApplyForm from './_components/apply-form.tsx';
-import { Skeleton } from '../../../components/shared/skeleton.tsx';
+
+import InfoSection from './_components/info-section.tsx';
 import { readRecruitmentByCode } from '../../../apis/base-api.ts';
 import { useQuery } from '@tanstack/react-query';
 import { Navigate, useParams } from 'react-router-dom';
@@ -27,10 +28,8 @@ const Page = () => {
           <ApplyForm />
         </div>
       </section>
-      <section className="overflow-scroll">
-        <Skeleton className="mx-auto mb-12 mt-[120px] h-[500px] w-[600px]" />
-        <Skeleton className="mx-auto mb-12 h-[300px] w-[600px]" />
-        <Skeleton className="mx-auto h-96 w-[600px]" />
+      <section className="my-0 w-full flex-1 overflow-scroll md:my-[6rem]">
+        <InfoSection />
       </section>
     </Container>
   );

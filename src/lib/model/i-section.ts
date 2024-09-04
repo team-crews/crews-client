@@ -26,7 +26,7 @@ type INarrativeQuestion = IBaseQuestion & {
   choices: [];
 };
 
-type IQuestion = ISelectiveQuestion | INarrativeQuestion;
+export type IQuestion = ISelectiveQuestion | INarrativeQuestion;
 
 export type ISection = {
   id: number;

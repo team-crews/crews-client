@@ -3,6 +3,14 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Input, { InputState } from '../../../../components/shared/input.tsx';
 import { Button } from '../../../../components/ui/button.tsx';
+import { applicantLogin } from '../../../../apis/auth-api.ts';
+import handleError from '../../../../lib/utils/error.ts';
+import useSession from '../../../../hooks/use-session.ts';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  validateEmail,
+  validatePassword,
+} from '../../../../lib/utils/regex.ts';
 
 type ApplyInputs = {
   email: string;
@@ -10,8 +18,13 @@ type ApplyInputs = {
 };
 
 const ApplyForm = () => {
+  const navigate = useNavigate();
+  const { 'recruitment-code': recruitmentCode } = useParams();
+
   const { toast } = useToast();
   const [error, setError] = useState<boolean>(false);
+
+  const { setSession } = useSession();
 
   const { register, resetField, handleSubmit, formState } =
     useForm<ApplyInputs>({
@@ -21,16 +34,34 @@ const ApplyForm = () => {
       },
     });
 
-  const onSubmit: SubmitHandler<ApplyInputs> = (data) => {
-    /*
-      ToDo
-      * 길이 유효성 검사
-      * 문자 유효성 검사
-      * 로그인 처리
-      * 페이지 네비게이션
+  const onSubmit: SubmitHandler<ApplyInputs> = async (data) => {
+    const emailValidation = validateEmail(data.email);
+    const passwordValidation = validatePassword(data.password);
 
-      유효성 검사 어느정도로 할지 생각해봐야 할듯
-     */
+    if (emailValidation || passwordValidation) {
+      toast({
+        title: emailValidation || passwordValidation,
+        state: 'error',
+      });
+      setError(true);
+      return;
+    }
+
+    try {
+      const { accessToken } = await applicantLogin(data);
+
+      setSession(accessToken);
+      navigate(`/apply/${recruitmentCode}`);
+    } catch (e) {
+      handleError(e, 'applicantLogin', 'PRINT');
+
+      const title = '예기치 못한 문제가 발생했습니다.';
+
+      toast({
+        title,
+        state: 'error',
+      });
+    }
 
     toast({
       title: '문제가 발생했어요 😡',
@@ -38,8 +69,6 @@ const ApplyForm = () => {
     });
 
     setError(true);
-
-    console.log(data);
   };
 
   const inputState: Record<keyof ApplyInputs, InputState> = {
@@ -61,7 +90,6 @@ const ApplyForm = () => {
       </p>
       <fieldset className="mb-3">
         <Input
-          type="email"
           state={inputState.email}
           className="mb-3"
           registerReturns={register('email', {
