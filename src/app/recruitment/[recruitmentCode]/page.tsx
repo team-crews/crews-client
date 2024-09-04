@@ -17,19 +17,17 @@ const Page = () => {
   });
 
   if (readQuery.isFetching) return <Loading />;
-  else if (readQuery.isError) {
+  else if (readQuery.isError || !readQuery.data) {
     printCustomError(readQuery.error, 'readQuery');
     return <Navigate to="/error" replace />;
   }
-
   return (
-    <Container className="flex flex-col md:flex-row">
-      <section className="mt-14 flex flex-1 items-center justify-center md:mt-0">
-        <div className="mb-10 w-full max-w-[375px] p-2 sm:p-0">
-          <ApplyForm />
-        </div>
+    <Container className="flex flex-row justify-around">
+      <section className="flex max-w-[375px] flex-grow items-center">
+        <ApplyForm />
       </section>
-      <section className="my-0 w-full flex-1 overflow-scroll md:my-[6rem]">
+
+      <section className="max-w-[600px]">
         <InfoSection recruitment={readQuery.data} />
       </section>
     </Container>
