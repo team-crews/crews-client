@@ -46,6 +46,8 @@ export type ILoginResponse = {
   accessToken: string;
 };
 
+export type ILogoutResponse = NoResponseData;
+
 // ---------------------------------- Type Guards ----------------------------------
 
 function isIRecruitmentProgressResponse(
@@ -75,8 +77,10 @@ function isIReadRecruitmentInProgressDetailResponse(
 function isIReadRecruitmentResponse(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   obj: any,
+  status: number,
 ): obj is IReadRecruitmentResponse {
-  return typeof obj === 'object' && obj !== null && isIRecruitment(obj);
+  if (status === 204) return obj === '';
+  else return typeof obj === 'object' && obj !== null && isIRecruitment(obj);
 }
 
 function isISaveRecruitmentResponse(
@@ -154,11 +158,6 @@ function isIReadRecruitmentByCodeResponse(
   return typeof obj === 'object' && obj !== null && isIRecruitment(obj);
 }
 
-//
-// export type ILoginResponse = {
-//   username: string;
-//   accessToken: string;
-// };
 function isILoginResponse(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   obj: any,
@@ -169,6 +168,13 @@ function isILoginResponse(
     typeof obj.username === 'string' &&
     typeof obj.accessToken === 'string'
   );
+}
+
+function isILogoutResponse(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  obj: any,
+): obj is ILogoutResponse {
+  return obj === '';
 }
 
 export {
@@ -186,4 +192,5 @@ export {
   isISaveApplicationResponse,
   isIReadRecruitmentByCodeResponse,
   isILoginResponse,
+  isILogoutResponse,
 };
