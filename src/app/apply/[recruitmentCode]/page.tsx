@@ -1,9 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
 import Container from '../../../components/shared/container';
-import SectionBox from '../../../components/shared/section-box';
+import SectionBox from '../../../components/recruitment-view/section-boxes.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import useApplicantApi from '../../../apis/applicant-api';
-import handleError from '../../../lib/utils/error';
 import { useToast } from '../../../hooks/use-toast';
 
 const Page = () => {

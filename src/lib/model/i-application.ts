@@ -6,28 +6,24 @@ export type IApplicationOverview = {
   outcome: 'PASS' | 'FAIL' | 'PENDING';
 };
 
-export type IApplication = {
-  id: number;
-  studentNumber: string;
-  major: string;
-  name: string;
+export type IApplication = Omit<IApplicationOverview, 'outcome'> & {
   answers: IAnswer[];
 };
 
-type IAnswer = INarrativeAnswer | ISelectiveAnswer;
+export type IAnswer = INarrativeAnswer | ISelectiveAnswer;
 
 type IBaseAnswer = {
   answerId: number;
   questionId: number;
 };
 
-type INarrativeAnswer = IBaseAnswer & {
+export type INarrativeAnswer = IBaseAnswer & {
   content: string;
   choiceId: null;
   type: 'NARRATIVE';
 };
 
-type ISelectiveAnswer = IBaseAnswer & {
+export type ISelectiveAnswer = IBaseAnswer & {
   content: null;
   choiceId: number;
   type: 'SELECTIVE';

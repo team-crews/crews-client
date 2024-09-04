@@ -22,7 +22,7 @@ const RecruitMetaSection = () => {
   }, [value]);
 
   return (
-    <div className="flex flex-col gap-6 overflow-hidden rounded-xl border border-crews-b01 bg-crews-w01 p-8">
+    <div className="flex flex-col gap-6 rounded-xl border border-crews-g01 bg-crews-w01 p-8">
       <div>
         <p className="mb-2 w-full text-xs font-bold text-crews-b06">
           공고 제목
@@ -62,20 +62,18 @@ const RecruitMetaSection = () => {
         <p className="mb-2 w-full text-xs font-bold text-crews-b06">
           마감 일자
         </p>
-        <div className="flex gap-2">
-          <input
-            maxLength={11}
-            placeholder="모집 마감은 한시간 단위로 가능합니다. (ex. 24년 11월 6일 저녁 6시 : 24-11-06-18)"
-            className="w-full text-sm text-crews-bk01 placeholder:text-crews-g03"
-            {...register('deadline', {
-              validate: {
-                isFilledInput: (v) =>
-                  isFilledInput(v, '마감 시간이 작성되지 않았어요.'),
-                isProperDeadlinePattern,
-              },
-            })}
-          />
-        </div>
+        <input
+          maxLength={11}
+          placeholder="모집 마감은 한시간 단위로 가능합니다. (ex. 24년 11월 6일 저녁 6시 : 24-11-06-18)"
+          className="w-full text-sm text-crews-bk01 placeholder:text-crews-g03"
+          {...register('deadline', {
+            validate: {
+              isFilledInput: (v) =>
+                isFilledInput(v, '마감 시간이 작성되지 않았어요.'),
+              isProperDeadlinePattern,
+            },
+          })}
+        />
       </div>
     </div>
   );

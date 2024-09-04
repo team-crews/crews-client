@@ -91,7 +91,7 @@ const FooterSection = ({
           평가 완료
         </Button>
       </FooterContainer>
-      <Dialog {...dialogProps} action={handleSendConfirmClick}>
+      <Dialog {...dialogProps} action={handleSendConfirmClick} className="w-96">
         <div className="flex flex-col gap-4">
           <p className="text-center text-2xl font-semibold text-crews-b05">
             합격 메일을 발송합니다 ✉️

@@ -56,7 +56,7 @@ const RecruitMakePage = () => {
       <HeaderSection />
 
       <FormProvider {...methods}>
-        <form className="pb-[6rem]" noValidate>
+        <form className="pb-[6rem]">
           <section className="mt-6">
             <RecruitMetaSection />
           </section>

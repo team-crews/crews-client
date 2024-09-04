@@ -10,7 +10,7 @@ type IChoice = {
   content: string;
 };
 
-type ISelectiveQuestion = IBaseQuestion & {
+export type ISelectiveQuestion = IBaseQuestion & {
   type: 'SELECTIVE';
   wordLimit: null;
   minimumSelection: number;
@@ -18,7 +18,7 @@ type ISelectiveQuestion = IBaseQuestion & {
   choices: IChoice[];
 };
 
-type INarrativeQuestion = IBaseQuestion & {
+export type INarrativeQuestion = IBaseQuestion & {
   type: 'NARRATIVE';
   wordLimit: number;
   minimumSelection: null;

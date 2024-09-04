@@ -11,6 +11,7 @@ import {
   validateEmail,
   validatePassword,
 } from '../../../../lib/utils/regex.ts';
+import { LocalLegend } from '../../../sign-in/_components/lookup-recruitment-form.tsx';
 
 type ApplyInputs = {
   email: string;
@@ -79,14 +80,9 @@ const ApplyForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <p className="mb-4 text-center font-medium">
-        <span className="text-2xl font-bold text-crews-b05">
-          Crews 1기 기획진 모집
-        </span>{' '}
-        에 지원해 주세요 😃
-      </p>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <fieldset className="mb-3">
+        <LocalLegend>지원하기</LocalLegend>
         <Input
           state={inputState.email}
           className="mb-3"
@@ -118,7 +114,7 @@ const ApplyForm = () => {
       </fieldset>
 
       <Button className="w-full" disabled={error}>
-        모집하기
+        지원하기
       </Button>
     </form>
   );

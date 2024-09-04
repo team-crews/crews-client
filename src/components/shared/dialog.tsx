@@ -6,17 +6,22 @@ import {
 } from '../ui/dialog.tsx';
 import React from 'react';
 import { Button } from '../ui/button.tsx';
+import { cn } from '../../lib/utils.ts';
 
 const Dialog = ({
   isOpen,
   toggleOpen,
   children,
   action = async () => {},
+  type = 'CONFIRM',
+  className,
 }: {
   isOpen: boolean;
   toggleOpen: () => void;
   action?: () => Promise<void>;
+  type?: 'ALERT' | 'CONFIRM';
   children: React.ReactNode;
+  className?: string;
 }) => {
   const handleConfirmClick = async () => {
     toggleOpen();
@@ -29,14 +34,25 @@ const Dialog = ({
 
   return (
     <AlertDialog open={isOpen}>
-      <AlertDialogContent className="flex w-96 flex-col items-center">
+      <AlertDialogContent
+        className={cn(
+          'flex max-h-[90%] w-full max-w-[600px] flex-col items-center overflow-y-auto p-4',
+          className,
+        )}
+      >
         <AlertDialogTitle className="hidden" />
         <AlertDialogDescription className="hidden" />
-        {children}
-        <div className="flex w-full gap-4">
-          <Button onClick={handleCancelClick} className="flex-1" variant="gray">
-            취소
-          </Button>
+        <section className="w-full flex-1">{children}</section>
+        <div className="sticky bottom-0 flex w-full gap-4 bg-transparent">
+          {type === 'CONFIRM' && (
+            <Button
+              onClick={handleCancelClick}
+              className="flex-1"
+              variant="gray"
+            >
+              취소
+            </Button>
+          )}
           <Button onClick={handleConfirmClick} className="flex-1">
             확인
           </Button>
