@@ -6,9 +6,9 @@ import NarrativeBox from '../../../../components/shared/narrative-box';
 import SectionBox from '../../../../components/shared/section-box';
 import SelectiveBox from '../../../../components/shared/selective-box';
 import { QuestionType } from '../../../../lib/enums';
-import { IQuestion } from '../../../../lib/model/i-section';
 import handleError from '../../../../lib/utils/error';
 import { useToast } from '../../../../hooks/use-toast';
+import { IQuestion } from '../../../../lib/model/i-section.ts';
 
 const InfoSection = () => {
   const { toast } = useToast();

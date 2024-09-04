@@ -45,10 +45,48 @@ type ICreatedSelectiveQuestion = Omit<
   choices: ICreatedChoice[];
 };
 type ICreatedNarrativeQuestion = WithNullableId<INarrativeQuestion>;
-type ICreatedQuestion = ICreatedSelectiveQuestion | ICreatedNarrativeQuestion;
+export type ICreatedQuestion =
+  | ICreatedSelectiveQuestion
+  | ICreatedNarrativeQuestion;
 
 export type ICreatedSection = Omit<WithNullableId<ISection>, 'questions'> & {
   questions: ICreatedQuestion[];
+};
+
+export const CREATED_NARRATIVE_QUESTION: ICreatedNarrativeQuestion = {
+  id: null,
+  type: 'NARRATIVE',
+  content: '',
+  necessity: true,
+  wordLimit: 100,
+  minimumSelection: null,
+  maximumSelection: null,
+  choices: [],
+  order: -1,
+};
+
+export const CREATED_SELECTIVE_QUESTION: ICreatedSelectiveQuestion = {
+  id: null,
+  type: 'SELECTIVE',
+  content: '',
+  necessity: true,
+  wordLimit: null,
+  minimumSelection: 1,
+  maximumSelection: 1,
+  choices: [
+    {
+      id: null,
+      content: '',
+    },
+  ],
+  order: -1,
+};
+
+export const CREATED_SECTION: ICreatedSection = {
+  id: null,
+  name: '',
+  description: '',
+  questions: [CREATED_SELECTIVE_QUESTION],
 };
 
 // ---------------------------------- Type Guards ----------------------------------

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IApplicationOverview } from '../../../../lib/model/i-application.ts';
+import { IApplicationOverview } from '../../../../../lib/model/i-application.ts';
 
 const usePassedApplicationIds = (data: IApplicationOverview[] | null) => {
   const [passApplicationIds, setPassApplicationIds] = useState<number[] | null>(

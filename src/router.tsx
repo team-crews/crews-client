@@ -7,8 +7,8 @@ import RootLayout from './app/layout.tsx';
 import AuthRouteWrapper from './components/wrapper/auth-redirect-wrapper.tsx';
 import LandingPage from './app/page.tsx';
 import SignInPage from './app/sign-in/page.tsx';
-import RecruitmentPage from './app/recruitment/[recruitment-code]/page.tsx';
-import ApplyPage from './app/apply/[recruitment-code]/page.tsx';
+import RecruitmentPage from './app/recruitment/[recruitmentCode]/page.tsx';
+import ApplyPage from './app/apply/[recruitmentCode]/page.tsx';
 import RecruitPage from './app/recruit/page.tsx';
 import ErrorPage from './app/error/page.tsx';
 
@@ -20,13 +20,12 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
         <Route path="/sign-in" element={<SignInPage />} />
 
         <Route
-          path="recruitment/:recruitment-code"
+          path="recruitment/:recruitmentCode"
           element={<RecruitmentPage />}
         />
 
-        <Route path="apply/:recruitment-code" element={<ApplyPage />} />
+        <Route path="apply/:recruitmentCode" element={<ApplyPage />} />
         <Route path="recruit" element={<RecruitPage />} />
-
         <Route path="error" element={<ErrorPage />} />
       </Route>
     </Route>,
