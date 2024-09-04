@@ -62,7 +62,8 @@ const useAdminApi = () => {
     try {
       const response = await authInstance.get('/recruitments/ready');
 
-      if (isIReadRecruitmentResponse(response.data)) return response.data;
+      if (isIReadRecruitmentResponse(response.data, response.status))
+        return response.data;
       throw new Error('[ResponseTypeMismatch] Unexpected response format');
     } catch (e) {
       throwCustomError(e, 'readRecruitment');
@@ -72,6 +73,18 @@ const useAdminApi = () => {
   async function saveRecruitment(
     requestBody: ICreatedRecruitment,
   ): Promise<ISaveRecruitmentResponse> {
+    requestBody.sections.forEach((section) => {
+      section.questions.forEach((question, idx) => {
+        question.order = idx + 1;
+      });
+    });
+
+    const match = requestBody.deadline.match(
+      /^(\d{2})-(\d{2})-(\d{2})-(\d{2})$/,
+    );
+    const [_, year, month, day, hour] = match!;
+    requestBody.deadline = `20${year}-${month}-${day}T${hour}:00:00`;
+
     try {
       const response = await authInstance.post('/recruitments', requestBody);
 
@@ -96,6 +109,12 @@ const useAdminApi = () => {
   async function changeDeadline(requestBody: {
     deadline: string;
   }): Promise<IChangeDeadlineResponse> {
+    const match = requestBody.deadline.match(
+      /^(\d{2})-(\d{2})-(\d{2})-(\d{2})$/,
+    );
+    const [_, year, month, day, hour] = match!;
+    requestBody.deadline = `20${year}-${month}-${day}T${hour}:00:00`;
+
     try {
       const response = await authInstance.patch(
         '/recruitments/deadline',

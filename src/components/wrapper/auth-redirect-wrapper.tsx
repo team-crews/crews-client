@@ -29,18 +29,14 @@ const AuthRedirectWrapper = () => {
       if (accessToken) {
         switch (role) {
           case 'ADMIN':
-            location.pathname !== 'recruit' &&
-              location.pathname !== 'error' &&
+            location.pathname !== '/recruit' &&
+              location.pathname !== '/error' &&
               navigate('/recruit');
             break;
           case 'APPLICANT':
-            /**
-             * FIXME: 해당 조건문이 존재할 시에 APPLICANT role을 가진 user가 무조건 /apply로 이동하게 됩니다.
-             * user가 여러개의 application을 가질 경우, 특정 url로 navigate를 강제하는 로직이 자연스럽지 못하여 논의가 필요합니다.
-             */
-            // !/^\/apply\/.+$/.test(location.pathname) &&
-            //   location.pathname !== 'error' &&
-            //   navigate('/apply');
+            !/^\/apply\/.+$/.test(location.pathname) &&
+              location.pathname !== '/error' &&
+              navigate('/apply');
             break;
         }
         setLoading(false);

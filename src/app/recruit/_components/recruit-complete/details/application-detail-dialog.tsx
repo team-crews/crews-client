@@ -1,8 +1,8 @@
-import Dialog from '../../../../components/shared/dialog.tsx';
-import useAdminApi from '../../../../apis/admin-api.ts';
+import Dialog from '../../../../../components/shared/dialog.tsx';
+import useAdminApi from '../../../../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
-import Loading from '../../../../components/shared/loading.tsx';
-import { printCustomError } from '../../../../lib/utils/error.ts';
+import Loading from '../../../../../components/shared/loading.tsx';
+import { printCustomError } from '../../../../../lib/utils/error.ts';
 import { Navigate } from 'react-router-dom';
 
 type Props = {
@@ -33,6 +33,7 @@ const ApplicationDetailDialog = ({ applicationId, ...dialogProps }: Props) => {
     printCustomError(applicationQuery.error, 'applicationQuery');
     return <Navigate to="/error" replace />;
   }
+
   return (
     <Dialog {...dialogProps}>
       <h1>내용들어가야됨</h1>

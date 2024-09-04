@@ -100,7 +100,7 @@ export const formMockData = {
 } as PostRecruitmentsBody;
 
 export const RECRUITMENT_MOCK: IRecruitment = {
-  id: 'rec123',
+  id: 123,
   title: '소프트웨어 엔지니어 채용',
   description: '팀에 합류할 숙련된 소프트웨어 엔지니어를 찾고 있습니다.',
   recruitmentProgress: 'IN_PROGRESS',
