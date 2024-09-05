@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Navigate, useParams } from 'react-router-dom';
 
 import Container from '../../../components/shared/container';
@@ -20,6 +20,7 @@ import {
   INarrativeAnswer,
   ISelectiveAnswer,
 } from '../../../lib/model/i-application';
+import { useToast } from '../../../hooks/use-toast';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -52,30 +53,13 @@ const defaultApplication: IFormApplication = {
 };
 
 const Page = () => {
+  const { toast } = useToast();
+
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
 
-  const { readApplication } = useApplicantApi(recruitmentCode!);
-
-  const methods = useForm<IFormApplication>({
-    defaultValues: defaultApplication,
-  });
-
-  const name = methods.watch(`answers.${untouchedFieldIndex.name}.content`);
-  const major = methods.watch(`answers.${untouchedFieldIndex.major}.content`);
-  const studentNumber = methods.watch(
-    `answers.${untouchedFieldIndex.studentNumber}.content`,
+  const { readApplication, saveApplication } = useApplicantApi(
+    recruitmentCode!,
   );
-
-  const onSubmit = (data: IFormApplication) => {
-    const body = {
-      studentNumber: studentNumber,
-      name: name,
-      major: major,
-      answers: data.answers,
-    };
-
-    console.log('Submitted Data:', data);
-  };
 
   const { data: recruitment, ...recruitmentQuery } = useQuery({
     queryKey: ['recruitmentByCode'],
@@ -90,8 +74,77 @@ const Page = () => {
     enabled: !!recruitmentCode,
   });
 
+  const saveMutate = useMutation({
+    mutationFn: (requestBody: ICreatedApplication) =>
+      saveApplication(requestBody),
+  });
+
+  const methods = useForm<IFormApplication>({
+    defaultValues: defaultApplication,
+  });
+
+  const name = methods.watch(`answers.${untouchedFieldIndex.name}.content`);
+  const major = methods.watch(`answers.${untouchedFieldIndex.major}.content`);
+  const studentNumber = methods.watch(
+    `answers.${untouchedFieldIndex.studentNumber}.content`,
+  );
+
+  const onSubmit = async (data: IFormApplication) => {
+    const convertedAnswers = data.answers.flatMap((answer) => {
+      if (answer.questionType === 'NARRATIVE') {
+        return [
+          {
+            answerId: answer.answerId,
+            questionId: answer.questionId,
+            content: answer.content,
+            choiceId: null,
+            questionType: 'NARRATIVE',
+          } as IAnswer,
+        ];
+      } else if (answer.questionType === 'SELECTIVE') {
+        return (
+          answer.choiceIds?.map(
+            (choiceId) =>
+              ({
+                answerId: answer.answerId,
+                questionId: answer.questionId,
+                content: null,
+                choiceId: choiceId,
+                questionType: 'SELECTIVE',
+              }) as IAnswer,
+          ) || []
+        );
+      }
+      return [];
+    });
+
+    const requestBody = {
+      id: data.id,
+      studentNumber: studentNumber || defaultApplication.studentNumber,
+      name: name || defaultApplication.name,
+      major: major || defaultApplication.major,
+      answers: convertedAnswers,
+    };
+
+    try {
+      await saveMutate.mutateAsync(requestBody);
+      toast({
+        title: '지원서 저장이 완료되었습니다.',
+        state: 'success',
+      });
+    } catch (e) {
+      handleError(e, 'saveApplication', 'PRINT');
+
+      toast({
+        title: '예기치 못한 오류가 발생했습니다.',
+        state: 'error',
+      });
+    }
+  };
+
   useEffect(() => {
     if (application) {
+      //Convert ICreatedApplication to IFormApplication
       const formAnswers: IFormAnswer[] = application.answers.reduce(
         (acc: IFormAnswer[], answer: IAnswer) => {
           if (answer.questionType === 'NARRATIVE') {
@@ -105,7 +158,6 @@ const Page = () => {
             };
             acc.push(narrativeAnswer);
           } else if (answer.questionType === 'SELECTIVE') {
-            // SELECTIVE 타입의 답변 변환 및 그룹화
             const selectiveAnswerIndex = acc.findIndex(
               (fa) =>
                 fa.questionId === answer.questionId &&
@@ -113,12 +165,10 @@ const Page = () => {
             );
 
             if (selectiveAnswerIndex !== -1) {
-              // 이미 존재하는 SELECTIVE 답변에 choiceId 추가
               acc[selectiveAnswerIndex].choiceIds?.push(
                 (answer as ISelectiveAnswer).choiceId,
               );
             } else {
-              // 새로운 SELECTIVE 답변 생성
               const selectiveAnswer: IFormAnswer = {
                 answerId: answer.answerId,
                 content: null,
@@ -131,7 +181,7 @@ const Page = () => {
           }
           return acc;
         },
-        [] as IFormAnswer[], // 초기값을 빈 배열로 설정
+        [] as IFormAnswer[],
       );
 
       //TODO: check converted formAnswers
