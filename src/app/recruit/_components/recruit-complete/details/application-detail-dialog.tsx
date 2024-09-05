@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Loading from '../../../../../components/shared/loading.tsx';
 import { printCustomError } from '../../../../../lib/utils/error.ts';
 import { Navigate } from 'react-router-dom';
+import SectionBoxes from '../../../../../components/recruitment-view/section-boxes.tsx';
 
 type Props = {
   applicationId: number;
@@ -26,17 +27,21 @@ const ApplicationDetailDialog = ({ applicationId, ...dialogProps }: Props) => {
 
   if (recruitmentQuery.isFetching || applicationQuery.isFetching)
     return <Loading />;
-  else if (recruitmentQuery.isError) {
+  else if (recruitmentQuery.isError || !recruitmentQuery.data) {
     printCustomError(recruitmentQuery.error, 'recruitmentQuery');
     return <Navigate to="/error" replace />;
-  } else if (applicationQuery.isError) {
+  } else if (applicationQuery.isError || !applicationQuery.data) {
     printCustomError(applicationQuery.error, 'applicationQuery');
     return <Navigate to="/error" replace />;
   }
 
+  console.log(recruitmentQuery.data, applicationQuery.data);
   return (
-    <Dialog {...dialogProps}>
-      <h1>내용들어가야됨</h1>
+    <Dialog {...dialogProps} type="ALERT">
+      <SectionBoxes
+        sections={recruitmentQuery.data.sections}
+        answers={applicationQuery.data.answers}
+      />
     </Dialog>
   );
 };

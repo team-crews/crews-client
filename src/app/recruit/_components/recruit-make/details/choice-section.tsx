@@ -46,7 +46,7 @@ const ChoiceSection = ({ sectionIndex, questionIndex }: ChoiceSectionProps) => {
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 rounded-full border border-crews-g03" />
               <input
-                className="text-sm font-light placeholder:text-crews-g03"
+                className="text-sm font-light text-crews-bk01 placeholder:text-crews-g03"
                 {...register(
                   `sections.${sectionIndex}.questions.${questionIndex}.choices.${choiceIndex}.content`,
                   {

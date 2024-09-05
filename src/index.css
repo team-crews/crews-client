@@ -54,3 +54,12 @@ textarea {
 
     resize: none; /*remove the resize handle on the bottom right*/
 }
+
+* {
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}

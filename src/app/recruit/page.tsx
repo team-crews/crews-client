@@ -22,7 +22,7 @@ const Page = () => {
     return <Navigate to="/error" replace />;
   }
   return (
-    <Container className="mx-auto w-[630px] py-24">
+    <Container className="mx-auto w-[600px] py-24">
       <RenderByProgress progress={readQuery.data.recruitmentProgress} />
     </Container>
   );
