@@ -26,7 +26,11 @@ const Page = () => {
   /** 저장된 값 없을 시 default로 set 하도록 에러 핸들링 */
   const { data: application, ...applicationQuery } = useQuery({
     queryKey: ['readApplication', recruitmentCode],
-    queryFn: () => readApplication(),
+    queryFn: async () => {
+      const response = await readApplication();
+      //TODO: add 204 exception logic
+      return response;
+    },
     enabled: !!recruitmentCode,
   });
 
@@ -36,10 +40,10 @@ const Page = () => {
     handleError(recruitmentQuery.error, 'readRecruitmentByCode');
     return <Navigate to="/error" replace />;
   } else if (applicationQuery.isError || !application) {
-    const errorStatus = handleError(applicationQuery.error, 'readApplication');
+    handleError(applicationQuery.error, 'readApplication');
 
     // 저장된 지원 정보가 없을 시 404 (추후 status 변경 예정)
-    if (errorStatus !== 404) return <Navigate to="/error" replace />;
+    return <Navigate to="/error" replace />;
   }
 
   return (
