@@ -2,8 +2,8 @@ import { useFormContext } from 'react-hook-form';
 import Container from '../../../../components/shared/container';
 import Typography from '../../../../components/shared/typography';
 import { IQuestion } from '../../../../lib/model/i-section';
-import { ICreatedApplication } from '../../../../lib/model/i-application';
 import { cn } from '../../../../lib/utils';
+import { IFormApplication } from '../page';
 
 interface ApplyNarrativeBoxProps {
   question: IQuestion;
@@ -16,7 +16,7 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
     watch,
     setValue,
     formState: { errors },
-  } = useFormContext<ICreatedApplication>();
+  } = useFormContext<IFormApplication>();
 
   const currentAnswerIndex = watch('answers').findIndex(
     (answer) => answer.questionId === question.id,
@@ -30,7 +30,7 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
         answerId: null,
         questionId: question.id,
         content: '',
-        choiceId: null,
+        choiceIds: null,
         questionType: 'NARRATIVE',
       },
     ]);
@@ -75,6 +75,7 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
           })}
           maxLength={question.wordLimit || undefined}
           onInput={(e) => {
+            // 한글 타이핑 시 글자수 제한을 넘기는 이슈 방지
             const { value } = e.target as HTMLInputElement;
 
             const maxLength = question.wordLimit || undefined;

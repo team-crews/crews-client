@@ -14,15 +14,12 @@ import { IQuestion } from '../../../lib/model/i-section';
 import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
-import { ICreatedApplication } from '../../../lib/model/i-application';
-
-const defaultApplication: ICreatedApplication = {
-  id: null,
-  studentNumber: '00000000',
-  name: 'DEFAULT_NAME',
-  major: 'DEFAULT_MAJOR',
-  answers: [],
-};
+import {
+  IAnswer,
+  ICreatedApplication,
+  INarrativeAnswer,
+  ISelectiveAnswer,
+} from '../../../lib/model/i-application';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -30,12 +27,36 @@ const untouchedFieldIndex = {
   major: 2,
 };
 
+export interface IFormApplication {
+  id: number | null;
+  studentNumber: string;
+  major: string;
+  name: string;
+  answers: IFormAnswer[]; // answers 배열은 여러 답변 타입을 포함
+}
+
+type IFormAnswer = {
+  answerId: number | null;
+  content: string | null;
+  choiceIds: number[] | null;
+  questionId: number;
+  questionType: 'SELECTIVE' | 'NARRATIVE';
+};
+
+const defaultApplication: IFormApplication = {
+  id: null,
+  studentNumber: '00000000',
+  name: 'DEFAULT_NAME',
+  major: 'DEFAULT_MAJOR',
+  answers: [],
+};
+
 const Page = () => {
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
 
   const { readApplication } = useApplicantApi(recruitmentCode!);
 
-  const methods = useForm<ICreatedApplication>({
+  const methods = useForm<IFormApplication>({
     defaultValues: defaultApplication,
   });
 
@@ -45,7 +66,7 @@ const Page = () => {
     `answers.${untouchedFieldIndex.studentNumber}.content`,
   );
 
-  const onSubmit = (data: ICreatedApplication) => {
+  const onSubmit = (data: IFormApplication) => {
     const body = {
       studentNumber: studentNumber,
       name: name,
@@ -53,7 +74,7 @@ const Page = () => {
       answers: data.answers,
     };
 
-    console.log('Submitted Data:', body);
+    console.log('Submitted Data:', data);
   };
 
   const { data: recruitment, ...recruitmentQuery } = useQuery({
@@ -71,8 +92,57 @@ const Page = () => {
 
   useEffect(() => {
     if (application) {
+      const formAnswers: IFormAnswer[] = application.answers.reduce(
+        (acc: IFormAnswer[], answer: IAnswer) => {
+          if (answer.questionType === 'NARRATIVE') {
+            // NARRATIVE 타입의 답변 변환
+            const narrativeAnswer: IFormAnswer = {
+              answerId: answer.answerId,
+              content: (answer as INarrativeAnswer).content,
+              choiceIds: null,
+              questionId: answer.questionId,
+              questionType: 'NARRATIVE',
+            };
+            acc.push(narrativeAnswer);
+          } else if (answer.questionType === 'SELECTIVE') {
+            // SELECTIVE 타입의 답변 변환 및 그룹화
+            const selectiveAnswerIndex = acc.findIndex(
+              (fa) =>
+                fa.questionId === answer.questionId &&
+                fa.questionType === 'SELECTIVE',
+            );
+
+            if (selectiveAnswerIndex !== -1) {
+              // 이미 존재하는 SELECTIVE 답변에 choiceId 추가
+              acc[selectiveAnswerIndex].choiceIds?.push(
+                (answer as ISelectiveAnswer).choiceId,
+              );
+            } else {
+              // 새로운 SELECTIVE 답변 생성
+              const selectiveAnswer: IFormAnswer = {
+                answerId: answer.answerId,
+                content: null,
+                choiceIds: [(answer as ISelectiveAnswer).choiceId],
+                questionId: answer.questionId,
+                questionType: 'SELECTIVE',
+              };
+              acc.push(selectiveAnswer);
+            }
+          }
+          return acc;
+        },
+        [] as IFormAnswer[], // 초기값을 빈 배열로 설정
+      );
+
+      //TODO: check converted formAnswers
+      console.log(formAnswers);
+
       methods.reset({
-        answers: application.answers,
+        id: application.id,
+        studentNumber: application.studentNumber,
+        name: application.name,
+        major: application.major,
+        answers: formAnswers,
       });
     }
   }, [application, methods]);
