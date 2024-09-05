@@ -20,13 +20,13 @@ type IBaseAnswer = {
 export type INarrativeAnswer = IBaseAnswer & {
   content: string;
   choiceId: null;
-  type: 'NARRATIVE';
+  questionType: 'NARRATIVE';
 };
 
 export type ISelectiveAnswer = IBaseAnswer & {
   content: null;
   choiceId: number;
-  type: 'SELECTIVE';
+  questionType: 'SELECTIVE';
 };
 
 type WithNullableAnswerId<T> = Omit<T, 'answerId'> & {
