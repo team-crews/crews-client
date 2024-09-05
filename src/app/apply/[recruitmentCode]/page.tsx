@@ -11,11 +11,32 @@ import ApplyNarrativeBox from './_components/apply-narrative-box';
 import ApplySelectiveBox from './_components/apply-selective-box';
 import { QuestionType } from '../../../lib/enums';
 import { IQuestion } from '../../../lib/model/i-section';
+import HeaderSection from './_components/header-section';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { ICreatedApplication } from '../../../lib/model/i-application';
+
+const defaultApplication: ICreatedApplication = {
+  id: null,
+  studentNumber: '00000000',
+  name: 'DEFAULT_NAME',
+  major: 'DEFAULT_MAJOR',
+  answers: [],
+};
 
 const Page = () => {
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
 
   const { readApplication } = useApplicantApi(recruitmentCode!);
+
+  const methods = useForm<ICreatedApplication>({
+    defaultValues: defaultApplication,
+  });
+
+  const onSubmit = (data: unknown) => {
+    console.log('Submitted Data:', data);
+    // 여기에 1, 2, 3 전공 학번 post 로직 추가
+  };
 
   const { data: recruitment, ...recruitmentQuery } = useQuery({
     queryKey: ['recruitmentByCode'],
@@ -26,43 +47,59 @@ const Page = () => {
   /** 저장된 값 없을 시 default로 set 하도록 에러 핸들링 */
   const { data: application, ...applicationQuery } = useQuery({
     queryKey: ['readApplication', recruitmentCode],
-    queryFn: async () => {
-      const response = await readApplication();
-      //TODO: add 204 exception logic
-      return response;
-    },
+    queryFn: () => readApplication(),
     enabled: !!recruitmentCode,
   });
+
+  useEffect(() => {
+    if (application) {
+      methods.reset({
+        answers: application.answers,
+      });
+    }
+  }, [application, methods]);
 
   if (applicationQuery.isFetching || recruitmentQuery.isFetching)
     return <Loading />;
   else if (recruitmentQuery.error || !recruitment) {
     handleError(recruitmentQuery.error, 'readRecruitmentByCode');
     return <Navigate to="/error" replace />;
-  } else if (applicationQuery.isError || !application) {
+  } else if (applicationQuery.isError) {
     handleError(applicationQuery.error, 'readApplication');
 
-    // 저장된 지원 정보가 없을 시 404 (추후 status 변경 예정)
     return <Navigate to="/error" replace />;
   }
 
   return (
-    <Container className="mx-auto my-24 w-[630px]">
-      <div className="flex flex-col gap-[1.5rem]">
-        {recruitment.sections.map((section) => (
-          <ApplySectionBox
-            name={section.name}
-            description={section.description}
-          >
+    <FormProvider {...methods}>
+      <Container className="mx-auto w-[630px]">
+        <div className="flex flex-col gap-[1.5rem] py-24">
+          <HeaderSection />
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-[1.5rem]">
-              {section.questions.map((question) => (
-                <RenderQuestion key={question.id} question={question} />
+              {recruitment.sections.map((section) => (
+                <ApplySectionBox
+                  name={section.name}
+                  description={section.description}
+                >
+                  <div className="flex flex-col gap-[1.5rem]">
+                    {section.questions.map((question) => (
+                      <RenderQuestion key={question.id} question={question} />
+                    ))}
+                  </div>
+                </ApplySectionBox>
               ))}
             </div>
-          </ApplySectionBox>
-        ))}
-      </div>
-    </Container>
+            <button
+              type="submit"
+              className="rounded-[0.625rem] bg-crews-bk01 py-2 text-crews-w01"
+            >
+              제출하기
+            </button>
+          </form>
+        </div>
+      </Container>
+    </FormProvider>
   );
 };
 
