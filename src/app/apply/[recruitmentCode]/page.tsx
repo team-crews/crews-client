@@ -16,9 +16,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import {
   IAnswer,
-  ICreatedApplication,
-  INarrativeAnswer,
-  ISelectiveAnswer,
+  ISaveApplicationRequest,
+  ITempAnswer,
+  ITempNarrativeAnswer,
+  ITempSelectiveAnswer,
 } from '../../../lib/model/i-application';
 import { useToast } from '../../../hooks/use-toast';
 
@@ -75,7 +76,7 @@ const Page = () => {
   });
 
   const saveMutate = useMutation({
-    mutationFn: (requestBody: ICreatedApplication) =>
+    mutationFn: (requestBody: ISaveApplicationRequest) =>
       saveApplication(requestBody),
   });
 
@@ -124,6 +125,7 @@ const Page = () => {
       name: name || defaultApplication.name,
       major: major || defaultApplication.major,
       answers: convertedAnswers,
+      recruitmentCode: recruitmentCode!,
     };
 
     try {
@@ -146,18 +148,18 @@ const Page = () => {
     if (application) {
       //Convert ICreatedApplication to IFormApplication
       const formAnswers: IFormAnswer[] = application.answers.reduce(
-        (acc: IFormAnswer[], answer: IAnswer) => {
-          if (answer.questionType === 'NARRATIVE') {
+        (acc: IFormAnswer[], answer: ITempAnswer) => {
+          if (answer.type === 'NARRATIVE') {
             // NARRATIVE 타입의 답변 변환
             const narrativeAnswer: IFormAnswer = {
               answerId: answer.answerId,
-              content: (answer as INarrativeAnswer).content,
+              content: (answer as ITempNarrativeAnswer).content,
               choiceIds: null,
               questionId: answer.questionId,
               questionType: 'NARRATIVE',
             };
             acc.push(narrativeAnswer);
-          } else if (answer.questionType === 'SELECTIVE') {
+          } else if (answer.type === 'SELECTIVE') {
             const selectiveAnswerIndex = acc.findIndex(
               (fa) =>
                 fa.questionId === answer.questionId &&
@@ -166,13 +168,13 @@ const Page = () => {
 
             if (selectiveAnswerIndex !== -1) {
               acc[selectiveAnswerIndex].choiceIds?.push(
-                (answer as ISelectiveAnswer).choiceId,
+                (answer as ITempSelectiveAnswer).choiceId,
               );
             } else {
               const selectiveAnswer: IFormAnswer = {
                 answerId: answer.answerId,
                 content: null,
-                choiceIds: [(answer as ISelectiveAnswer).choiceId],
+                choiceIds: [(answer as ITempSelectiveAnswer).choiceId],
                 questionId: answer.questionId,
                 questionType: 'SELECTIVE',
               };
@@ -183,9 +185,6 @@ const Page = () => {
         },
         [] as IFormAnswer[],
       );
-
-      //TODO: check converted formAnswers
-      console.log(formAnswers);
 
       methods.reset({
         id: application.id,

@@ -45,6 +45,31 @@ export type ICreatedApplication = {
   answers: ICreatedAnswer[];
 };
 
+//FIXME: 임시 type... 추후 수정 필요
+export type ISaveApplicationRequest = ICreatedApplication & {
+  recruitmentCode: string;
+};
+
+export type ITempNarrativeAnswer = IBaseAnswer & {
+  content: string;
+  choiceId: null;
+  type: 'NARRATIVE';
+};
+
+export type ITempSelectiveAnswer = IBaseAnswer & {
+  content: null;
+  choiceId: number;
+  type: 'SELECTIVE';
+};
+
+export type ITempAnswer = ITempNarrativeAnswer | ITempSelectiveAnswer;
+
+export type ITempApplication = Omit<IApplicationOverview, 'outcome'> & {
+  answers: ITempAnswer[];
+};
+
+export type ITempReadApplicationResponse = ITempApplication;
+
 // ---------------------------------- Type Guards ----------------------------------
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
