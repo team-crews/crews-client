@@ -24,6 +24,12 @@ const defaultApplication: ICreatedApplication = {
   answers: [],
 };
 
+const untouchedFieldIndex = {
+  name: 0,
+  studentNumber: 1,
+  major: 2,
+};
+
 const Page = () => {
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
 
@@ -33,9 +39,21 @@ const Page = () => {
     defaultValues: defaultApplication,
   });
 
-  const onSubmit = (data: unknown) => {
-    console.log('Submitted Data:', data);
-    // 여기에 1, 2, 3 전공 학번 post 로직 추가
+  const name = methods.watch(`answers.${untouchedFieldIndex.name}.content`);
+  const major = methods.watch(`answers.${untouchedFieldIndex.major}.content`);
+  const studentNumber = methods.watch(
+    `answers.${untouchedFieldIndex.studentNumber}.content`,
+  );
+
+  const onSubmit = (data: ICreatedApplication) => {
+    const body = {
+      studentNumber: studentNumber,
+      name: name,
+      major: major,
+      answers: data.answers,
+    };
+
+    console.log('Submitted Data:', body);
   };
 
   const { data: recruitment, ...recruitmentQuery } = useQuery({

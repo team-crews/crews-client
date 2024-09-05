@@ -1,13 +1,22 @@
 import Container from '../../../../components/shared/container';
 import Typography from '../../../../components/shared/typography';
 import { IQuestion } from '../../../../lib/model/i-section';
+import ApplyChoiceBox from './apply-choice-box';
+import { useState } from 'react';
 
 interface ApplySelectiveBoxProps {
   question: IQuestion;
 }
 
-// 사용자가 선택을 할 수 없는 view-only 모드를 위한 컴포넌트입니다.
 const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
+  const [choiceErrorMessage, setChoiceErrorMessage] = useState<string | null>(
+    null,
+  );
+
+  const handleChoiceError = (message: string | null) => {
+    setChoiceErrorMessage(message);
+  };
+
   const necessityText = question.necessity ? '응답 필수' : '';
 
   const minText = question.minimumSelection
@@ -34,15 +43,20 @@ const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
         </div>
         <div className="flex flex-col gap-[0.5rem]">
           {question.choices.map((choice) => (
-            <div key={choice.id} className="flex items-center gap-[0.5rem]">
-              <div className="h-[1rem] w-[1rem] rounded-full border-[1px] border-crews-g03" />
-              <div className="text-[0.875rem] text-crews-bk01">
-                {choice.content}
-              </div>
-            </div>
+            <ApplyChoiceBox
+              key={choice.id}
+              choice={choice}
+              question={question}
+              handleChoiceError={handleChoiceError}
+            />
           ))}
         </div>
       </div>
+      {choiceErrorMessage && (
+        <Typography className="text-[0.875rem] text-crews-r03">
+          {choiceErrorMessage}
+        </Typography>
+      )}
     </Container>
   );
 };
