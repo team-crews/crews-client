@@ -14,18 +14,38 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
   const {
     register,
     watch,
+    setValue,
     formState: { errors },
   } = useFormContext<ICreatedApplication>();
 
-  const answerValue = watch(`answers.${question.id}.content`, '') || '';
+  const currentAnswerIndex = watch('answers').findIndex(
+    (answer) => answer.questionId === question.id,
+  );
 
+  // make new answer if not exist, cuurentAnswerIndex === -1인 item 생성 방지를 위해 return null
+  if (currentAnswerIndex === -1) {
+    setValue('answers', [
+      ...watch('answers'),
+      {
+        answerId: null,
+        questionId: question.id,
+        content: '',
+        choiceId: null,
+        questionType: 'NARRATIVE',
+      },
+    ]);
+
+    return null;
+  }
+
+  const currentContent = watch(`answers.${currentAnswerIndex}.content`) || '';
   const necessityText = question.necessity ? '응답 필수' : '';
 
   const wordLimitText = question.wordLimit
-    ? `글자수 (${answerValue.length}/${question.wordLimit})`
+    ? `글자수 (${currentContent.length}/${question.wordLimit})`
     : '';
 
-  const isFieldError = errors.answers?.[question.id]?.content;
+  const isFieldError = errors.answers?.[currentAnswerIndex]?.content;
 
   const displayText = [necessityText, wordLimitText].filter(Boolean).join(', ');
 
@@ -49,7 +69,7 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
             },
           )}
           placeholder="이곳에 답변을 입력해주세요."
-          {...register(`answers.${question.id}.content`, {
+          {...register(`answers.${currentAnswerIndex}.content`, {
             required: question.necessity ? '해당 필드는 필수입니다.' : false,
             maxLength: question.wordLimit || undefined,
           })}
@@ -66,7 +86,7 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
       </div>
       {isFieldError && (
         <Typography className="text-[0.875rem] text-crews-r03">
-          {errors.answers?.[question.id]?.content?.message}
+          {errors.answers?.[currentAnswerIndex]?.content?.message}
         </Typography>
       )}
     </Container>
