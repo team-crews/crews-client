@@ -1,51 +1,77 @@
 import { useQuery } from '@tanstack/react-query';
+import { Navigate, useParams } from 'react-router-dom';
+
 import Container from '../../../components/shared/container';
-import SectionBox from '../../../components/shared/section-box';
-import { useNavigate, useParams } from 'react-router-dom';
 import useApplicantApi from '../../../apis/applicant-api';
 import handleError from '../../../lib/utils/error';
-import { useToast } from '../../../hooks/use-toast';
+import Loading from '../../../components/shared/loading';
+import { readRecruitmentByCode } from '../../../apis/base-api';
+import ApplySectionBox from './_components/apply-section-box';
+import ApplyNarrativeBox from './_components/apply-narrative-box';
+import ApplySelectiveBox from './_components/apply-selective-box';
+import { QuestionType } from '../../../lib/enums';
+import { IQuestion } from '../../../lib/model/i-section';
 
 const Page = () => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
 
-  const { 'recruitment-code': recruitmentCode } = useParams();
+  const { readApplication } = useApplicantApi(recruitmentCode!);
 
-  const { readApplication } = useApplicantApi(recruitmentCode || '');
+  const { data: recruitment, ...recruitmentQuery } = useQuery({
+    queryKey: ['recruitmentByCode'],
+    queryFn: () => readRecruitmentByCode(recruitmentCode!),
+    enabled: !!recruitmentCode,
+  });
 
-  // /** 저장된 값 없을 시 default로 set 하도록 에러 핸들링 */
-  // const { data } = useQuery({
-  //   queryKey: ['readApplication', recruitmentCode],
-  //   queryFn: async () => {
-  //     try {
-  //       return await readApplication();
-  //     } catch (e) {
-  //       const errorStatus = handleError(e, 'readApplication');
+  /** 저장된 값 없을 시 default로 set 하도록 에러 핸들링 */
+  const { data: application, ...applicationQuery } = useQuery({
+    queryKey: ['readApplication', recruitmentCode],
+    queryFn: () => readApplication(),
+    enabled: !!recruitmentCode,
+  });
 
-  //       // 저장된 지원 정보가 없을 시 404 (추후 status 변경 예정)
-  //       if (errorStatus === 404) {
-  //         return;
-  //       }
+  if (applicationQuery.isFetching || recruitmentQuery.isFetching)
+    return <Loading />;
+  else if (recruitmentQuery.error || !recruitment) {
+    handleError(recruitmentQuery.error, 'readRecruitmentByCode');
+    return <Navigate to="/error" replace />;
+  } else if (applicationQuery.isError || !application) {
+    const errorStatus = handleError(applicationQuery.error, 'readApplication');
 
-  //       navigate('/error');
-  //     }
-  //   },
-  //   enabled: !!recruitmentCode,
-  // });
+    // 저장된 지원 정보가 없을 시 404 (추후 status 변경 예정)
+    if (errorStatus !== 404) return <Navigate to="/error" replace />;
+  }
 
   return (
-    <Container>
-      <div>
-        <SectionBox name="test" description="test description">
-          <div>
-            <h1>Section 1</h1>
-            <p>Section 1 description</p>
-          </div>
-        </SectionBox>
+    <Container className="mx-auto my-24 w-[630px]">
+      <div className="flex flex-col gap-[1.5rem]">
+        {recruitment.sections.map((section) => (
+          <ApplySectionBox
+            name={section.name}
+            description={section.description}
+          >
+            <div className="flex flex-col gap-[1.5rem]">
+              {section.questions.map((question) => (
+                <RenderQuestion key={question.id} question={question} />
+              ))}
+            </div>
+          </ApplySectionBox>
+        ))}
       </div>
     </Container>
   );
+};
+
+// 질문 타입별 확장성을 위한 컴포넌트 렌더링
+const RenderQuestion = ({ question }: { question: IQuestion }) => {
+  switch (question.type) {
+    case QuestionType.NARRATIVE:
+      return <ApplyNarrativeBox question={question} />;
+    case QuestionType.SELECTIVE:
+      return <ApplySelectiveBox key={question.id} question={question} />;
+    default:
+      return null;
+  }
 };
 
 export default Page;
