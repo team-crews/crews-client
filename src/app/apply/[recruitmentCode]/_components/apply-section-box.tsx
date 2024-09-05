@@ -17,7 +17,7 @@ const ApplySectionBox = ({
             {name}
           </div>
         </div>
-        <div className="bg-crews-b04 font-pretendard text-[0.875rem] text-crews-w01 underline">
+        <div className="bg-crews-b04 font-pretendard text-[0.875rem] text-crews-w01">
           {description}
         </div>
       </div>
