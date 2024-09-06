@@ -46,8 +46,8 @@ const RecruitForm = () => {
     }
 
     try {
-      const { accessToken } = await adminLogin(data);
-      setSession(accessToken);
+      const { accessToken, username } = await adminLogin(data);
+      setSession(accessToken, username);
       navigate('/recruit');
     } catch (e) {
       const errorStatus = printCustomError(e, 'adminLogin');

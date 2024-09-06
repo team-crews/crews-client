@@ -15,7 +15,7 @@ const Header = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const { clearSession } = useSession();
+  const { clearSession, username, role } = useSession();
   const handleLogoutClick = async () => {
     try {
       await logoutMutation.mutateAsync();
@@ -41,7 +41,7 @@ const Header = () => {
         <div className="flex items-center gap-3 text-crews-bk01">
           <div className="flex items-center gap-2">
             <CircleUserIcon className="h-6 w-6" />
-            <p className="text-sm font-medium">운영진 | 크루즈 11기</p>
+            <p className="text-sm font-medium">{`${role === 'ADMIN' ? '운영진' : '지원자'} | ${username}`}</p>
           </div>
           <button onClick={handleLogoutClick}>
             <p className="text-xs font-light underline">로그아웃</p>

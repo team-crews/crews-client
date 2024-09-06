@@ -1,13 +1,14 @@
 import { baseInstance } from '../apis/instance.ts';
 import useSession from './use-session.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
+import { ILoginResponse } from '../lib/model/i-response-body.ts';
 
 const useRefreshToken = () => {
   const { setSession } = useSession();
 
   const refresh = async () => {
     try {
-      const response = await baseInstance.post<{ accessToken: string }>(
+      const response = await baseInstance.post<ILoginResponse>(
         '/auth/refresh',
         {},
         {
@@ -15,8 +16,8 @@ const useRefreshToken = () => {
         },
       );
 
-      const accessToken = response.data.accessToken;
-      setSession(accessToken);
+      const { accessToken, username } = response.data;
+      setSession(accessToken, username);
       return `Bearer ${accessToken}`;
     } catch (e) {
       throwCustomError(e, 'refresh');
