@@ -6,6 +6,7 @@ import { printCustomError } from '../../lib/utils/error.ts';
 import { useToast } from '../../hooks/use-toast.ts';
 import Loading from './loading.tsx';
 import { useNavigate } from 'react-router-dom';
+import useSession from '../../hooks/use-session.ts';
 
 const Header = () => {
   const { logout } = useLogout();
@@ -13,9 +14,12 @@ const Header = () => {
 
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const { clearSession } = useSession();
   const handleLogoutClick = async () => {
     try {
       await logoutMutation.mutateAsync();
+      clearSession();
       navigate('/sign-in');
     } catch (e) {
       printCustomError(e, 'handleLogoutClick');
