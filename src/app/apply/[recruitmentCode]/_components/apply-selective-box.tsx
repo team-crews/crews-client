@@ -66,8 +66,6 @@ const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
             <ApplyChoiceBox
               key={choice.id}
               choice={choice}
-              //   question={question}
-              //   index={index}
               currentAnswerIndex={currentAnswerIndex}
             />
           ))}

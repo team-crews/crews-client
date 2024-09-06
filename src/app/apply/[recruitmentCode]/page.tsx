@@ -93,11 +93,60 @@ const Page = () => {
     `answers.${untouchedFieldIndex.studentNumber}.content`,
   );
 
-  const answers = methods.watch('answers');
+  const validateChoices = (answers: IFormAnswer[] | null) => {
+    if (!answers) return;
 
-  console.log(answers);
+    let valid: boolean = true;
+
+    const getQuestionInfo = (questionId: number) =>
+      recruitment?.sections
+        .flatMap((section) => section.questions)
+        .find((question) => question.id === questionId);
+
+    answers.forEach((answer, index) => {
+      if (answer.questionType === 'NARRATIVE') return;
+
+      const question = getQuestionInfo(answer.questionId);
+
+      if (question?.necessity && answer.choiceIds?.length === 0) {
+        methods.setError(`answers.${index}`, {
+          type: 'necessity',
+          message: '해당 필드는 응답 필수입니다.',
+        });
+        valid = false;
+      } else if (
+        question?.minimumSelection &&
+        answer.choiceIds &&
+        answer.choiceIds.length < question.minimumSelection
+      ) {
+        methods.setError(`answers.${index}`, {
+          type: 'minimumSelection',
+          message: `최소 ${question.minimumSelection}개 이상 선택해주세요.`,
+        });
+        valid = false;
+      } else if (
+        question?.maximumSelection &&
+        answer.choiceIds &&
+        answer.choiceIds.length > question.maximumSelection
+      ) {
+        methods.setError(`answers.${index}`, {
+          type: 'maximumSelection',
+          message: `최대 ${question.maximumSelection}개 이하로 선택해주세요.`,
+        });
+
+        valid = false;
+      }
+    });
+
+    return valid;
+  };
 
   const onSubmit = async (data: IFormApplication) => {
+    const choiceValidate = validateChoices(data.answers);
+
+    if (!choiceValidate) return;
+
+    // FIXME: 강제로 answerId null로 설정하였는데, 기존 값이 있을 경우에는 그대로 사용하도록 수정 필요 (IFormApplication type 수정)
     const convertedAnswers = data.answers.flatMap((answer) => {
       if (answer.questionType === 'NARRATIVE') {
         return [
@@ -134,8 +183,6 @@ const Page = () => {
       answers: convertedAnswers,
       recruitmentCode: recruitmentCode!,
     };
-
-    console.log(requestBody);
 
     try {
       const response = await saveMutate.mutateAsync(requestBody);
