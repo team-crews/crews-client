@@ -83,7 +83,6 @@ const FooterSection = ({
   };
 
   const handleFormRequirement = (errors: object) => {
-    console.log(errors);
     const msg = findFirstErrorMessage(errors);
     msg &&
       toast({

@@ -38,7 +38,6 @@ const LimitedNumberInput = ({
           if (e.target.value === '') e.target.value = '';
           else if (e.target.value <= 0) e.target.value = 1;
           else if (e.target.value >= maxVal) e.target.value = maxVal;
-          console.log(e.target.value);
         },
         valueAsNumber: true,
         validate: {
