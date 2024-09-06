@@ -144,7 +144,10 @@ const Page = () => {
   const onSubmit = async (data: IFormApplication) => {
     const choiceValidate = validateChoices(data.answers);
 
-    if (!choiceValidate) return;
+    if (!choiceValidate) {
+      onFormError();
+      return;
+    }
 
     // FIXME: 강제로 answerId null로 설정하였는데, 기존 값이 있을 경우에는 그대로 사용하도록 수정 필요 (IFormApplication type 수정)
     const convertedAnswers = data.answers.flatMap((answer) => {
@@ -209,6 +212,13 @@ const Page = () => {
         state: 'error',
       });
     }
+  };
+
+  const onFormError = () => {
+    toast({
+      title: '입력을 다시 확인해주세요.',
+      state: 'error',
+    });
   };
 
   // Convert ICreatedApplication to IFormApplication
@@ -288,7 +298,7 @@ const Page = () => {
       <Container className="mx-auto w-[630px]">
         <div className="flex flex-col gap-[1.5rem] py-24">
           <HeaderSection />
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={methods.handleSubmit(onSubmit, onFormError)}>
             <div className="flex flex-col gap-[1.5rem]">
               {recruitment.sections.map((section) => (
                 <ApplySectionBox
