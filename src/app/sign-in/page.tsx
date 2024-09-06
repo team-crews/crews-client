@@ -3,27 +3,8 @@ import AnchorIcon from '../../assets/icons/anchor-icon.svg?react';
 import Seperator from '../../components/shared/seperator.tsx';
 import LookupRecruitmentForm from './_components/lookup-recruitment-form.tsx';
 import RecruitForm from './_components/recruit-form.tsx';
-import axios from 'axios';
-import { useEffect } from 'react';
 
 const Page = () => {
-  const fetchTest = async () => {
-    try {
-      const response = await axios.get(
-        'https://jsonplaceholder.typicode.com/todos/1',
-      );
-      console.log(response.data);
-    } catch (e) {
-      console.error('?!?!?!?', e);
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      await fetchTest();
-    })();
-  }, []);
-
   return (
     <Container className="flex items-center justify-center">
       <section className="mb-10 w-full max-w-[375px]">
