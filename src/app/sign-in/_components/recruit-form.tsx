@@ -80,6 +80,7 @@ const RecruitForm = () => {
       <fieldset className="mb-3">
         <LocalLegend>모집하기</LocalLegend>
         <Input
+          maxLength={30}
           state={inputState.clubName}
           className="mb-3"
           registerReturns={register('clubName', {
@@ -94,6 +95,7 @@ const RecruitForm = () => {
           placeholder="동아리명"
         />
         <Input
+          maxLength={30}
           state={inputState.password}
           type="password"
           registerReturns={register('password', {
