@@ -17,7 +17,8 @@ const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
   } = useFormContext<IFormApplication>();
 
   const currentAnswerIndex = watch('answers').findIndex(
-    (answer) => answer.questionId === question.id,
+    (answer) =>
+      answer.questionId === question.id && answer.questionType === 'SELECTIVE',
   );
 
   // make new answer if not exist, cuurentAnswerIndex === -1인 item 생성 방지를 위해 return null

@@ -15,9 +15,10 @@ import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import {
-  IAnswer,
+  ICreatedAnswer,
   ISaveApplicationRequest,
   ITempAnswer,
+  ITempApplication,
   ITempNarrativeAnswer,
   ITempSelectiveAnswer,
 } from '../../../lib/model/i-application';
@@ -92,29 +93,33 @@ const Page = () => {
     `answers.${untouchedFieldIndex.studentNumber}.content`,
   );
 
+  const answers = methods.watch('answers');
+
+  console.log(answers);
+
   const onSubmit = async (data: IFormApplication) => {
     const convertedAnswers = data.answers.flatMap((answer) => {
       if (answer.questionType === 'NARRATIVE') {
         return [
           {
-            answerId: answer.answerId,
+            answerId: null,
             questionId: answer.questionId,
             content: answer.content,
             choiceId: null,
             questionType: 'NARRATIVE',
-          } as IAnswer,
+          } as ICreatedAnswer,
         ];
       } else if (answer.questionType === 'SELECTIVE') {
         return (
           answer.choiceIds?.map(
             (choiceId) =>
               ({
-                answerId: answer.answerId,
+                answerId: null,
                 questionId: answer.questionId,
                 content: null,
                 choiceId: choiceId,
                 questionType: 'SELECTIVE',
-              }) as IAnswer,
+              }) as ICreatedAnswer,
           ) || []
         );
       }
@@ -130,8 +135,21 @@ const Page = () => {
       recruitmentCode: recruitmentCode!,
     };
 
+    console.log(requestBody);
+
     try {
-      await saveMutate.mutateAsync(requestBody);
+      const response = await saveMutate.mutateAsync(requestBody);
+
+      const convertedAnswers = convertAnswerToFormAnswer(response);
+
+      methods.reset({
+        id: response.id,
+        studentNumber: response.studentNumber,
+        name: response.name,
+        major: response.major,
+        answers: convertedAnswers,
+      });
+
       toast({
         title: '지원서 저장이 완료되었습니다.',
         state: 'success',
@@ -146,47 +164,56 @@ const Page = () => {
     }
   };
 
+  // Convert ICreatedApplication to IFormApplication
+  const convertAnswerToFormAnswer = (
+    application: ITempApplication,
+  ): IFormAnswer[] => {
+    const convertedFormAnswers: IFormAnswer[] = application.answers.reduce(
+      (acc: IFormAnswer[], answer: ITempAnswer) => {
+        if (answer.type === 'NARRATIVE') {
+          // NARRATIVE 타입의 답변 변환
+          const narrativeAnswer: IFormAnswer = {
+            answerId: answer.answerId,
+            content: (answer as ITempNarrativeAnswer).content,
+            choiceIds: null,
+            questionId: answer.questionId,
+            questionType: 'NARRATIVE',
+          };
+          acc.push(narrativeAnswer);
+        } else if (answer.type === 'SELECTIVE') {
+          const selectiveAnswerIndex = acc.findIndex(
+            (fa) =>
+              fa.questionId === answer.questionId &&
+              fa.questionType === 'SELECTIVE',
+          );
+
+          if (selectiveAnswerIndex !== -1) {
+            acc[selectiveAnswerIndex].choiceIds?.push(
+              (answer as ITempSelectiveAnswer).choiceId,
+            );
+          } else {
+            const selectiveAnswer: IFormAnswer = {
+              answerId: answer.answerId,
+              content: null,
+              choiceIds: [(answer as ITempSelectiveAnswer).choiceId],
+              questionId: answer.questionId,
+              questionType: 'SELECTIVE',
+            };
+            acc.push(selectiveAnswer);
+          }
+        }
+        return acc;
+      },
+      [] as IFormAnswer[],
+    );
+
+    return convertedFormAnswers;
+  };
+
   useEffect(() => {
     if (application) {
       //Convert ICreatedApplication to IFormApplication
-      const formAnswers: IFormAnswer[] = application.answers.reduce(
-        (acc: IFormAnswer[], answer: ITempAnswer) => {
-          if (answer.type === 'NARRATIVE') {
-            // NARRATIVE 타입의 답변 변환
-            const narrativeAnswer: IFormAnswer = {
-              answerId: answer.answerId,
-              content: (answer as ITempNarrativeAnswer).content,
-              choiceIds: null,
-              questionId: answer.questionId,
-              questionType: 'NARRATIVE',
-            };
-            acc.push(narrativeAnswer);
-          } else if (answer.type === 'SELECTIVE') {
-            const selectiveAnswerIndex = acc.findIndex(
-              (fa) =>
-                fa.questionId === answer.questionId &&
-                fa.questionType === 'SELECTIVE',
-            );
-
-            if (selectiveAnswerIndex !== -1) {
-              acc[selectiveAnswerIndex].choiceIds?.push(
-                (answer as ITempSelectiveAnswer).choiceId,
-              );
-            } else {
-              const selectiveAnswer: IFormAnswer = {
-                answerId: answer.answerId,
-                content: null,
-                choiceIds: [(answer as ITempSelectiveAnswer).choiceId],
-                questionId: answer.questionId,
-                questionType: 'SELECTIVE',
-              };
-              acc.push(selectiveAnswer);
-            }
-          }
-          return acc;
-        },
-        [] as IFormAnswer[],
-      );
+      const formAnswers: IFormAnswer[] = convertAnswerToFormAnswer(application);
 
       methods.reset({
         id: application.id,

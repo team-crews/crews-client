@@ -33,9 +33,9 @@ type WithNullableAnswerId<T> = Omit<T, 'answerId'> & {
   answerId: number | null;
 };
 
-type ICreatedNarrativeAnswer = WithNullableAnswerId<INarrativeAnswer>;
-type ICreatedSelectiveAnswer = WithNullableAnswerId<ISelectiveAnswer>;
-type ICreatedAnswer = ICreatedNarrativeAnswer | ICreatedSelectiveAnswer;
+export type ICreatedNarrativeAnswer = WithNullableAnswerId<INarrativeAnswer>;
+export type ICreatedSelectiveAnswer = WithNullableAnswerId<ISelectiveAnswer>;
+export type ICreatedAnswer = ICreatedNarrativeAnswer | ICreatedSelectiveAnswer;
 
 export type ICreatedApplication = {
   id: number | null;
