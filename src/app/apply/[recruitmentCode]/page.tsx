@@ -93,6 +93,7 @@ const Page = () => {
     `answers.${untouchedFieldIndex.studentNumber}.content`,
   );
 
+  // chocie의 경우 submit 시 validation
   const validateChoices = (answers: IFormAnswer[] | null) => {
     if (!answers) return;
 
