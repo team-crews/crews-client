@@ -5,7 +5,7 @@ type IBaseQuestion = {
   order: number;
 };
 
-type IChoice = {
+export type IChoice = {
   id: number;
   content: string;
 };
