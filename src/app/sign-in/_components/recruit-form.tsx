@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { adminLogin } from '../../../apis/auth-api.ts';
 import { useNavigate } from 'react-router-dom';
 import useSession from '../../../hooks/use-session.ts';
-import handleError from '../../../lib/utils/error.ts';
+import { printCustomError } from '../../../lib/utils/error.ts';
 import {
   validateClubName,
   validatePassword,
@@ -50,7 +50,7 @@ const RecruitForm = () => {
       setSession(accessToken);
       navigate('/recruit');
     } catch (e) {
-      const errorStatus = handleError(e, 'adminLogin', 'PRINT');
+      const errorStatus = printCustomError(e, 'adminLogin');
 
       let title = '예기치 못한 문제가 발생했습니다.';
       if (errorStatus === 401) title = '잘못된 비밀번호입니다.';

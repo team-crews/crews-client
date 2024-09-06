@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import useSession from '../../hooks/use-session';
 import useRefreshToken from '../../hooks/use-refresh-token';
-import handleError from '../../lib/utils/error';
+import { printCustomError } from '../../lib/utils/error';
 import { validatePublicRoute } from '../../lib/utils/regex.ts';
 import Header from '../shared/header.tsx';
 import Loading from '../shared/loading.tsx';
@@ -20,7 +20,7 @@ const AuthRedirectWrapper = () => {
         try {
           await refresh();
         } catch (e) {
-          handleError(e, 'redirectByAuth', 'PRINT');
+          printCustomError(e, 'redirectByAuth');
           !validatePublicRoute(location.pathname) && navigate('/sign-in');
           setLoading(false);
         }

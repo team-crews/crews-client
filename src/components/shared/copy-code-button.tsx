@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from '../ui/button.tsx';
 import { useToast } from '../../hooks/use-toast.ts';
 import React from 'react';
-import handleError from '../../lib/utils/error.ts';
+import { printCustomError } from '../../lib/utils/error.ts';
 
 const CopyCodeButton = ({
   code,
@@ -21,7 +21,7 @@ const CopyCodeButton = ({
         state: 'success',
       });
     } catch (e) {
-      handleError(e, 'handleClipboardClick', 'PRINT');
+      printCustomError(e, 'handleClipboardClick');
       toast({
         title: '예기치 못한 오류가 발생했습니다.',
         state: 'error',

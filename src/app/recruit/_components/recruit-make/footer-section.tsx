@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { ICreatedRecruitment } from '../../../../lib/model/i-recruitment.ts';
 import { useToast } from '../../../../hooks/use-toast.ts';
-import handleError from '../../../../lib/utils/error.ts';
+import { printCustomError } from '../../../../lib/utils/error.ts';
 import { useFormContext } from 'react-hook-form';
 import Loading from '../../../../components/shared/loading.tsx';
 import CopyCodeButton from '../../../../components/shared/copy-code-button.tsx';
@@ -58,7 +58,7 @@ const FooterSection = ({
     try {
       reset(await saveMutation.mutateAsync(data));
     } catch (e) {
-      handleError(e, 'handleStartRecruitmentClick', 'PRINT');
+      printCustomError(e, 'handleStartRecruitmentClick');
       toast({
         title: '예기치 못한 문제가 발생했습니다.',
         state: 'error',
@@ -74,7 +74,7 @@ const FooterSection = ({
         queryKey: ['recruitmentProgress'],
       });
     } catch (e) {
-      handleError(e, 'handleStartRecruitmentClick', 'PRINT');
+      printCustomError(e, 'handleStartRecruitmentClick');
       toast({
         title: '예기치 못한 문제가 발생했습니다.',
         state: 'error',

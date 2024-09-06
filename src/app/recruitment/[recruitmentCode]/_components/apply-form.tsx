@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Input, { InputState } from '../../../../components/shared/input.tsx';
 import { Button } from '../../../../components/ui/button.tsx';
 import { applicantLogin } from '../../../../apis/auth-api.ts';
-import handleError from '../../../../lib/utils/error.ts';
+import { printCustomError } from '../../../../lib/utils/error.ts';
 import useSession from '../../../../hooks/use-session.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -57,7 +57,7 @@ const ApplyForm = () => {
       setSession(accessToken);
       navigate(`/apply/${recruitmentCode}`);
     } catch (e) {
-      handleError(e, 'applicantLogin', 'PRINT');
+      printCustomError(e, 'applicantLogin');
 
       const title = '예기치 못한 문제가 발생했습니다.';
 

@@ -3,7 +3,7 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import Container from '../../../components/shared/container';
 import useApplicantApi from '../../../apis/applicant-api';
-import handleError from '../../../lib/utils/error';
+import { printCustomError } from '../../../lib/utils/error';
 import Loading from '../../../components/shared/loading';
 import { readRecruitmentByCode } from '../../../apis/base-api';
 import ApplySectionBox from './_components/apply-section-box';
@@ -135,7 +135,7 @@ const Page = () => {
         state: 'success',
       });
     } catch (e) {
-      handleError(e, 'saveApplication', 'PRINT');
+      printCustomError(e, 'saveApplication');
 
       toast({
         title: '예기치 못한 오류가 발생했습니다.',
@@ -199,10 +199,10 @@ const Page = () => {
   if (applicationQuery.isFetching || recruitmentQuery.isFetching)
     return <Loading />;
   else if (recruitmentQuery.error || !recruitment) {
-    handleError(recruitmentQuery.error, 'readRecruitmentByCode');
+    printCustomError(recruitmentQuery.error, 'readRecruitmentByCode');
     return <Navigate to="/error" replace />;
   } else if (applicationQuery.isError) {
-    handleError(applicationQuery.error, 'readApplication');
+    printCustomError(applicationQuery.error, 'readApplication');
 
     return <Navigate to="/error" replace />;
   }
