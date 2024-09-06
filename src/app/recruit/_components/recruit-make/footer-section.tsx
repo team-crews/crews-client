@@ -39,7 +39,7 @@ const FooterSection = ({
 }: {
   recruitmentCode?: string | null;
 }) => {
-  const { handleSubmit } = useFormContext<ICreatedRecruitment>();
+  const { handleSubmit, reset } = useFormContext<ICreatedRecruitment>();
 
   const queryClient = useQueryClient();
   const { saveRecruitment, startRecruitment } = useAdminApi();
@@ -56,7 +56,7 @@ const FooterSection = ({
   const { toast } = useToast();
   const handleSaveRecruitmentClick = async (data: ICreatedRecruitment) => {
     try {
-      await saveMutation.mutateAsync(data);
+      reset(await saveMutation.mutateAsync(data));
     } catch (e) {
       handleError(e, 'handleStartRecruitmentClick', 'PRINT');
       toast({
@@ -68,7 +68,7 @@ const FooterSection = ({
 
   const handleStartRecruitmentClick = async (data: ICreatedRecruitment) => {
     try {
-      await saveMutation.mutateAsync(data);
+      reset(await saveMutation.mutateAsync(data));
       await startMutation.mutateAsync();
       await queryClient.invalidateQueries({
         queryKey: ['recruitmentProgress'],
@@ -83,6 +83,7 @@ const FooterSection = ({
   };
 
   const handleFormRequirement = (errors: object) => {
+    console.log(errors);
     const msg = findFirstErrorMessage(errors);
     msg &&
       toast({
