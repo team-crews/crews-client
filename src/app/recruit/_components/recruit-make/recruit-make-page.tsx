@@ -53,7 +53,7 @@ const RecruitMakePage = () => {
   });
 
   useEffect(() => {
-    if (!readQuery.isSuccess) return;
+    if (!readQuery.isFetching) return;
     if (readQuery.data) {
       methods.reset({
         ...readQuery.data,
@@ -61,7 +61,7 @@ const RecruitMakePage = () => {
       });
       setRecruitmentCode(readQuery.data.code);
     }
-  }, [readQuery.isSuccess]);
+  }, [readQuery.isFetching]);
 
   if (readQuery.isFetching) return <Loading />;
   else if (readQuery.isError) {
@@ -73,11 +73,11 @@ const RecruitMakePage = () => {
       <HeaderSection />
 
       <FormProvider {...methods}>
-        <form className="pb-[6rem]">
+        <form className="pb-24">
           <section className="mt-6">
             <RecruitMetaSection />
           </section>
-          <section className="mt-6">
+          <section className="mt-6 flex flex-col gap-8">
             <SectionBoxes
               sectionFields={sectionFields}
               removeSection={removeSection}

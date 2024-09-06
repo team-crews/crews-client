@@ -8,6 +8,7 @@ import { printCustomError } from '../../../../lib/utils/error.ts';
 import { useFormContext } from 'react-hook-form';
 import Loading from '../../../../components/shared/loading.tsx';
 import CopyCodeButton from '../../../../components/shared/copy-code-button.tsx';
+import dayjs from 'dayjs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function findFirstErrorMessage(errors: any): string | null {
@@ -56,7 +57,14 @@ const FooterSection = ({
   const { toast } = useToast();
   const handleSaveRecruitmentClick = async (data: ICreatedRecruitment) => {
     try {
-      reset(await saveMutation.mutateAsync(data));
+      const response = await saveMutation.mutateAsync(data);
+      response.deadline = dayjs(response.deadline).format('YY-MM-DD-HH');
+      reset(response);
+
+      toast({
+        title: '임시저장이 완료되었습니다.',
+        state: 'success',
+      });
     } catch (e) {
       printCustomError(e, 'handleStartRecruitmentClick');
       toast({

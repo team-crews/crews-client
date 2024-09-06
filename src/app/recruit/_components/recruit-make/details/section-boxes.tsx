@@ -125,19 +125,15 @@ const SectionBoxes = ({
   sectionFields: ICreatedSection[];
   removeSection: UseFieldArrayRemove;
 }) => {
-  return (
-    <section className="flex flex-col gap-8">
-      {sectionFields.map((section, sectionIndex) => {
-        return (
-          <SectionBox
-            key={section.id}
-            sectionIndex={sectionIndex}
-            removeSection={removeSection}
-          />
-        );
-      })}
-    </section>
-  );
+  return sectionFields.map((section, sectionIndex) => {
+    return (
+      <SectionBox
+        key={section.id}
+        sectionIndex={sectionIndex}
+        removeSection={removeSection}
+      />
+    );
+  });
 };
 
 export default SectionBoxes;
