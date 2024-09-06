@@ -22,6 +22,8 @@ import {
   ITempSelectiveAnswer,
 } from '../../../lib/model/i-application';
 import { useToast } from '../../../hooks/use-toast';
+import FooterContainer from '../../../components/shared/footer-container';
+import { Button } from '../../../components/ui/button';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -227,12 +229,11 @@ const Page = () => {
                 </ApplySectionBox>
               ))}
             </div>
-            <button
-              type="submit"
-              className="rounded-[0.625rem] bg-crews-bk01 py-2 text-crews-w01"
-            >
-              제출하기
-            </button>
+            <FooterContainer className="flex w-full justify-end">
+              <Button type="submit" size="lg">
+                제출하기
+              </Button>
+            </FooterContainer>
           </form>
         </div>
       </Container>
