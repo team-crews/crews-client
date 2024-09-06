@@ -5,18 +5,15 @@ import { IFormApplication } from '../page';
 
 interface ApplyChoiceBoxProps {
   choice: IChoice;
-  //   question: IQuestion;
-  //   index: number;
   currentAnswerIndex: number;
 }
 
 const ApplyChoiceBox = ({
   choice,
-  //   question,
-  //   index,
   currentAnswerIndex,
 }: ApplyChoiceBoxProps) => {
-  const { getValues, setValue } = useFormContext<IFormApplication>();
+  const { getValues, setValue, clearErrors } =
+    useFormContext<IFormApplication>();
 
   const handleChange = () => {
     const currentAnswers = getValues('answers');
@@ -28,14 +25,15 @@ const ApplyChoiceBox = ({
       : [...currentChoiceIds, choice.id];
 
     setValue(`answers.${currentAnswerIndex}.choiceIds`, newChoiceIds);
+
+    // if checkbox input value changes, clear error message
+    clearErrors(`answers.${currentAnswerIndex}`);
   };
 
   return (
     <div key={choice.id} className="flex items-center gap-[0.5rem]">
       <input
         type="checkbox"
-        // value={choice.id}
-        // {...register(`answers.${currentAnswerIndex}.choiceIds.${index}`)}
         checked={getValues(`answers.${currentAnswerIndex}.choiceIds`)?.includes(
           choice.id,
         )}
