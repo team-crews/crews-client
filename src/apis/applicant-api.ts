@@ -5,7 +5,11 @@ import {
   isIReadApplicationResponse,
   isISaveApplicationResponse,
 } from '../lib/model/i-response-body.ts';
-import { ICreatedApplication } from '../lib/model/i-application.ts';
+import {
+  ICreatedApplication,
+  ISaveApplicationRequest,
+  ITempReadApplicationResponse,
+} from '../lib/model/i-application.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
 
 const useApplicantApi = (recruitmentCode: string) => {
@@ -20,13 +24,14 @@ const useApplicantApi = (recruitmentCode: string) => {
     Assume role check is completed in require-auth wrapper.
    */
 
-  async function readApplication(): Promise<IReadApplicationResponse> {
+  async function readApplication(): Promise<ITempReadApplicationResponse> {
     try {
       const response = await authInstance.get(
         `/applications/mine?code=${recruitmentCode}`,
       );
 
-      if (isIReadApplicationResponse(response.data)) return response.data;
+      // if (isIReadApplicationResponse(response.data))
+      return response.data;
       throw new Error('[ResponseTypeMismatch] Unexpected response format');
     } catch (e) {
       throwCustomError(e, 'readApplication');
@@ -34,12 +39,13 @@ const useApplicantApi = (recruitmentCode: string) => {
   }
 
   async function saveApplication(
-    requestBody: ICreatedApplication,
+    requestBody: ISaveApplicationRequest,
   ): Promise<ISaveApplicationResponse> {
     try {
       const response = await authInstance.post('applications', requestBody);
 
-      if (isISaveApplicationResponse(response.data)) return response.data;
+      // if (isISaveApplicationResponse(response.data))
+      return response.data;
       throw new Error('[ResponseTypeMismatch] Unexpected response format');
     } catch (e) {
       throwCustomError(e, 'saveApplication');

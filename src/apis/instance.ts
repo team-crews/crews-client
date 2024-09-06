@@ -50,7 +50,8 @@ const useAuthInstance = () => {
           return authInstance(prevRequest);
         }
 
-        clearSession();
+        // This line causes an infinite loop because get application return status is 404
+        // clearSession();
         return Promise.reject(error);
       },
     );
