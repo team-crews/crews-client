@@ -13,20 +13,34 @@ function getLength(value: string | number | undefined): number {
 const LimitedNumberInput = ({
   name,
   maxLength,
+  type,
 }: {
   name: string;
   maxLength: number;
+  type: 'NARRATIVE' | 'SELECTIVE';
 }) => {
   const { register, watch } = useFormContext();
   const placeholder = '0'.repeat(maxLength);
 
   const value = watch(name);
-  const inputLength = getLength(value) || maxLength;
+  const inputLength = getLength(value)
+    ? Math.min(getLength(value), maxLength)
+    : maxLength;
 
+  const maxVal = type === 'NARRATIVE' ? 1500 : 10;
   return (
     <input
+      autoComplete="off"
+      type="number"
       maxLength={maxLength}
       {...register(name, {
+        onChange: (e) => {
+          if (e.target.value === '') e.target.value = '';
+          else if (e.target.value <= 0) e.target.value = 1;
+          else if (e.target.value >= maxVal) e.target.value = maxVal;
+          console.log(e.target.value);
+        },
+        valueAsNumber: true,
         validate: {
           isFilledInput: (v) =>
             isFilledInput(

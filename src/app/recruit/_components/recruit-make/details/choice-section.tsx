@@ -6,20 +6,20 @@ import Typography from '../../../../../components/shared/typography.tsx';
 import Separator from '../../../../../components/shared/seperator.tsx';
 import { useToast } from '../../../../../hooks/use-toast.ts';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
+import { CREATED_CHOICE } from '../../../../../lib/model/i-section.ts';
 
-interface ChoiceSectionProps {
+const ChoiceSection = ({
+  sectionIndex,
+  questionIndex,
+}: {
   sectionIndex: number;
   questionIndex: number;
-}
-
-const DEFAULT_CHOICE = { id: null, content: '' };
-
-const ChoiceSection = ({ sectionIndex, questionIndex }: ChoiceSectionProps) => {
+}) => {
   const { control, register } = useFormContext();
 
   const {
     fields: choiceFields,
-    append: appendChoice,
+    append,
     remove: removeChoice,
   } = useFieldArray({
     control,
@@ -38,15 +38,31 @@ const ChoiceSection = ({ sectionIndex, questionIndex }: ChoiceSectionProps) => {
     removeChoice(choiceIndex);
   };
 
+  const appendChoice = () => {
+    if (choiceFields.length === 10) {
+      toast({
+        title: '옵션은 질문당 최대 10개 까지만 추가가능 합니다.',
+        state: 'warning',
+      });
+      return;
+    }
+    append(CREATED_CHOICE);
+  };
+
   return (
     <section className="mt-3">
       <div className="flex flex-col gap-2">
         {choiceFields.map((choice, choiceIndex) => (
           <div key={choice.id} className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex w-full items-center gap-2">
               <div className="h-3 w-3 rounded-full border border-crews-g03" />
               <input
-                className="text-sm font-light text-crews-bk01 placeholder:text-crews-g03"
+                maxLength={50}
+                autoComplete="off"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') appendChoice();
+                }}
+                className="w-full text-sm font-light text-crews-bk01 placeholder:text-crews-g03"
                 {...register(
                   `sections.${sectionIndex}.questions.${questionIndex}.choices.${choiceIndex}.content`,
                   {
@@ -69,7 +85,7 @@ const ChoiceSection = ({ sectionIndex, questionIndex }: ChoiceSectionProps) => {
       <button
         className="mt-3 flex items-center gap-1"
         type="button"
-        onClick={() => appendChoice(DEFAULT_CHOICE)}
+        onClick={appendChoice}
       >
         <PlusIcon className="h-3 w-3 cursor-pointer text-crews-g05" />
         <Typography className="text-xs font-light text-crews-g05">

@@ -35,6 +35,8 @@ const QuestionTextarea = ({
   return (
     <div className="flex h-full w-full flex-col gap-1">
       <textarea
+        maxLength={250}
+        spellCheck={false}
         className="h-auto w-full overflow-y-hidden text-sm font-semibold text-crews-bk01"
         rows={1}
         placeholder="질문을 작성해주세요."

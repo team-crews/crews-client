@@ -28,6 +28,8 @@ const RecruitMetaSection = () => {
           공고 제목
         </p>
         <input
+          maxLength={30}
+          autoComplete="off"
           className="w-full text-xl font-bold text-crews-bk01 placeholder:text-crews-g03"
           placeholder="공고 제목을 입력해주세요."
           {...register('title', {
@@ -44,6 +46,7 @@ const RecruitMetaSection = () => {
           공고 내용
         </p>
         <textarea
+          maxLength={1500}
           rows={1}
           id="recruitment-description"
           spellCheck={false}
@@ -64,6 +67,7 @@ const RecruitMetaSection = () => {
         </p>
         <input
           maxLength={11}
+          autoComplete="off"
           placeholder="모집 마감은 한시간 단위로 가능합니다. (ex. 24년 11월 6일 저녁 6시 : 24-11-06-18)"
           className="w-full text-sm text-crews-bk01 placeholder:text-crews-g03"
           {...register('deadline', {

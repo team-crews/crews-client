@@ -14,6 +14,7 @@ import {
 import { ICreatedRecruitment } from '../../../../../lib/model/i-recruitment.ts';
 import { useEffect } from 'react';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
+import { useToast } from '../../../../../hooks/use-toast.ts';
 
 const SectionBox = ({
   sectionIndex,
@@ -27,7 +28,7 @@ const SectionBox = ({
 
   const {
     fields: questionFields,
-    append: appendQuestion,
+    append,
     remove: removeQuestion,
     update,
   } = useFieldArray({
@@ -48,10 +49,24 @@ const SectionBox = ({
     }
   }, [sectionIndex, value]);
 
+  const { toast } = useToast();
+  const appendQuestion = () => {
+    if (questionFields.length === 10) {
+      toast({
+        title: '질문은 섹션당 최대 10개 까지만 추가가능 합니다.',
+        state: 'warning',
+      });
+      return;
+    }
+    append(CREATED_SELECTIVE_QUESTION);
+  };
+
   return (
     <div className="overflow-hidden rounded-xl">
       <div className="relative flex w-full flex-col gap-1 bg-crews-b04 p-4">
         <input
+          autoComplete="off"
+          maxLength={50}
           disabled={untouchable}
           {...register(`sections.${sectionIndex}.name`, {
             validate: {
@@ -69,6 +84,8 @@ const SectionBox = ({
           />
         )}
         <textarea
+          spellCheck={false}
+          maxLength={250}
           rows={1}
           {...register(`sections.${sectionIndex}.description`, {
             validate: {
@@ -92,7 +109,7 @@ const SectionBox = ({
         <Button
           type="button"
           className="ml-auto h-6 w-6 bg-crews-b04 text-center text-sm font-semibold"
-          onClick={() => appendQuestion(CREATED_SELECTIVE_QUESTION)}
+          onClick={appendQuestion}
         >
           +
         </Button>

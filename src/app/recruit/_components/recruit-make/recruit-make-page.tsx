@@ -16,6 +16,8 @@ import { Navigate } from 'react-router-dom';
 import Loading from '../../../../components/shared/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import { useToast } from '../../../../hooks/use-toast.ts';
 
 const RecruitMakePage = () => {
   const methods = useForm<ICreatedRecruitment>({
@@ -25,12 +27,24 @@ const RecruitMakePage = () => {
 
   const {
     fields: sectionFields,
-    append: appendSection,
+    append,
     remove: removeSection,
   } = useFieldArray({
     control: methods.control,
     name: 'sections',
   });
+
+  const { toast } = useToast();
+  const appendSection = () => {
+    if (sectionFields.length === 6) {
+      toast({
+        title: '섹션은 최대 5개 까지만 추가가능 합니다.',
+        state: 'warning',
+      });
+      return;
+    }
+    append(CREATED_SECTION);
+  };
 
   const { readRecruitment } = useAdminApi();
   const readQuery = useQuery({
@@ -41,7 +55,10 @@ const RecruitMakePage = () => {
   useEffect(() => {
     if (!readQuery.isSuccess) return;
     if (readQuery.data) {
-      methods.reset(readQuery.data);
+      methods.reset({
+        ...readQuery.data,
+        deadline: dayjs(readQuery.data.deadline).format('YY-MM-DD-HH'),
+      });
       setRecruitmentCode(readQuery.data.code);
     }
   }, [readQuery.isSuccess]);
@@ -70,7 +87,7 @@ const RecruitMakePage = () => {
             <button
               type="button"
               className="mt-9 text-lg font-light text-crews-g04 underline underline-offset-[4px] hover:text-crews-g06"
-              onClick={() => appendSection(CREATED_SECTION)}
+              onClick={appendSection}
             >
               섹션 추가하기
             </button>

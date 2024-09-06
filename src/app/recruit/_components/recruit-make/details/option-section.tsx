@@ -30,6 +30,7 @@ const OptionSection = ({ sectionIndex, questionIndex }: OptionSectionProps) => {
                 최소 선택
               </Typography>
               <LimitedNumberInput
+                type={questionType}
                 name={`sections.${sectionIndex}.questions.${questionIndex}.minimumSelection`}
                 maxLength={MAX_SELECTION_LENGTH}
               />
@@ -39,6 +40,7 @@ const OptionSection = ({ sectionIndex, questionIndex }: OptionSectionProps) => {
                 최대 선택
               </Typography>
               <LimitedNumberInput
+                type={questionType}
                 name={`sections.${sectionIndex}.questions.${questionIndex}.maximumSelection`}
                 maxLength={MAX_SELECTION_LENGTH}
               />
@@ -52,6 +54,7 @@ const OptionSection = ({ sectionIndex, questionIndex }: OptionSectionProps) => {
               글자 수 제한
             </Typography>
             <LimitedNumberInput
+              type={questionType}
               name={`sections.${sectionIndex}.questions.${questionIndex}.wordLimit`}
               maxLength={MAX_WORD_LIMIT_LENGTH}
             />

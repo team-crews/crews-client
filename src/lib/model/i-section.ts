@@ -89,6 +89,11 @@ export const CREATED_SECTION: ICreatedSection = {
   questions: [CREATED_SELECTIVE_QUESTION],
 };
 
+export const CREATED_CHOICE: ICreatedChoice = {
+  id: null,
+  content: '',
+};
+
 // ---------------------------------- Type Guards ----------------------------------
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
