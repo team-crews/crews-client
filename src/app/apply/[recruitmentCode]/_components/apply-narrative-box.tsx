@@ -19,7 +19,8 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
   } = useFormContext<IFormApplication>();
 
   const currentAnswerIndex = watch('answers').findIndex(
-    (answer) => answer.questionId === question.id,
+    (answer) =>
+      answer.questionId === question.id && answer.questionType === 'NARRATIVE',
   );
 
   // make new answer if not exist, cuurentAnswerIndex === -1인 item 생성 방지를 위해 return null
@@ -70,7 +71,9 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
           )}
           placeholder="이곳에 답변을 입력해주세요."
           {...register(`answers.${currentAnswerIndex}.content`, {
-            required: question.necessity ? '해당 필드는 필수입니다.' : false,
+            required: question.necessity
+              ? '해당 필드는 응답 필수입니다.'
+              : false,
             maxLength: question.wordLimit || undefined,
           })}
           maxLength={question.wordLimit || undefined}

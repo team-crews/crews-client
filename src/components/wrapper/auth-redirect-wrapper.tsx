@@ -40,8 +40,6 @@ const AuthRedirectWrapper = () => {
               location.pathname !== '/error' &&
               recruitmentCode &&
               navigate(`/apply/${recruitmentCode}`);
-
-            // 💡 refresh token이 있는 상태에서 가장 최근 접속한 code가 없는 경우에는?
             break;
         }
         setLoading(false);

@@ -3,6 +3,7 @@ import { IRecruitment, isIRecruitment } from './i-recruitment.ts';
 import {
   IApplication,
   IApplicationOverview,
+  ITempApplication,
   isIApplication,
   isIApplicationOverview,
 } from './i-application.ts';
@@ -37,7 +38,7 @@ export type ISaveEvaluationResponse = NoResponseData;
 
 export type IReadApplicationResponse = IApplication;
 
-export type ISaveApplicationResponse = IApplication;
+export type ISaveApplicationResponse = ITempApplication;
 
 export type IReadRecruitmentByCodeResponse = IRecruitment;
 

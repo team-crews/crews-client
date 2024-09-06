@@ -1,12 +1,12 @@
 import useAuthInstance from './instance.ts';
 import {
-  IReadApplicationResponse,
+  // IReadApplicationResponse,
   ISaveApplicationResponse,
-  isIReadApplicationResponse,
-  isISaveApplicationResponse,
+  // isIReadApplicationResponse,
+  // isISaveApplicationResponse,
 } from '../lib/model/i-response-body.ts';
 import {
-  ICreatedApplication,
+  // ICreatedApplication,
   ISaveApplicationRequest,
   ITempReadApplicationResponse,
 } from '../lib/model/i-application.ts';
