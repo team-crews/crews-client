@@ -6,6 +6,7 @@ import Typography from '../../../../../components/shared/typography.tsx';
 import Separator from '../../../../../components/shared/seperator.tsx';
 import { useToast } from '../../../../../hooks/use-toast.ts';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
+import { useState } from 'react';
 import { CREATED_CHOICE } from '../../../../../lib/model/i-section.ts';
 
 const ChoiceSection = ({
@@ -49,6 +50,8 @@ const ChoiceSection = ({
     append(CREATED_CHOICE);
   };
 
+  const [isComposing, setIsComposing] = useState<boolean>(false);
+
   return (
     <section className="mt-3">
       <div className="flex flex-col gap-2">
@@ -60,8 +63,10 @@ const ChoiceSection = ({
                 maxLength={50}
                 autoComplete="off"
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') appendChoice();
+                  if (!isComposing && e.key === 'Enter') appendChoice();
                 }}
+                onCompositionStart={() => setIsComposing(true)}
+                onCompositionEnd={() => setIsComposing(false)}
                 className="w-full text-sm font-light text-crews-bk01 placeholder:text-crews-g03"
                 {...register(
                   `sections.${sectionIndex}.questions.${questionIndex}.choices.${choiceIndex}.content`,
