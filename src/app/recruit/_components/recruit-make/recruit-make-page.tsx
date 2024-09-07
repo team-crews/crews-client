@@ -53,7 +53,7 @@ const RecruitMakePage = () => {
   });
 
   useEffect(() => {
-    if (!readQuery.isFetching) return;
+    if (readQuery.isFetching) return;
     if (readQuery.data) {
       methods.reset({
         ...readQuery.data,

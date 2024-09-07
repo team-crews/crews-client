@@ -15,7 +15,7 @@ const Page = () => {
           </p>
           <p className="mb-4 text-sm font-semibold text-crews-b07">
             <a
-              href="https://open.kakao.com/o/gBdXlhNg"
+              href="https://open.kakao.com/o/suHXEsNg"
               className="text-base font-light text-crews-b04"
               target="_blank"
             >

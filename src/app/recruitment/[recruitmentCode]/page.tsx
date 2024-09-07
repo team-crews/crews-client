@@ -27,7 +27,7 @@ const Page = () => {
         <ApplyForm />
       </section>
 
-      <section className="max-w-[600px]">
+      <section className="w-[600px]">
         <InfoSection recruitment={readQuery.data} />
       </section>
     </Container>
