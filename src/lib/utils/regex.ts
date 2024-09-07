@@ -36,11 +36,11 @@ function validateClubName(targetString: string): string {
   if (targetString.length < 3 || targetString.length > 30)
     return '동아리명은 3자 이상 30자 이하까지 가능합니다.';
 
-  /*
-    ToDo
-    - 특수 문자 제외 / (-,_)만 허용
-    - 띄어쓰기 제외
-   */
+  const validPattern = /^[가-힣a-zA-Z0-9-_]+$/;
+
+  if (!validPattern.test(targetString)) {
+    return '동아리명은 한글, 영문, 숫자, -, _만 사용할 수 있습니다. 띄어쓰기는 불가능합니다.';
+  }
 
   return '';
 }
