@@ -2,15 +2,18 @@ import useSessionStore from './store/use-session-store.ts';
 import extractRole from '../lib/utils/jwt.ts';
 
 const useSession = () => {
+  const username = useSessionStore((state) => state.username);
   const accessToken = useSessionStore((state) => state.accessToken);
   const role = useSessionStore((state) => state.role);
+  const updateUsername = useSessionStore((state) => state.updateUsername);
   const updateAccessToken = useSessionStore((state) => state.updateAccessToken);
   const updateRole = useSessionStore((state) => state.updateRole);
   const clearState = useSessionStore((state) => state.clearState);
 
-  function setSession(accessToken: string) {
+  function setSession(accessToken: string, id: string) {
     const role = extractRole(accessToken);
 
+    updateUsername(id);
     updateAccessToken(`Bearer ${accessToken}`);
     updateRole(role);
   }
@@ -19,7 +22,7 @@ const useSession = () => {
     clearState();
   }
 
-  return { accessToken, role, setSession, clearSession };
+  return { username, accessToken, role, setSession, clearSession };
 };
 
 export default useSession;

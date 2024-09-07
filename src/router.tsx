@@ -11,22 +11,25 @@ import RecruitmentPage from './app/recruitment/[recruitmentCode]/page.tsx';
 import ApplyPage from './app/apply/[recruitmentCode]/page.tsx';
 import RecruitPage from './app/recruit/page.tsx';
 import ErrorPage from './app/error/page.tsx';
+import ResponsiveWrapper from './components/wrapper/responsive-wrapper.tsx';
 
 const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<RootLayout />}>
-      <Route element={<AuthRouteWrapper />}>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/sign-in" element={<SignInPage />} />
+    <Route element={<ResponsiveWrapper />}>
+      <Route element={<RootLayout />}>
+        <Route element={<AuthRouteWrapper />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/sign-in" element={<SignInPage />} />
 
-        <Route
-          path="recruitment/:recruitmentCode"
-          element={<RecruitmentPage />}
-        />
+          <Route
+            path="recruitment/:recruitmentCode"
+            element={<RecruitmentPage />}
+          />
 
-        <Route path="apply/:recruitmentCode" element={<ApplyPage />} />
-        <Route path="recruit" element={<RecruitPage />} />
-        <Route path="error" element={<ErrorPage />} />
+          <Route path="apply/:recruitmentCode" element={<ApplyPage />} />
+          <Route path="recruit" element={<RecruitPage />} />
+          <Route path="error" element={<ErrorPage />} />
+        </Route>
       </Route>
     </Route>,
   ),

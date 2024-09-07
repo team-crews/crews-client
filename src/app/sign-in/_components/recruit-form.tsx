@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { adminLogin } from '../../../apis/auth-api.ts';
 import { useNavigate } from 'react-router-dom';
 import useSession from '../../../hooks/use-session.ts';
-import handleError from '../../../lib/utils/error.ts';
+import { printCustomError } from '../../../lib/utils/error.ts';
 import {
   validateClubName,
   validatePassword,
@@ -46,11 +46,11 @@ const RecruitForm = () => {
     }
 
     try {
-      const { accessToken } = await adminLogin(data);
-      setSession(accessToken);
+      const { accessToken, username } = await adminLogin(data);
+      setSession(accessToken, username);
       navigate('/recruit');
     } catch (e) {
-      const errorStatus = handleError(e, 'adminLogin', 'PRINT');
+      const errorStatus = printCustomError(e, 'adminLogin');
 
       let title = '예기치 못한 문제가 발생했습니다.';
       if (errorStatus === 401) title = '잘못된 비밀번호입니다.';
@@ -80,6 +80,7 @@ const RecruitForm = () => {
       <fieldset className="mb-3">
         <LocalLegend>모집하기</LocalLegend>
         <Input
+          maxLength={30}
           state={inputState.clubName}
           className="mb-3"
           registerReturns={register('clubName', {
@@ -94,6 +95,7 @@ const RecruitForm = () => {
           placeholder="동아리명"
         />
         <Input
+          maxLength={30}
           state={inputState.password}
           type="password"
           registerReturns={register('password', {

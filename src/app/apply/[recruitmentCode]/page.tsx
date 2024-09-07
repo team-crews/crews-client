@@ -3,7 +3,6 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import Container from '../../../components/shared/container';
 import useApplicantApi from '../../../apis/applicant-api';
-import handleError from '../../../lib/utils/error';
 import Loading from '../../../components/shared/loading';
 import { readRecruitmentByCode } from '../../../apis/base-api';
 import ApplySectionBox from './_components/apply-section-box';
@@ -25,6 +24,7 @@ import {
 import { useToast } from '../../../hooks/use-toast';
 import FooterContainer from '../../../components/shared/footer-container';
 import { Button } from '../../../components/ui/button';
+import { printCustomError } from '../../../lib/utils/error.ts';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -206,7 +206,7 @@ const Page = () => {
         state: 'success',
       });
     } catch (e) {
-      handleError(e, 'saveApplication', 'PRINT');
+      printCustomError(e, 'saveApplication');
 
       toast({
         title: '예기치 못한 오류가 발생했습니다.',
@@ -286,43 +286,47 @@ const Page = () => {
   if (applicationQuery.isFetching || recruitmentQuery.isFetching)
     return <Loading />;
   else if (recruitmentQuery.error || !recruitment) {
-    handleError(recruitmentQuery.error, 'readRecruitmentByCode');
+    printCustomError(recruitmentQuery.error, 'readRecruitmentByCode');
     return <Navigate to="/error" replace />;
   } else if (applicationQuery.isError) {
-    handleError(applicationQuery.error, 'readApplication');
+    printCustomError(applicationQuery.error, 'readApplication');
 
     return <Navigate to="/error" replace />;
   }
 
   return (
-    <FormProvider {...methods}>
-      <Container className="mx-auto w-[630px]">
-        <div className="flex flex-col gap-[1.5rem] py-24">
-          <HeaderSection />
-          <form onSubmit={methods.handleSubmit(onSubmit, onFormError)}>
-            <div className="flex flex-col gap-[1.5rem]">
-              {recruitment.sections.map((section) => (
-                <ApplySectionBox
-                  name={section.name}
-                  description={section.description}
-                >
-                  <div className="flex flex-col gap-[1.5rem]">
-                    {section.questions.map((question) => (
-                      <RenderQuestion key={question.id} question={question} />
-                    ))}
-                  </div>
-                </ApplySectionBox>
-              ))}
-            </div>
-            <FooterContainer className="flex w-full justify-end">
-              <Button type="submit" size="lg">
-                제출하기
-              </Button>
-            </FooterContainer>
-          </form>
-        </div>
-      </Container>
-    </FormProvider>
+    <Container className="mx-auto w-[600px] py-24">
+      <HeaderSection />
+
+      <FormProvider {...methods}>
+        <form className="pb-24">
+          <section className="mt-6 flex flex-col gap-8">
+            {recruitment.sections.map((section) => (
+              <ApplySectionBox
+                name={section.name}
+                description={section.description}
+              >
+                <section className="flex h-fit flex-col gap-4">
+                  {section.questions.map((question) => (
+                    <RenderQuestion key={question.id} question={question} />
+                  ))}
+                </section>
+              </ApplySectionBox>
+            ))}
+          </section>
+
+          <FooterContainer className="flex w-full justify-end">
+            <Button
+              type="button"
+              size="lg"
+              onClick={methods.handleSubmit(onSubmit)}
+            >
+              제출하기
+            </Button>
+          </FooterContainer>
+        </form>
+      </FormProvider>
+    </Container>
   );
 };
 

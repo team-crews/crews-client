@@ -4,7 +4,7 @@ import Dialog from '../../../../components/shared/dialog.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import useDialog from '../../../../hooks/use-dialog.ts';
-import handleError from '../../../../lib/utils/error.ts';
+import { printCustomError } from '../../../../lib/utils/error.ts';
 import Loading from '../../../../components/shared/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { IProgress } from '../../../../lib/model/i-progress.ts';
@@ -39,7 +39,7 @@ const FooterSection = ({
         state: 'success',
       });
     } catch (e) {
-      handleError(e, 'handleSaveClick', 'PRINT');
+      printCustomError(e, 'handleSaveClick');
       toast({
         title: '예기치 못한 오류가 발생했습니다.',
         state: 'error',
@@ -60,7 +60,7 @@ const FooterSection = ({
         state: 'success',
       });
     } catch (e) {
-      handleError(e, 'handleSendConfirmClick', 'PRINT');
+      printCustomError(e, 'handleSendConfirmClick');
       toast({
         title: '예기치 못한 오류가 발생했습니다.',
         state: 'error',

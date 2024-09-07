@@ -13,14 +13,14 @@ const SectionBox = ({
 >) => {
   return (
     <div className="overflow-hidden rounded-xl">
-      <div className="flex w-full flex-col gap-1 bg-crews-b04 p-4">
+      <div className="flex h-fit w-full flex-col gap-1 bg-crews-b04 p-4">
         <p className="w-full bg-inherit text-base font-bold text-crews-w01">
           {name}
         </p>
         <p className="bg-inherit text-xs text-crews-w01">{description}</p>
       </div>
 
-      <div className="flex w-full flex-col gap-4 bg-crews-b01 p-4">
+      <div className="flex h-fit w-full flex-col gap-4 bg-crews-b01 p-4">
         <QuestionBoxes questions={questions} answers={answers} />
       </div>
     </div>
@@ -35,7 +35,7 @@ const SectionBoxes = ({
   answers?: IAnswer[];
 }) => {
   return (
-    <section className="flex h-fit w-full flex-col gap-8 overflow-scroll">
+    <section className="flex h-fit w-full flex-col gap-8">
       {sections.map((section) => (
         <SectionBox
           key={section.id}

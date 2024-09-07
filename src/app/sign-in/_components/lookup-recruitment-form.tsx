@@ -52,6 +52,7 @@ const LookupRecruitmentForm = () => {
       <fieldset className="mb-3">
         <LocalLegend>지원하기</LocalLegend>
         <Input
+          maxLength={36}
           state={inputState}
           registerReturns={register('recruitmentCode', {
             onChange: () => {

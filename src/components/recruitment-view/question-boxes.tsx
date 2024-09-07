@@ -20,7 +20,7 @@ const QuestionBoxes = ({
   answers?: IAnswer[];
 }) => {
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex h-fit flex-col gap-4">
       {questions.map((question) => {
         const filteredAnswers = answers
           ? answers.filter((ans) => ans.questionId === question.id)
@@ -70,7 +70,7 @@ const SelectiveBox = ({
     <Container className="rounded-xl bg-crews-w01 p-3">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <Typography className="h-auto w-full overflow-y-hidden text-sm font-semibold text-crews-bk01">
+          <Typography className="h-auto w-full text-sm font-semibold text-crews-bk01">
             {question.content}
           </Typography>
           <Typography className="text-xs text-crews-b06">
@@ -81,11 +81,11 @@ const SelectiveBox = ({
           {question.choices.map((choice) => (
             <div key={choice.id} className="flex items-center gap-2">
               {choices?.includes(choice.id) ? (
-                <div className="h-3 w-3 rounded-full border border-crews-g03" />
-              ) : (
                 <div className="flex h-3 w-3 items-center justify-center rounded-full border border-crews-g03">
                   <div className="h-2 w-2 rounded-full bg-crews-b05" />
                 </div>
+              ) : (
+                <div className="h-3 w-3 rounded-full border border-crews-g03" />
               )}
               <div className="text-sm font-light text-crews-bk01">
                 {choice.content}
@@ -115,7 +115,7 @@ const NarrativeBox = ({
     <Container className="rounded-xl bg-crews-w01 p-3">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <Typography className="h-auto w-full overflow-y-hidden text-sm font-semibold text-crews-bk01">
+          <Typography className="h-auto w-full text-sm font-semibold text-crews-bk01">
             {question.content}
           </Typography>
           <Typography className="text-xs text-crews-b06">
@@ -124,6 +124,7 @@ const NarrativeBox = ({
         </div>
 
         <textarea
+          rows={3}
           className="w-full rounded-lg p-2 text-xs outline outline-1 outline-crews-g02 placeholder:font-light placeholder:text-crews-g03"
           disabled={true}
           placeholder="이곳에 답변을 입력해주세요."

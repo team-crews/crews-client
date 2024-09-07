@@ -34,8 +34,7 @@ const ApplicationDetailDialog = ({ applicationId, ...dialogProps }: Props) => {
     printCustomError(applicationQuery.error, 'applicationQuery');
     return <Navigate to="/error" replace />;
   }
-
-  console.log(recruitmentQuery.data, applicationQuery.data);
+  
   return (
     <Dialog {...dialogProps} type="ALERT">
       <SectionBoxes

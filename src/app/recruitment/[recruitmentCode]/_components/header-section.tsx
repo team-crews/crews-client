@@ -6,16 +6,14 @@ const HeaderSection = () => {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 text-crews-bk02">
           <ThumbTackIcon className="h-5 w-5" />
-          <p className="text-2xl font-bold">지원서 작성하기</p>
+          <p className="text-2xl font-bold">지원 준비</p>
         </div>
         <div className="flex flex-col gap-1 text-crews-g05">
           <p className="text-base font-light">
-            지원서를 자유롭게 작성하세요. 모집 마감 전까지 자유롭게 제출
-            가능합니다.
+            좌측 미리보기를 통해 지원서를 확인하세요 😚
           </p>
           <p className="text-base font-light">
-            모집 마감 이후에도 작성한 지원서를 확인하실 수 있지만 제출은 불가능
-            합니다 😃
+            합격 메일은 지원 이메일로 전송되니 오타에 주의하세요.
           </p>
         </div>
       </div>
