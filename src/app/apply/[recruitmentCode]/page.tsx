@@ -3,7 +3,6 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import Container from '../../../components/shared/container';
 import useApplicantApi from '../../../apis/applicant-api';
-import { printCustomError } from '../../../lib/utils/error';
 import Loading from '../../../components/shared/loading';
 import { readRecruitmentByCode } from '../../../apis/base-api';
 import ApplySectionBox from './_components/apply-section-box';
@@ -15,6 +14,7 @@ import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import {
+  ICreatedAnswer,
   ISaveApplicationRequest,
   ITempAnswer,
   ITempApplication,
@@ -22,7 +22,9 @@ import {
   ITempSelectiveAnswer,
 } from '../../../lib/model/i-application';
 import { useToast } from '../../../hooks/use-toast';
-import FooterSection from './_components/footer-section.tsx';
+import FooterContainer from '../../../components/shared/footer-container';
+import { Button } from '../../../components/ui/button';
+import { printCustomError } from '../../../lib/utils/error.ts';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -56,7 +58,9 @@ const defaultApplication: IFormApplication = {
 
 const Page = () => {
   const { toast } = useToast();
+
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
+
   const { readApplication, saveApplication } = useApplicantApi(
     recruitmentCode!,
   );
@@ -67,7 +71,7 @@ const Page = () => {
     enabled: !!recruitmentCode,
   });
 
-  /** 저장된 값 없을 시 default 로 set 하도록 에러 핸들링 */
+  /** 저장된 값 없을 시 default로 set 하도록 에러 핸들링 */
   const { data: application, ...applicationQuery } = useQuery({
     queryKey: ['readApplication', recruitmentCode],
     queryFn: () => readApplication(),
@@ -89,7 +93,7 @@ const Page = () => {
     `answers.${untouchedFieldIndex.studentNumber}.content`,
   );
 
-  // choice 의 경우 submit 시 validation
+  // chocie의 경우 submit 시 validation
   const validateChoices = (answers: IFormAnswer[] | null) => {
     if (!answers) return;
 
@@ -138,6 +142,79 @@ const Page = () => {
     return valid;
   };
 
+  const onSubmit = async (data: IFormApplication) => {
+    const choiceValidate = validateChoices(data.answers);
+
+    if (!choiceValidate) {
+      onFormError();
+      return;
+    }
+
+    // FIXME: 강제로 answerId null로 설정하였는데, 기존 값이 있을 경우에는 그대로 사용하도록 수정 필요 (IFormApplication type 수정)
+    const convertedAnswers = data.answers.flatMap((answer) => {
+      if (answer.questionType === 'NARRATIVE') {
+        return [
+          {
+            answerId: null,
+            questionId: answer.questionId,
+            content: answer.content,
+            choiceId: null,
+            questionType: 'NARRATIVE',
+          } as ICreatedAnswer,
+        ];
+      } else if (answer.questionType === 'SELECTIVE') {
+        return (
+          answer.choiceIds?.map(
+            (choiceId) =>
+              ({
+                answerId: null,
+                questionId: answer.questionId,
+                content: null,
+                choiceId: choiceId,
+                questionType: 'SELECTIVE',
+              }) as ICreatedAnswer,
+          ) || []
+        );
+      }
+      return [];
+    });
+
+    const requestBody = {
+      id: data.id,
+      studentNumber: studentNumber || defaultApplication.studentNumber,
+      name: name || defaultApplication.name,
+      major: major || defaultApplication.major,
+      answers: convertedAnswers,
+      recruitmentCode: recruitmentCode!,
+    };
+
+    try {
+      const response = await saveMutate.mutateAsync(requestBody);
+
+      const convertedAnswers = convertAnswerToFormAnswer(response);
+
+      methods.reset({
+        id: response.id,
+        studentNumber: response.studentNumber,
+        name: response.name,
+        major: response.major,
+        answers: convertedAnswers,
+      });
+
+      toast({
+        title: '지원서 저장이 완료되었습니다.',
+        state: 'success',
+      });
+    } catch (e) {
+      printCustomError(e, 'saveApplication');
+
+      toast({
+        title: '예기치 못한 오류가 발생했습니다.',
+        state: 'error',
+      });
+    }
+  };
+
   const onFormError = () => {
     toast({
       title: '입력을 다시 확인해주세요.',
@@ -149,7 +226,7 @@ const Page = () => {
   const convertAnswerToFormAnswer = (
     application: ITempApplication,
   ): IFormAnswer[] => {
-    return application.answers.reduce(
+    const convertedFormAnswers: IFormAnswer[] = application.answers.reduce(
       (acc: IFormAnswer[], answer: ITempAnswer) => {
         if (answer.type === 'NARRATIVE') {
           // NARRATIVE 타입의 답변 변환
@@ -187,6 +264,8 @@ const Page = () => {
       },
       [] as IFormAnswer[],
     );
+
+    return convertedFormAnswers;
   };
 
   useEffect(() => {
@@ -236,7 +315,15 @@ const Page = () => {
             ))}
           </section>
 
-          <FooterSection />
+          <FooterContainer className="flex w-full justify-end">
+            <Button
+              type="button"
+              size="lg"
+              onClick={methods.handleSubmit(onSubmit)}
+            >
+              제출하기
+            </Button>
+          </FooterContainer>
         </form>
       </FormProvider>
     </Container>
