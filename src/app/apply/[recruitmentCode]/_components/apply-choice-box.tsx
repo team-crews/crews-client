@@ -31,7 +31,7 @@ const ApplyChoiceBox = ({
   };
 
   return (
-    <div key={choice.id} className="flex items-center gap-[0.5rem]">
+    <div key={choice.id} className="flex items-center gap-2">
       <input
         type="checkbox"
         checked={getValues(`answers.${currentAnswerIndex}.choiceIds`)?.includes(

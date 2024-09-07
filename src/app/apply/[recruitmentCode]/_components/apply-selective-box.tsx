@@ -4,30 +4,39 @@ import Typography from '../../../../components/shared/typography';
 import { IQuestion } from '../../../../lib/model/i-section';
 import { IFormApplication } from '../page';
 import ApplyChoiceBox from './apply-choice-box';
+import { useEffect } from 'react';
 
-const ApplySelectiveBox = ({ question }: { question: IQuestion }) => {
-  const { watch, setValue } = useFormContext<IFormApplication>();
+interface ApplySelectiveBoxProps {
+  question: IQuestion;
+}
+
+const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
+  const {
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext<IFormApplication>();
 
   const currentAnswerIndex = watch('answers').findIndex(
     (answer) =>
       answer.questionId === question.id && answer.questionType === 'SELECTIVE',
   );
 
-  // make new answer if not exist, currentAnswerIndex === -1인 item 생성 방지를 위해 return null
-  if (currentAnswerIndex === -1) {
-    setValue('answers', [
-      ...watch('answers'),
-      {
-        answerId: null,
-        questionId: question.id,
-        content: null,
-        choiceIds: [],
-        questionType: 'SELECTIVE',
-      },
-    ]);
-
-    return null;
-  }
+  // make new answer if not exist, cuurentAnswerIndex === -1인 item 생성 방지를 위해 return null
+  useEffect(() => {
+    if (currentAnswerIndex === -1) {
+      setValue('answers', [
+        ...watch('answers'),
+        {
+          answerId: null,
+          questionId: question.id,
+          content: null,
+          choiceIds: [],
+          questionType: 'SELECTIVE',
+        },
+      ]);
+    }
+  }, [currentAnswerIndex, question.id, setValue, watch]);
 
   const necessityText = question.necessity ? '응답 필수' : '';
 
@@ -53,7 +62,6 @@ const ApplySelectiveBox = ({ question }: { question: IQuestion }) => {
             {displayText}
           </Typography>
         </div>
-
         <div className="flex flex-col gap-1">
           {question.choices.map((choice) => (
             <ApplyChoiceBox
@@ -64,6 +72,11 @@ const ApplySelectiveBox = ({ question }: { question: IQuestion }) => {
           ))}
         </div>
       </div>
+      {errors.answers?.[currentAnswerIndex] && (
+        <Typography className="text-xs text-crews-r03">
+          {errors.answers[currentAnswerIndex]?.message}
+        </Typography>
+      )}
     </Container>
   );
 };

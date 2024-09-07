@@ -3,6 +3,8 @@ import FaceSadTearIcon from '../../assets/icons/face-sad-tear-icon.svg?react';
 import { Button } from '../../components/ui/button.tsx';
 import { useNavigate } from 'react-router-dom';
 
+const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
+
 const Page = () => {
   const navigate = useNavigate();
   return (
@@ -15,11 +17,11 @@ const Page = () => {
           </p>
           <p className="mb-4 text-sm font-semibold text-crews-b07">
             <a
-              href="https://open.kakao.com/o/suHXEsNg"
+              href={url}
               className="text-base font-light text-crews-b04"
               target="_blank"
             >
-              {'🤣 카카오톡 오픈채팅 (익명) '}
+              {'🤣 카카오톡 오픈채팅 '}
             </a>
             에 문의해주세요.
           </p>
