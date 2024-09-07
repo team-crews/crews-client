@@ -13,7 +13,7 @@ import { QuestionType } from '../../../lib/enums';
 import { IQuestion } from '../../../lib/model/i-section';
 import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ISaveApplicationRequest } from '../../../lib/model/i-application';
 import { useToast } from '../../../hooks/use-toast';
 import FooterContainer from '../../../components/shared/footer-container';
@@ -62,6 +62,7 @@ export const SHARED_SECTION_INDEX = 0;
 
 const Page = () => {
   const { toast } = useToast();
+  const [ableToSubmit, setAbleToSubmit] = useState<boolean>(false);
 
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
 
@@ -260,6 +261,19 @@ const Page = () => {
     }
   }, [application, methods]);
 
+  useEffect(() => {
+    if (recruitment) {
+      const now = new Date().getTime(); // 현재 시간
+      const deadline = new Date(recruitment.deadline).getTime(); // 마감일
+
+      if (now > deadline) {
+        setAbleToSubmit(false); // 마감일이 지났으면 제출 불가능
+      } else {
+        setAbleToSubmit(true); // 마감일이 지나지 않았으면 제출 가능
+      }
+    }
+  }, [recruitment]);
+
   const isRecruitmentError =
     recruitmentQuery.error ||
     !recruitment ||
@@ -320,8 +334,8 @@ const Page = () => {
               </div>
             </div>
             <FooterContainer className="flex w-full justify-end">
-              <Button type="submit" size="lg">
-                제출하기
+              <Button type="submit" size="lg" disabled={!ableToSubmit}>
+                {ableToSubmit ? '제출하기' : '모집 기간이 아닙니다.'}
               </Button>
             </FooterContainer>
           </form>
