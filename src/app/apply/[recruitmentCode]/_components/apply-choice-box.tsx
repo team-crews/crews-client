@@ -39,7 +39,7 @@ const ApplyChoiceBox = ({
         )}
         onChange={handleChange}
       />
-      <div className="text-sm font-light text-crews-bk01">{choice.content}</div>
+      <div className="text-[0.875rem] text-crews-bk01">{choice.content}</div>
     </div>
   );
 };
