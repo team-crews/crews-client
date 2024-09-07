@@ -71,7 +71,7 @@ const Page = () => {
   );
 
   const { data: recruitment, ...recruitmentQuery } = useQuery({
-    queryKey: ['recruitmentByCode'],
+    queryKey: ['recruitmentByCode', recruitmentCode],
     queryFn: () => readRecruitmentByCode(recruitmentCode!),
     enabled: !!recruitmentCode,
   });
