@@ -1,5 +1,6 @@
 import { ISection } from '../../../../lib/model/i-section';
 import { cn } from '../../../../lib/utils';
+import React from 'react';
 
 interface ApplySectionBoxProps extends Pick<ISection, 'name' | 'description'> {
   children?: React.ReactNode;
@@ -13,23 +14,19 @@ const ApplySectionBox = ({
   isSelectable = false,
 }: ApplySectionBoxProps) => {
   return (
-    <section>
-      <div
-        className={cn('flex w-full flex-col bg-crews-b04 p-[1.25rem]', {
-          'rounded-tr-[0.625rem]': isSelectable,
-          'rounded-t-[0.625rem]': !isSelectable,
-        })}
-      >
-        <div className="flex items-center justify-between">
-          <div className="bg-crews-b04 font-pretendard text-[1.375rem] font-bold text-crews-w01">
-            {name}
-          </div>
-        </div>
-        <div className="bg-crews-b04 font-pretendard text-[0.875rem] text-crews-w01">
-          {description}
-        </div>
+    <section
+      className={cn('overflow-hidden rounded-xl', {
+        'rounded-tl-none': isSelectable,
+        '': !isSelectable,
+      })}
+    >
+      <div className="flex h-fit w-full flex-col gap-1 bg-crews-b04 p-4">
+        <p className="w-full bg-inherit text-base font-bold text-crews-w01">
+          {name}
+        </p>
+        <p className="bg-inherit text-xs text-crews-w01">{description}</p>
       </div>
-      <div className="rounded-b-[0.625rem] bg-crews-b01 px-[1.25rem] py-[1.5rem]">
+      <div className="flex h-fit w-full flex-col gap-4 bg-crews-b01 p-4">
         {children}
       </div>
     </section>

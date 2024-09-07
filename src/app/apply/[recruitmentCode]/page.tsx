@@ -279,22 +279,26 @@ const Page = () => {
 
   return (
     <FormProvider {...methods}>
-      <Container className="mx-auto w-[630px]">
-        <div className="flex flex-col gap-[1.5rem] py-24">
+      <Container className="mx-auto w-[600px]">
+        <div className="flex flex-col py-24">
           <HeaderSection />
           <form onSubmit={methods.handleSubmit(onSubmit, onFormError)}>
-            <div className="flex flex-col gap-[1.5rem]">
+            <div className="mt-6 flex flex-col gap-8">
               <ApplySectionBox
                 key={sharedSection.id}
                 name={sharedSection.name}
                 description={sharedSection.description}
               >
-                <div className="flex flex-col gap-[1.5rem]">
+                <div className="flex flex-col gap-8">
                   {sharedSection.questions.map((question) => (
                     <RenderQuestion key={question.id} question={question} />
                   ))}
                 </div>
               </ApplySectionBox>
+
+              <p className="text-base font-light text-crews-g05">
+                제출 시 선택된 섹션의 내용만이 전송된다는 점 주의하세요.
+              </p>
               <div className="flex w-full flex-col">
                 <ApplySectionHeader
                   sections={recruitment.sections}
@@ -307,7 +311,7 @@ const Page = () => {
                   description={selectedSection.description}
                   isSelectable={true}
                 >
-                  <div className="flex flex-col gap-[1.5rem]">
+                  <div className="flex flex-col gap-8">
                     {selectedSection.questions.map((question) => (
                       <RenderQuestion key={question.id} question={question} />
                     ))}

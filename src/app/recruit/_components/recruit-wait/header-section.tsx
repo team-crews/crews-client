@@ -6,7 +6,7 @@ const HeaderSection = () => {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 text-crews-bk02">
           <ThumbTackIcon className="h-5 w-5" />
-          <p className="text-2xl font-bold">지원서 생성하기</p>
+          <p className="text-2xl font-bold">모집 대기</p>
         </div>
         <div className="flex flex-col gap-1 text-crews-g05">
           <p className="text-base font-light">

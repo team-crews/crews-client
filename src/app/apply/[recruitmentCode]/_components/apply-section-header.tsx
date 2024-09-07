@@ -14,7 +14,7 @@ const ApplySectionHeader = ({
   handleSelectionChange,
 }: ApplySectionHeaderProps) => {
   return (
-    <div className="flex w-full gap-[0.5rem]">
+    <div className="justify start flex w-full flex-row gap-1">
       {sections.map((section, index) => {
         if (index === SHARED_SECTION_INDEX) return null;
 
@@ -22,9 +22,10 @@ const ApplySectionHeader = ({
           <div
             key={section.id}
             className={cn(
-              'cursor-pointer rounded-t-[0.625rem] bg-crews-b03 px-[0.75rem] py-[0.5rem] font-pretendard text-[1rem] font-semibold text-crews-w01',
+              'cursor-pointer rounded-t-xl px-3 pb-2 pt-3 text-sm font-semibold text-crews-w01',
               {
-                'bg-crews-b04': selectionIndex === index,
+                'w-fit min-w-8 bg-crews-b04': selectionIndex === index,
+                'max-w-16 truncate bg-crews-b03': selectionIndex !== index,
               },
             )}
             onClick={() => handleSelectionChange(index)}

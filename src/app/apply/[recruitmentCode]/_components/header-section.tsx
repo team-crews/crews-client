@@ -10,7 +10,10 @@ const HeaderSection = () => {
         </div>
         <div className="flex flex-col gap-1 text-crews-g05">
           <p className="text-base font-light">
-            지원서는 모집 기간 이후 수정이 불가능하니 신중하게 작성해주세요.
+            모집 마감 전까지 자유롭게 제출 가능하며 제출된 지원서는 저장됩니다.
+          </p>
+          <p className="text-base font-light">
+            모집 마감 이후에는 지원서를 제출할 수 없으니 주의해주세요 😱
           </p>
         </div>
       </div>
