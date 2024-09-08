@@ -1,5 +1,6 @@
 import { IRecruitment } from '../../lib/model/i-recruitment.ts';
 import { useEffect } from 'react';
+import dayjs from 'dayjs';
 
 const RecruitMetaBox = ({
   title,
@@ -7,7 +8,9 @@ const RecruitMetaBox = ({
   deadline,
 }: Pick<IRecruitment, 'title' | 'description' | 'deadline'>) => {
   useEffect(() => {
-    const textarea = document.querySelector('#tmp') as HTMLTextAreaElement;
+    const textarea = document.querySelector(
+      '#meta-textarea',
+    ) as HTMLTextAreaElement;
 
     if (textarea) {
       textarea.style.height = 'auto';
@@ -32,11 +35,11 @@ const RecruitMetaBox = ({
         </p>
         <textarea
           disabled
-          id="tmp"
+          id="meta-textarea"
           className="w-full cursor-default text-sm text-crews-bk01 placeholder:text-crews-g03"
-        >
-          {description}
-        </textarea>
+          value={description}
+          readOnly
+        />
       </div>
 
       <div>
@@ -44,7 +47,7 @@ const RecruitMetaBox = ({
           마감 일자
         </p>
         <p className="w-full text-sm text-crews-bk01 placeholder:text-crews-g03">
-          {deadline}
+          {dayjs(deadline).format('YYYY년 MM월 DD일 hh:mm A')}
         </p>
       </div>
     </div>
