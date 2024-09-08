@@ -283,7 +283,7 @@ const Page = () => {
   if (applicationQuery.isFetching || recruitmentQuery.isFetching)
     return <Loading />;
   else if (isRecruitmentError) {
-    printCustomError(recruitmentQuery.error, 'readRecruitmentByCode');
+    printCustomError(recruitmentQuery.error, 'readQuery');
     return <Navigate to="/error" replace />;
   } else if (applicationQuery.isError) {
     printCustomError(applicationQuery.error, 'readApplication');
@@ -311,7 +311,7 @@ const Page = () => {
               </ApplySectionBox>
 
               <p className="text-base font-light text-crews-g05">
-                제출 시 선택된 섹션의 내용만이 전송된다는 점 주의하세요.
+                제출 시 선택된 섹션의 내용만이 저장됩니다.
               </p>
               <div className="flex w-full flex-col">
                 <ApplySectionHeader

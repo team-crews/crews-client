@@ -93,7 +93,7 @@ const SectionBox = ({
                 isFilledInput(v, '채워지지 않은 섹션 설명이 존재해요.'),
             },
           })}
-          className="bg-inhe명rit text-xs text-crews-w01 placeholder:text-crews-b02"
+          className="bg-inherit text-xs text-crews-w01 placeholder:text-crews-b02"
           placeholder="섹션에 대한 설명을 작성해주세요."
         />
       </div>
