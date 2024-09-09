@@ -306,31 +306,35 @@ const Page = () => {
                   ))}
                 </div>
               </ApplySectionBox>
-
-              <p className="text-base font-light text-crews-g05">
-                제출 시 선택된 섹션의 내용만이 저장됩니다.
-              </p>
               {selectedSection && (
-                <div className="flex w-full flex-col">
-                  <ApplySectionHeader
-                    sections={recruitment.sections}
-                    selectionIndex={sectionSelections}
-                    handleSelectionChange={handleSectionSelectionChange}
-                  />
+                <>
+                  <p className="mt-4 text-base font-semibold text-crews-bk01">
+                    제출 시 선택된 섹션의 내용만이 저장됩니다.
+                  </p>
+                  <div className="flex w-full flex-col">
+                    <ApplySectionHeader
+                      sections={recruitment.sections}
+                      selectionIndex={sectionSelections}
+                      handleSelectionChange={handleSectionSelectionChange}
+                    />
 
-                  <ApplySectionBox
-                    key={selectedSection.id}
-                    name={selectedSection.name}
-                    description={selectedSection.description}
-                    isSelectable={true}
-                  >
-                    <div className="flex flex-col gap-8">
-                      {selectedSection.questions.map((question) => (
-                        <RenderQuestion key={question.id} question={question} />
-                      ))}
-                    </div>
-                  </ApplySectionBox>
-                </div>
+                    <ApplySectionBox
+                      key={selectedSection.id}
+                      name={selectedSection.name}
+                      description={selectedSection.description}
+                      isSelectable={true}
+                    >
+                      <div className="flex flex-col gap-8">
+                        {selectedSection.questions.map((question) => (
+                          <RenderQuestion
+                            key={question.id}
+                            question={question}
+                          />
+                        ))}
+                      </div>
+                    </ApplySectionBox>
+                  </div>
+                </>
               )}
             </div>
             <FooterContainer className="flex w-full justify-end">
