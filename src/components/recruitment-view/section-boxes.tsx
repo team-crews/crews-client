@@ -45,6 +45,29 @@ const SectionBox = ({
   );
 };
 
+function findSelectedSection(
+  sections: ISection[],
+  answers: IAnswer[],
+): number[] {
+  const answerMap = new Map(
+    answers.map((answer) => [answer.questionId, answer]),
+  );
+
+  return sections.reduce((answeredSections: number[], section) => {
+    const hasAnsweredQuestion = section.questions.some((question) => {
+      const answer = answerMap.get(question.id);
+      // @ts-expect-error Fix Me later answer type or question type?
+      return answer && answer.type === question.type;
+    });
+
+    if (hasAnsweredQuestion) {
+      answeredSections.push(section.id);
+    }
+
+    return answeredSections;
+  }, []);
+}
+
 const SectionBoxes = ({
   sections,
   answers,
@@ -52,17 +75,23 @@ const SectionBoxes = ({
   sections: ISection[];
   answers?: IAnswer[];
 }) => {
+  const selectedSectionIds = answers
+    ? findSelectedSection(sections, answers)
+    : false;
+
   return (
     <section className="flex h-fit w-full flex-col gap-8">
-      {sections.map((section) => (
-        <SectionBox
-          key={section.id}
-          name={section.name}
-          answers={answers}
-          description={section.description}
-          questions={section.questions}
-        />
-      ))}
+      {sections.map((section) =>
+        !selectedSectionIds || selectedSectionIds.includes(section.id) ? (
+          <SectionBox
+            key={section.id}
+            name={section.name}
+            answers={answers}
+            description={section.description}
+            questions={section.questions}
+          />
+        ) : null,
+      )}
     </section>
   );
 };

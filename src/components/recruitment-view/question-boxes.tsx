@@ -28,13 +28,13 @@ const QuestionBoxes = ({
 
         return question.type === 'SELECTIVE' ? (
           <SelectiveBox
-            key={question.id}
+            key={crypto.randomUUID()}
             question={question}
             answers={filteredAnswers as ISelectiveAnswer[]}
           />
         ) : (
           <NarrativeBox
-            key={question.id}
+            key={crypto.randomUUID()}
             question={question}
             answers={
               filteredAnswers
