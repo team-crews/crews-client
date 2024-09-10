@@ -86,11 +86,31 @@ export const convertFormAnswerToAnswer = (answers: IFormAnswer[]) => {
   return convertedAnswers;
 };
 
+/**
+ * Filter answers related to selected or shared section
+ * If selected section is undefined, filter only shared section
+ * @param answers - answers to filter
+ * @param selectedSection - selected section
+ * @param sharedSection - shared section
+ * @returns filtered answers
+ */
 export const filterSelectedAnswer = (
   answers: IFormAnswer[],
-  selectedSection: ISection,
+  selectedSection: ISection | undefined,
   sharedSection: ISection,
 ) => {
+  if (!selectedSection) {
+    // questionIds 추출
+    const questionIds = [
+      ...sharedSection.questions.map((question) => question.id),
+    ];
+
+    const filteredAnswers = answers.filter((answer) =>
+      questionIds.includes(answer.questionId),
+    );
+
+    return filteredAnswers;
+  }
   // questionIds 추출
   const questionIds = [
     ...selectedSection.questions.map((question) => question.id),
@@ -104,11 +124,27 @@ export const filterSelectedAnswer = (
   return filteredAnswers;
 };
 
+/**
+ * Check answer is related to selected or shared section
+ * If selected section is undefined, check only shared section
+ * @param answer - answer to check
+ * @param selectedSection - selected section
+ * @param sharedSection - shared section
+ * @returns boolean
+ */
 export const checkSelectedAnswer = (
   answer: IFormAnswer,
-  selectedSection: ISection,
+  selectedSection: ISection | undefined,
   sharedSection: ISection,
 ) => {
+  if (!selectedSection) {
+    const questionIds = [
+      ...sharedSection.questions.map((question) => question.id),
+    ];
+
+    return questionIds.includes(answer.questionId);
+  }
+
   // questionIds 추출
   const questionIds = [
     ...selectedSection.questions.map((question) => question.id),

@@ -119,7 +119,7 @@ const Page = () => {
 
   // chocie의 경우 submit 시 validation
   const validateChoices = (answers: IFormAnswer[] | null) => {
-    if (!answers || !selectedSection || !sharedSection) return;
+    if (!answers || !sharedSection) return;
 
     let valid: boolean = true;
 
@@ -185,7 +185,7 @@ const Page = () => {
     // submit 시 choice validation 수행
     const choiceValidate = validateChoices(data.answers);
 
-    if (!choiceValidate || !selectedSection || !sharedSection) {
+    if (!choiceValidate || !sharedSection) {
       onFormError();
       return;
     }
