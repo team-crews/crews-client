@@ -171,8 +171,13 @@ export const getInitialSectionSelection = (
     if (sharedQuestionIds.includes(answer.questionId)) {
       return false;
     }
+
     return true;
   });
+
+  if (nonSharedAnswers.length === 0) {
+    return 1;
+  }
 
   const questionId = nonSharedAnswers[0].questionId;
 
