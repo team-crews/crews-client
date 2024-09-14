@@ -4,9 +4,10 @@ import ApplyForm from './_components/apply-form.tsx';
 import InfoSection from './_components/info-section.tsx';
 import { readRecruitmentByCode } from '../../../apis/base-api.ts';
 import { useQuery } from '@tanstack/react-query';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Loading from '../../../components/shared/loading.tsx';
 import { printCustomError } from '../../../lib/utils/error.ts';
+import { Button } from '../../../components/ui/button.tsx';
 
 const Page = () => {
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
@@ -16,10 +17,23 @@ const Page = () => {
     queryFn: () => readRecruitmentByCode(recruitmentCode!),
   });
 
+  const navigate = useNavigate();
+
   if (readQuery.isFetching) return <Loading />;
   else if (readQuery.isError || !readQuery.data) {
-    printCustomError(readQuery.error, 'readQuery');
-    return <Navigate to="/error" replace />;
+    if (printCustomError(readQuery.error, 'readQuery') === 404)
+      return (
+        <Container className="flex flex-col items-center justify-center gap-2">
+          <p className="text-xl font-semibold text-crews-b05">
+            존재하지 않는 모집 코드입니다 😂
+          </p>
+          <p>모집 코드를 다시 확인해주세요.</p>
+          <Button onClick={() => navigate(-1)} size="sm">
+            돌아가기
+          </Button>
+        </Container>
+      );
+    else return <Navigate to="/error" replace />;
   }
   return (
     <Container className="flex flex-row justify-around">

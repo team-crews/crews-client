@@ -20,7 +20,11 @@ const CompetitionRateSection = ({
       <p className="text-crews-g04">
         {passedNumber === 0
           ? '경쟁률 계산을 위해 합격자를 선택해주세요'
-          : `현재 경쟁률은 ${totalNumber / passedNumber - 1} : 1 입니다`}
+          : (() => {
+              const ratio = totalNumber / passedNumber - 1;
+              const formattedRatio = Number(ratio.toFixed(2));
+              return `현재 경쟁률은 ${formattedRatio} : 1 입니다`;
+            })()}
       </p>
     </section>
   );
