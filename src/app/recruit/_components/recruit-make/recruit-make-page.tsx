@@ -4,12 +4,8 @@ import SectionBoxes from './details/section-boxes.tsx';
 import Container from '../../../../components/shared/container.tsx';
 import HeaderSection from './header-section.tsx';
 import FooterSection from './footer-section.tsx';
-import {
-  CREATED_RECRUITMENT,
-  ICreatedRecruitment,
-} from '../../../../lib/model/i-recruitment.ts';
+import { ICreatedRecruitment } from '../../../../lib/types/models/i-recruitment.ts';
 import RecruitMetaSection from './details/recruit-meta-section.tsx';
-import { CREATED_SECTION } from '../../../../lib/model/i-section.ts';
 import { useEffect, useState } from 'react';
 import { printCustomError } from '../../../../lib/utils/error.ts';
 import { Navigate } from 'react-router-dom';
@@ -18,6 +14,10 @@ import useAdminApi from '../../../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useToast } from '../../../../hooks/use-toast.ts';
+import {
+  CREATED_RECRUITMENT,
+  CREATED_SECTION,
+} from '../../../../lib/types/default-data.ts';
 
 const RecruitMakePage = () => {
   const methods = useForm<ICreatedRecruitment>({

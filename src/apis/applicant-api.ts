@@ -1,15 +1,9 @@
 import useAuthInstance from './instance.ts';
+import { ISaveApplicationResponse } from './i-response-body/i-response-body.ts';
 import {
-  // IReadApplicationResponse,
-  ISaveApplicationResponse,
-  // isIReadApplicationResponse,
-  // isISaveApplicationResponse,
-} from '../lib/model/i-response-body.ts';
-import {
-  // ICreatedApplication,
   ISaveApplicationRequest,
   ITempReadApplicationResponse,
-} from '../lib/model/i-application.ts';
+} from '../lib/types/models/i-application.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
 
 const useApplicantApi = (recruitmentCode: string) => {

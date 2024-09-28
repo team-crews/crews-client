@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { ICreatedRecruitment } from '../../../../../lib/model/i-recruitment.ts';
+import { ICreatedRecruitment } from '../../../../../lib/types/models/i-recruitment.ts';
 import { useEffect } from 'react';
 import {
   isFilledInput,

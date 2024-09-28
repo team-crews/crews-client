@@ -4,8 +4,8 @@ import {
   ITempApplication,
   ITempNarrativeAnswer,
   ITempSelectiveAnswer,
-} from '../../../../lib/model/i-application';
-import { ISection } from '../../../../lib/model/i-section';
+} from '../../../../lib/types/models/i-application.ts';
+import { ISection } from '../../../../lib/types/models/i-section.ts';
 import { IFormAnswer, SHARED_SECTION_INDEX } from '../page';
 
 // Convert ICreatedApplication to IFormApplication

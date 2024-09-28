@@ -1,5 +1,5 @@
-import { ISection } from '../../lib/model/i-section.ts';
-import { IAnswer } from '../../lib/model/i-application.ts';
+import { ISection } from '../../lib/types/models/i-section.ts';
+import { IAnswer } from '../../lib/types/models/i-application.ts';
 import QuestionBoxes from './question-boxes.tsx';
 import { useEffect } from 'react';
 

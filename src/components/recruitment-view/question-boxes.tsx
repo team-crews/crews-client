@@ -1,16 +1,15 @@
-import {
-  INarrativeQuestion,
-  IQuestion,
-  ISelectiveQuestion,
-} from '../../lib/model/i-section.ts';
-
 import Container from '../shared/container.tsx';
 import Typography from '../shared/typography.tsx';
 import {
   IAnswer,
   INarrativeAnswer,
   ISelectiveAnswer,
-} from '../../lib/model/i-application.ts';
+} from '../../lib/types/models/i-application.ts';
+import {
+  INarrativeQuestion,
+  IQuestion,
+  ISelectiveQuestion,
+} from '../../lib/types/models/i-question.ts';
 
 const QuestionBoxes = ({
   questions,

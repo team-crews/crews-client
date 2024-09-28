@@ -1,4 +1,4 @@
-import { IRecruitment } from '../../../../lib/model/i-recruitment.ts';
+import { IRecruitment } from '../../../../lib/types/models/i-recruitment.ts';
 import Container from '../../../../components/shared/container.tsx';
 import RecruitMetaBox from '../../../../components/recruitment-view/recruit-meta-box.tsx';
 import SectionBoxes from '../../../../components/recruitment-view/section-boxes.tsx';

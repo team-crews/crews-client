@@ -7,14 +7,12 @@ import {
 import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
 import QuestionBoxes from './question-boxes.tsx';
 import { Button } from '../../../../../components/ui/button.tsx';
-import {
-  CREATED_SELECTIVE_QUESTION,
-  ICreatedSection,
-} from '../../../../../lib/model/i-section.ts';
-import { ICreatedRecruitment } from '../../../../../lib/model/i-recruitment.ts';
+import { ICreatedRecruitment } from '../../../../../lib/types/models/i-recruitment.ts';
 import { useEffect } from 'react';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
 import { useToast } from '../../../../../hooks/use-toast.ts';
+import { CREATED_SELECTIVE_QUESTION } from '../../../../../lib/types/default-data.ts';
+import { ICreatedSection } from '../../../../../lib/types/models/i-section.ts';
 
 const SectionBox = ({
   sectionIndex,

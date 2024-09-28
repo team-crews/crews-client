@@ -1,4 +1,4 @@
-import { ISection } from '../../../../lib/model/i-section';
+import { ISection } from '../../../../lib/types/models/i-section.ts';
 import { cn } from '../../../../lib/utils';
 import { SHARED_SECTION_INDEX } from '../page';
 

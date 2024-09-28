@@ -2,10 +2,12 @@ import useAuthInstance, { baseInstance } from './instance.ts';
 import {
   ILoginResponse,
   ILogoutResponse,
+} from './i-response-body/i-response-body.ts';
+import { throwCustomError } from '../lib/utils/error.ts';
+import {
   isILoginResponse,
   isILogoutResponse,
-} from '../lib/model/i-response-body.ts';
-import { throwCustomError } from '../lib/utils/error.ts';
+} from './i-response-body/i-response-body-tg.ts';
 
 async function adminLogin(requestBody: {
   clubName: string;

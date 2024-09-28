@@ -7,7 +7,7 @@ import useDialog from '../../../../hooks/use-dialog.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
 import Loading from '../../../../components/shared/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
-import { IProgress } from '../../../../lib/model/i-progress.ts';
+import { IProgress } from '../../../../lib/types/models/i-progress.ts';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
 

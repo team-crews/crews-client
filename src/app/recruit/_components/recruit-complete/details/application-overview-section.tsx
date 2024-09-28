@@ -1,6 +1,6 @@
-import { IApplicationOverview } from '../../../../../lib/model/i-application.ts';
+import { IApplicationOverview } from '../../../../../lib/types/models/i-application.ts';
 import OverviewCard from './overveiw-card.tsx';
-import { IProgress } from '../../../../../lib/model/i-progress.ts';
+import { IProgress } from '../../../../../lib/types/models/i-progress.ts';
 
 type Props = {
   progress: IProgress;

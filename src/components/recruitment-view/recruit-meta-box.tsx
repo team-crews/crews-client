@@ -1,4 +1,4 @@
-import { IRecruitment } from '../../lib/model/i-recruitment.ts';
+import { IRecruitment } from '../../lib/types/models/i-recruitment.ts';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
 

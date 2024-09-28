@@ -9,6 +9,11 @@ import {
   ISaveEvaluationResponse,
   ISaveRecruitmentResponse,
   ISendEvaluationMailResponse,
+  IStartRecruitmentResponse,
+} from './i-response-body/i-response-body.ts';
+import { ICreatedRecruitment } from '../lib/types/models/i-recruitment.ts';
+import { throwCustomError } from '../lib/utils/error.ts';
+import {
   isIChangeDeadlineResponse,
   isIReadApplicationDetailResponse,
   isIReadApplicationOverviewsResponse,
@@ -19,10 +24,7 @@ import {
   isISaveRecruitmentResponse,
   isISendEvaluationMailResponse,
   isIStartRecruitmentResponse,
-  IStartRecruitmentResponse,
-} from '../lib/model/i-response-body.ts';
-import { ICreatedRecruitment } from '../lib/model/i-recruitment.ts';
-import { throwCustomError } from '../lib/utils/error.ts';
+} from './i-response-body/i-response-body-tg.ts';
 
 const useAdminApi = () => {
   const { authInstance } = useAuthInstance();

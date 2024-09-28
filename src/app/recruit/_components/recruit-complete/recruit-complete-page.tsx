@@ -5,7 +5,7 @@ import ApplicationOverviewSection from './details/application-overview-section.t
 import { useQuery } from '@tanstack/react-query';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import usePassedApplicationIds from './details/usePassedApplicationIds.ts';
-import { IProgress } from '../../../../lib/model/i-progress.ts';
+import { IProgress } from '../../../../lib/types/models/i-progress.ts';
 import Loading from '../../../../components/shared/loading.tsx';
 import FooterSection from './footer-section.tsx';
 

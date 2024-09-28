@@ -1,6 +1,6 @@
 import Container from '../../components/shared/container.tsx';
 import RecruitWaitPage from './_components/recruit-wait/recruit-wait-page.tsx';
-import { IProgress } from '../../lib/model/i-progress.ts';
+import { IProgress } from '../../lib/types/models/i-progress.ts';
 import RecruitCompletePage from './_components/recruit-complete/recruit-complete-page.tsx';
 import RecruitMakePage from './_components/recruit-make/recruit-make-page.tsx';
 import useAdminApi from '../../apis/admin-api.ts';

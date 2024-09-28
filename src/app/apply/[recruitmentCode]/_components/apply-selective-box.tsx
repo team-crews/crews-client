@@ -1,10 +1,10 @@
 import { useFormContext } from 'react-hook-form';
 import Container from '../../../../components/shared/container';
 import Typography from '../../../../components/shared/typography';
-import { IQuestion } from '../../../../lib/model/i-section';
 import { IFormApplication } from '../page';
 import ApplyChoiceBox from './apply-choice-box';
 import { useEffect } from 'react';
+import { IQuestion } from '../../../../lib/types/models/i-question.ts';
 
 interface ApplySelectiveBoxProps {
   question: IQuestion;
