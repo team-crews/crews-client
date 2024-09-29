@@ -36,7 +36,7 @@ export const NarrativeQuestionSchema = BaseQuestionSchema.extend({
       FixMe
       - Need a better way to express an empty array, or change it to null
      */
-  choices: z.string().array().length(0),
+  choices: z.array(z.any()).length(0),
 });
 export const CreatedNarrativeQuestionSchema = WithNullableIdSchema(
   NarrativeQuestionSchema,

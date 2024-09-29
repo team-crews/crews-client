@@ -1,6 +1,6 @@
 import { WithNullableId } from './i-nullable-id.ts';
 
-type IBaseQuestion = {
+export type IBaseQuestion = {
   id: number;
   content: string;
   necessity: boolean;

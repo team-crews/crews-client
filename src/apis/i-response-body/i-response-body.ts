@@ -46,5 +46,3 @@ export type ILoginResponse = {
 };
 
 export type ILogoutResponse = NoResponseData;
-
-// ---------------------------------- Type Guards ----------------------------------
