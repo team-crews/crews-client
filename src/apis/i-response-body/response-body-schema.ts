@@ -29,7 +29,8 @@ export const LoginResponseSchema = z.object({
 
 export const LogoutResponseSchema = NoResponseDataSchema;
 
-export const ReadRecruitmentResponseSchema = RecruitmentSchema;
+export const ReadRecruitmentResponseSchema =
+  RecruitmentSchema.or(NoResponseDataSchema);
 
 export const SaveRecruitmentResponseSchema = RecruitmentSchema;
 

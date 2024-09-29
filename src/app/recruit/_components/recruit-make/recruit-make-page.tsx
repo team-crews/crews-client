@@ -65,7 +65,7 @@ const RecruitMakePage = () => {
 
   if (readQuery.isFetching) return <Loading />;
   else if (readQuery.isError) {
-    printCustomError(readQuery.error, 'readQuery');
+    printCustomError(readQuery.error, 'readRecruitment');
     return <Navigate to="/error" replace />;
   }
   return (
