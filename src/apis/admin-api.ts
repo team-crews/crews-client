@@ -36,9 +36,7 @@ const useAdminApi = () => {
     z.infer<typeof ReadRecruitmentProgressResponseSchema>
   > {
     const response = await authInstance.get('/recruitments/progress');
-    // @ts-expect-error testing
-    return ReadRecruitmentInProgressDetailResponseSchema.parse(response.data);
-    // return ReadRecruitmentProgressResponseSchema.parse(response.data);
+    return ReadRecruitmentProgressResponseSchema.parse(response.data);
   }
 
   async function readRecruitmentInProgressDetail(): Promise<
