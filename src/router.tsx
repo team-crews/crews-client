@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import RootLayout from './app/layout.tsx';
 import AuthRouteWrapper from './components/wrapper/auth-redirect-wrapper.tsx';
-import LandingPage from './app/page.tsx';
+import LandingPage from './app/landing/page.tsx';
 import SignInPage from './app/sign-in/page.tsx';
 import RecruitmentPage from './app/recruitment/[recruitmentCode]/page.tsx';
 import ApplyPage from './app/apply/[recruitmentCode]/page.tsx';
@@ -27,8 +27,9 @@ const router: ReturnType<typeof createBrowserRouter> =
         errorElement={<RootErrorBoundary />}
       >
         <Route element={<RootLayout />}>
+          <Route path="/" element={<LandingPage />} />
           <Route element={<AuthRouteWrapper />}>
-            <Route path="/" element={<LandingPage />} />
+            {/*<Route path="/" element={<LandingPage />} />*/}
             <Route path="/sign-in" element={<SignInPage />} />
 
             <Route
