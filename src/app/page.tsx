@@ -1,12 +1,10 @@
 import LandingRecruit from '../assets/images/landing-recruit.png';
 import LandingApply from '../assets/images/landing-apply.png';
 import Container from '../components/shared/container.tsx';
-import Header from '../components/molecule/header.tsx';
 
 const Page = () => {
   return (
     <Container className="flex overflow-hidden">
-      <Header />
       <div className="flex flex-1 justify-center">
         <div className="mt-32 flex flex-col items-center">
           <div className="flex w-[350px] flex-col text-center">

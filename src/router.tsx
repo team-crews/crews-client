@@ -7,6 +7,7 @@ import RootLayout from './app/layout.tsx';
 import AuthRouteWrapper from './components/wrapper/auth-redirect-wrapper.tsx';
 import LandingPage from './app/page.tsx';
 import SignInPage from './app/sign-in/page.tsx';
+import SignUpPage from './app/sign-up/page.tsx';
 import RecruitmentPage from './app/recruitment/[recruitmentCode]/page.tsx';
 import ApplyPage from './app/apply/[recruitmentCode]/page.tsx';
 import RecruitPage from './app/recruit/page.tsx';
@@ -26,6 +27,7 @@ const router: ReturnType<typeof createBrowserRouter> =
         <Route element={<MobileRestrictionWrapper />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
           {/*<Route path="/sign-up" element={<SignInPage />} />*/}
           <Route element={<AuthRouteWrapper />}>
             <Route

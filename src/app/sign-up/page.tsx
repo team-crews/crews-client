@@ -1,14 +1,14 @@
-import Container from '../../components/shared/container.tsx';
-import Seperator from '../../components/shared/seperator.tsx';
-import RecruitForm from './_components/recruit-form.tsx';
-import ApplyForm from './_components/apply-form.tsx';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '../../components/shadcn/tooltip.tsx';
+import Container from '../../components/shared/container.tsx';
+import Seperator from '../../components/shared/seperator.tsx';
+import { useState } from 'react';
+import ApplyForm from '../sign-in/_components/apply-form.tsx';
+import RecruitForm from '../sign-in/_components/recruit-form.tsx';
 
 type LoginType = 'RECRUITER' | 'APPLICANT';
 
@@ -28,7 +28,7 @@ const Page = () => {
           <p className="font-bold">
             {loginType === 'APPLICANT' ? '지원자' : '모집자'}
           </p>
-          <p>로그인</p>
+          <p>회원가입</p>
         </div>
 
         {loginType === 'APPLICANT' && <ApplyForm />}
@@ -50,12 +50,12 @@ const Page = () => {
           onClick={toggleLoginType}
           className="w-full rounded py-2 text-sm font-normal tracking-wide text-crews-bk01 outline outline-1 outline-crews-g03 hover:bg-crews-g01"
         >
-          {loginType === 'APPLICANT' ? '지원자' : '모집자'}로 로그인
+          {loginType === 'APPLICANT' ? '지원자' : '모집자'}로 회원가입
         </button>
 
         <div className="flex w-full justify-center gap-4 py-3 text-sm font-thin text-crews-g05">
-          <Link to="/sign-up" className="hover:underline">
-            회원가입
+          <Link to="/sign-in" className="hover:underline">
+            로그인
           </Link>
           <Tooltip>
             <TooltipTrigger>

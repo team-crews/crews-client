@@ -1,43 +1,43 @@
-import Input, { InputState } from '../../../components/shared/input.tsx';
-import { Button } from '../../../components/ui/button.tsx';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from '../../../hooks/use-toast.ts';
 import { useState } from 'react';
-import { adminLogin } from '../../../apis/auth-api.ts';
-import { useNavigate } from 'react-router-dom';
 import useSession from '../../../hooks/use-session.ts';
+import { validateEmail, validatePassword } from '../../../lib/utils/regex.ts';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import Input, { InputState } from '../../../components/shared/input.tsx';
+import { Button } from '../../../components/ui/button.tsx';
+import { applicantLogin } from '../../../apis/auth-api.ts';
 import { printCustomError } from '../../../lib/utils/error.ts';
-import {
-  validateClubName,
-  validatePassword,
-} from '../../../lib/utils/regex.ts';
 
-type RecruitInputs = {
-  clubName: string;
+type ApplyInputs = {
+  email: string;
   password: string;
 };
 
-const RecruitForm = () => {
+const ApplyForm = () => {
+  const navigate = useNavigate();
+  const { recruitmentCode } = useParams();
+
   const { toast } = useToast();
   const [error, setError] = useState<boolean>(false);
 
+  const { setSession } = useSession();
+
   const { register, resetField, handleSubmit, formState } =
-    useForm<RecruitInputs>({
+    useForm<ApplyInputs>({
       defaultValues: {
-        clubName: '',
+        email: '',
         password: '',
       },
     });
 
-  const navigate = useNavigate();
-  const { setSession } = useSession();
-  const onSubmit: SubmitHandler<RecruitInputs> = async (data) => {
-    const clubNameValidation = validateClubName(data.clubName);
+  const onSubmit: SubmitHandler<ApplyInputs> = async (data) => {
+    const emailValidation = validateEmail(data.email);
     const passwordValidation = validatePassword(data.password);
 
-    if (clubNameValidation || passwordValidation) {
+    if (emailValidation || passwordValidation) {
       toast({
-        title: clubNameValidation || passwordValidation,
+        title: emailValidation || passwordValidation,
         state: 'error',
       });
       setError(true);
@@ -45,28 +45,30 @@ const RecruitForm = () => {
     }
 
     try {
-      const { accessToken, username } = await adminLogin(data);
+      const { accessToken, username } = await applicantLogin(data);
+
+      if (recruitmentCode)
+        localStorage.setItem('recruitmentCode', recruitmentCode);
+
       setSession(accessToken, username);
-      navigate('/recruit');
+      navigate(`/apply/${recruitmentCode}`);
     } catch (e) {
-      const errorStatus = printCustomError(e, 'adminLogin');
+      const errorStatus = printCustomError(e, 'applicantLogin');
 
       let title = '예기치 못한 문제가 발생했습니다.';
       if (errorStatus === 401) title = '잘못된 비밀번호입니다.';
+
       toast({
         title,
         state: 'error',
       });
+
       setError(true);
     }
   };
 
-  const inputState: Record<keyof RecruitInputs, InputState> = {
-    clubName: error
-      ? 'error'
-      : formState.dirtyFields.clubName
-        ? 'filled'
-        : 'empty',
+  const inputState: Record<keyof ApplyInputs, InputState> = {
+    email: error ? 'error' : formState.dirtyFields.email ? 'filled' : 'empty',
     password: error
       ? 'error'
       : formState.dirtyFields.password
@@ -75,25 +77,23 @@ const RecruitForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <fieldset className="mb-3">
         <Input
-          maxLength={30}
-          state={inputState.clubName}
+          state={inputState.email}
           className="mb-3"
-          registerReturns={register('clubName', {
+          registerReturns={register('email', {
             onChange: () => {
               setError(false);
             },
           })}
           clearInput={() => {
-            resetField('clubName');
+            resetField('email');
             setError(false);
           }}
-          placeholder="동아리명"
+          placeholder="이메일"
         />
         <Input
-          maxLength={30}
           state={inputState.password}
           type="password"
           registerReturns={register('password', {
@@ -110,10 +110,10 @@ const RecruitForm = () => {
       </fieldset>
 
       <Button className="w-full" disabled={error}>
-        모집하기
+        지원하기
       </Button>
     </form>
   );
 };
 
-export default RecruitForm;
+export default ApplyForm;

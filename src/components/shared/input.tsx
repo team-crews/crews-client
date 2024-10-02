@@ -10,12 +10,12 @@ import { cva, VariantProps } from 'class-variance-authority';
 export type InputState = 'error' | 'filled' | 'empty';
 
 const variants = cva(
-  'w-full rounded-md p-2.5 text-sm font-medium outline-2 placeholder:font-normal placeholder:text-crews-g04 focus:bg-crews-b02 focus:outline focus:outline-crews-b04',
+  'w-full rounded py-2 text-sm font-normal text-crews-bk02 outline outline-1 indent-2 outline-crews-g03 placeholder:font-normal placeholder:text-crews-g04 focus:bg-crews-b02 focus:outline-2 hover:outline-crews-g05 focus:outline-crews-b04',
   {
     variants: {
       state: {
-        empty: 'bg-crews-g01',
-        filled: 'outline outline-crews-g01 bg-crews-w01',
+        empty: '',
+        filled: '',
         error:
           'outline outline-crews-r02 bg-crews-r01 focus:outline-crews-r02 focus:bg-crews-r01 animation-shake',
       },
