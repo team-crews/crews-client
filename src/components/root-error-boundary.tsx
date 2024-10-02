@@ -3,7 +3,7 @@ import React from 'react';
 import * as Sentry from '@sentry/react';
 import Container from './shared/container.tsx';
 import { getErrorMessage } from '../lib/utils/error.ts';
-import HelpButton from './shared/help-button.tsx';
+import HelpSidebar from './molecule/help-sidebar.tsx';
 import FaceSadTearIcon from '../assets/icons/face-sad-tear-icon.svg?react';
 
 const RootErrorBoundary = () => {
@@ -39,7 +39,7 @@ const RootErrorBoundary = () => {
           </button>
         </div>
       </Container>
-      <HelpButton />
+      <HelpSidebar />
     </>
   );
 };
