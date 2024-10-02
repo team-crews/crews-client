@@ -2,14 +2,15 @@ import useBreakpoints from '../../hooks/use-breakpoints.ts';
 import { Outlet } from 'react-router-dom';
 
 import AnchorIcon from '../../assets/icons/anchor-icon.svg?react';
+import Container from '../shared/container.tsx';
 
-const ResponsiveWrapper = () => {
+const MobileRestrictionWrapper = () => {
   const { isSmaller } = useBreakpoints({ breakpoint: 'md' });
 
   return (
     <>
       {isSmaller && (
-        <div className="fixed left-0 top-0 z-50 flex h-dvh w-dvw items-center justify-center bg-white">
+        <Container className="fixed left-0 top-0 z-50 flex items-center justify-center bg-white">
           <div className="mb-6 flex flex-col">
             <p className="text-xl font-semibold">누구나 쉽게 모집 · 지원</p>
             <div className="flex items-center gap-2 font-bold text-crews-b05">
@@ -20,11 +21,11 @@ const ResponsiveWrapper = () => {
               죄송합니다. 데스크탑 혹은 노트북 화면으로 접속해주세요. 😢
             </p>
           </div>
-        </div>
+        </Container>
       )}
       <Outlet />
     </>
   );
 };
 
-export default ResponsiveWrapper;
+export default MobileRestrictionWrapper;

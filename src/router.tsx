@@ -11,7 +11,7 @@ import RecruitmentPage from './app/recruitment/[recruitmentCode]/page.tsx';
 import ApplyPage from './app/apply/[recruitmentCode]/page.tsx';
 import RecruitPage from './app/recruit/page.tsx';
 import ErrorPage from './app/error/page.tsx';
-import ResponsiveWrapper from './components/wrapper/responsive-wrapper.tsx';
+import MobileRestrictionWrapper from './components/wrapper/mobile-restriction-wrapper.tsx';
 import * as Sentry from '@sentry/react';
 
 import RootErrorBoundary from './components/root-error-boundary.tsx';
@@ -22,11 +22,8 @@ const sentryCreateBrowserRouter =
 const router: ReturnType<typeof createBrowserRouter> =
   sentryCreateBrowserRouter(
     createRoutesFromElements(
-      <Route
-        element={<ResponsiveWrapper />}
-        errorElement={<RootErrorBoundary />}
-      >
-        <Route element={<RootLayout />}>
+      <Route element={<RootLayout />} errorElement={<RootErrorBoundary />}>
+        <Route element={<MobileRestrictionWrapper />}>
           <Route path="/" element={<LandingPage />} />
           <Route element={<AuthRouteWrapper />}>
             {/*<Route path="/" element={<LandingPage />} />*/}

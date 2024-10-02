@@ -1,19 +1,12 @@
 import Container from '../../components/shared/container.tsx';
-import AnchorIcon from '../../assets/icons/anchor-icon.svg?react';
 import LandingRecruit from '../../assets/images/landing-recruit.png';
 import LandingApply from '../../assets/images/landing-apply.png';
+import Header from '../../components/molecule/header.tsx';
 
 const Page = () => {
   return (
     <Container className="flex overflow-hidden">
-      <header className="fixed left-0 top-0 z-10 flex w-dvw items-center justify-between bg-transparent px-4 py-2">
-        <div className="flex items-center gap-2 text-crews-b05">
-          <AnchorIcon className="h-6 w-6" />
-          <p className="text-2xl font-semibold">Crews</p>
-        </div>
-        <div className="flex items-center gap-3 text-crews-bk01"></div>
-      </header>
-
+      <Header />
       <div className="flex flex-1 justify-center">
         <div className="mt-32 flex flex-col items-center">
           <div className="flex w-[350px] flex-col text-center">
@@ -40,12 +33,12 @@ const Page = () => {
               <p>크루즈에서,</p>
               <p>누구나 쉽게 모집</p>
             </div>
-            <p className="mt-4 text-base tracking-wide text-[#2F3234] text-crews-g06">
+            <p className="mt-4 text-base tracking-wide text-[#2F3234]">
               모집 공고 생성부터 합격 알림 발송까지
               <br />
               크루즈에서 쉽고 빠르게 진행해보세요
             </p>
-            <button className="mb-20 mt-12 rounded bg-[#2F3234] py-2 font-bold tracking-widest text-crews-w01 hover:bg-[#000]">
+            <button className="mb-20 mt-12 rounded-full bg-[#2F3234] py-2 font-bold tracking-widest text-crews-w01 hover:bg-[#000]">
               지금 바로 모집하기
             </button>
           </div>
