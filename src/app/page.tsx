@@ -14,12 +14,12 @@ const Page = () => {
               <p>누구나 쉽게 지원</p>
             </div>
             <p className="mt-4 text-base tracking-wide text-crews-g06">
-              모집코드를 통해 지원할 공고를 확인하고
+              지원할 동아리를 검색하고
               <br /> 지원 후 메일로 합격 여부를 확인해 보세요
             </p>
             <input
-              placeholder="모집 코드"
-              className="mb-20 mt-12 rounded py-2 indent-2 outline outline-crews-g02 placeholder:text-crews-g02 hover:outline-crews-g04"
+              placeholder="동아리명"
+              className="mb-20 mt-12 rounded py-2 indent-2 outline outline-crews-g03 placeholder:text-crews-g03 hover:outline-crews-g05"
             />
           </div>
           <img alt="지원서 예시" width={550} src={LandingApply} />
