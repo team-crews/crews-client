@@ -3,11 +3,14 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import useSession from '../../hooks/use-session';
 import useRefreshToken from '../../hooks/use-refresh-token';
 import { printCustomError } from '../../lib/utils/error';
-import { validatePublicRoute } from '../../lib/utils/regex.ts';
-import Header from '../shared/header.tsx';
 import Loading from '../shared/loading.tsx';
+import { IRole } from '../../lib/types/models/i-role.ts';
 
-const AuthRedirectWrapper = () => {
+const AuthRedirectWrapper = ({
+  availableRoles,
+}: {
+  availableRoles: IRole[];
+}) => {
   const [loading, setLoading] = useState(true);
   const { accessToken, role } = useSession();
   const { refresh } = useRefreshToken();
@@ -21,26 +24,16 @@ const AuthRedirectWrapper = () => {
           await refresh();
         } catch (e) {
           printCustomError(e, 'redirectByAuth');
-          !validatePublicRoute(location.pathname) && navigate('/sign-in');
+          alert('로그인이 필요합니다.');
+          navigate('/sign-in');
           setLoading(false);
         }
       }
 
       if (accessToken) {
-        const recruitmentCode = localStorage.getItem('recruitmentCode');
-
-        switch (role) {
-          case 'ADMIN':
-            location.pathname !== '/recruit' &&
-              location.pathname !== '/error' &&
-              navigate('/recruit');
-            break;
-          case 'APPLICANT':
-            !/^\/apply\/.+$/.test(location.pathname) &&
-              location.pathname !== '/error' &&
-              recruitmentCode &&
-              navigate(`/apply/${recruitmentCode}`);
-            break;
+        if (!availableRoles.includes(role)) {
+          alert('허용되지 않은 페이지입니다.');
+          navigate('/');
         }
         setLoading(false);
       }
@@ -50,14 +43,7 @@ const AuthRedirectWrapper = () => {
   }, [location.pathname, accessToken]);
 
   if (loading) return <Loading />;
-  if (!accessToken) return <Outlet />;
-  if (accessToken)
-    return (
-      <>
-        <Header />
-        <Outlet />
-      </>
-    );
+  return <Outlet />;
 };
 
 export default AuthRedirectWrapper;

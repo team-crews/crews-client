@@ -1,6 +1,7 @@
 import LandingRecruit from '../assets/images/landing-recruit.png';
 import LandingApply from '../assets/images/landing-apply.png';
 import Container from '../components/shared/container.tsx';
+import { Link } from 'react-router-dom';
 
 const Page = () => {
   return (
@@ -21,7 +22,7 @@ const Page = () => {
               className="mb-20 mt-12 rounded py-2 indent-2 outline outline-crews-g02 placeholder:text-crews-g02 hover:outline-crews-g04"
             />
           </div>
-          <img width={550} src={LandingApply} />
+          <img alt="지원서 예시" width={550} src={LandingApply} />
         </div>
       </div>
       <div className="flex flex-1 justify-center bg-crews-b01">
@@ -36,11 +37,15 @@ const Page = () => {
               <br />
               크루즈에서 쉽고 빠르게 진행해보세요
             </p>
-            <button className="mb-20 mt-12 rounded-full bg-[#2F3234] py-2 font-bold tracking-widest text-crews-w01 hover:bg-[#000]">
-              지금 바로 모집하기
-            </button>
+            <Link
+              to="/recruit"
+              className="mb-20 mt-12 rounded-full bg-[#2F3234] py-2 font-bold tracking-widest text-crews-w01 hover:bg-[#000]"
+            >
+              바로 모집 시작하기
+            </Link>
           </div>
           <img
+            alt="모집 예시"
             width={550}
             src={LandingRecruit}
             className="shadow-custom-shadow"

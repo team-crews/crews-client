@@ -23,7 +23,7 @@ const Page = () => {
 
   return (
     <Container className="flex items-center justify-center">
-      <section className="shadow-custom-light-shadow w-full max-w-[700px] rounded-md border border-crews-g01 px-40 py-40">
+      <section className="shadow-custom-light-shadow w-full max-w-[650px] rounded-md border border-crews-g01 px-32 py-40">
         <div className="mb-6 flex flex-col items-center text-3xl tracking-widest">
           <p className="font-bold">
             {loginType === 'APPLICANT' ? '지원자' : '모집자'}
