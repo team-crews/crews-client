@@ -10,11 +10,10 @@ import ApplySectionBox from './_components/apply-section-box';
 import ApplyNarrativeBox from './_components/apply-narrative-box';
 import ApplySelectiveBox from './_components/apply-selective-box';
 import { QuestionType } from '../../../lib/enums';
-import { IQuestion } from '../../../lib/model/i-section';
 import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { ISaveApplicationRequest } from '../../../lib/model/i-application';
+import { ISaveApplicationRequest } from '../../../lib/types/models/i-application.ts';
 import { useToast } from '../../../hooks/use-toast';
 import FooterContainer from '../../../components/shared/footer-container';
 import { Button } from '../../../components/ui/button';
@@ -27,6 +26,7 @@ import {
 } from './_utils/utils';
 import { useSectionSelection } from './_hooks/use-section-selection';
 import { printCustomError } from '../../../lib/utils/error';
+import { IQuestion } from '../../../lib/types/models/i-question.ts';
 
 const untouchedFieldIndex = {
   name: 0,

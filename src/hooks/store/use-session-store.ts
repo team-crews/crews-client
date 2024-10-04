@@ -1,4 +1,4 @@
-import { IRole } from '../../lib/model/i-role.ts';
+import { IRole } from '../../lib/types/models/i-role.ts';
 import { create } from 'zustand';
 
 type State = {

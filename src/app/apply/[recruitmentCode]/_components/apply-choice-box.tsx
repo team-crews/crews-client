@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
-import { IChoice } from '../../../../lib/model/i-section';
 import { IFormApplication } from '../page';
+import { IChoice } from '../../../../lib/types/models/i-question.ts';
 
 interface ApplyChoiceBoxProps {
   choice: IChoice;

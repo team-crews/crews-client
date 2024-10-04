@@ -1,7 +1,7 @@
 import { baseInstance } from '../apis/instance.ts';
 import useSession from './use-session.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
-import { ILoginResponse } from '../lib/model/i-response-body.ts';
+import { ILoginResponse } from '../apis/i-response-body/i-response-body.ts';
 
 const useRefreshToken = () => {
   const { setSession } = useSession();

@@ -2,7 +2,7 @@ import { Button } from '../../../../components/ui/button.tsx';
 import FooterContainer from '../../../../components/shared/footer-container.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAdminApi from '../../../../apis/admin-api.ts';
-import { ICreatedRecruitment } from '../../../../lib/model/i-recruitment.ts';
+import { ICreatedRecruitment } from '../../../../lib/types/models/i-recruitment.ts';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
 import { useFormContext } from 'react-hook-form';

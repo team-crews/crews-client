@@ -1,9 +1,9 @@
 import { UseFormClearErrors } from 'react-hook-form';
-import { IRecruitment } from '../../../../lib/model/i-recruitment';
+import { IRecruitment } from '../../../../lib/types/models/i-recruitment.ts';
 import { useEffect, useState } from 'react';
 import { getInitialSectionSelection } from '../_utils/utils';
 import { SHARED_SECTION_INDEX } from '../page';
-import { ITempApplication } from '../../../../lib/model/i-application';
+import { ITempApplication } from '../../../../lib/types/models/i-application.ts';
 
 interface UseSectionSelectionParams {
   recruitment: IRecruitment | undefined;

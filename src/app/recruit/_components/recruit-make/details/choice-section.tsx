@@ -7,7 +7,8 @@ import Separator from '../../../../../components/shared/seperator.tsx';
 import { useToast } from '../../../../../hooks/use-toast.ts';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
 import { useState } from 'react';
-import { CREATED_CHOICE } from '../../../../../lib/model/i-section.ts';
+
+import { CREATED_CHOICE } from '../../../../../lib/types/default-data.ts';
 
 const ChoiceSection = ({
   sectionIndex,

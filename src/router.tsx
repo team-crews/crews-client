@@ -2,7 +2,6 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  useRouteError,
 } from 'react-router-dom';
 import RootLayout from './app/layout.tsx';
 import AuthRouteWrapper from './components/wrapper/auth-redirect-wrapper.tsx';
@@ -14,17 +13,8 @@ import RecruitPage from './app/recruit/page.tsx';
 import ErrorPage from './app/error/page.tsx';
 import ResponsiveWrapper from './components/wrapper/responsive-wrapper.tsx';
 import * as Sentry from '@sentry/react';
-import React from 'react';
 
-const RootErrorBoundary = () => {
-  const error = useRouteError() as Error;
-
-  React.useEffect(() => {
-    Sentry.captureException(error);
-  }, [error]);
-
-  return <ErrorPage />;
-};
+import RootErrorBoundary from './components/root-error-boundary.tsx';
 
 const sentryCreateBrowserRouter =
   Sentry.wrapCreateBrowserRouter(createBrowserRouter);

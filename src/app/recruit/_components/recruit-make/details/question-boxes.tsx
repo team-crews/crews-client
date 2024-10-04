@@ -14,13 +14,13 @@ import OptionSection from './option-section.tsx';
 import Container from '../../../../../components/shared/container.tsx';
 import { QuestionType } from '../../../../../lib/enums.ts';
 import { cn } from '../../../../../lib/utils.ts';
+import { ICreatedRecruitment } from '../../../../../lib/types/models/i-recruitment.ts';
+import { useToast } from '../../../../../hooks/use-toast.ts';
 import {
   CREATED_NARRATIVE_QUESTION,
   CREATED_SELECTIVE_QUESTION,
-  ICreatedQuestion,
-} from '../../../../../lib/model/i-section.ts';
-import { ICreatedRecruitment } from '../../../../../lib/model/i-recruitment.ts';
-import { useToast } from '../../../../../hooks/use-toast.ts';
+} from '../../../../../lib/types/default-data.ts';
+import { ICreatedQuestion } from '../../../../../lib/types/models/i-question.ts';
 
 const QuestionBox = ({
   sectionIndex,

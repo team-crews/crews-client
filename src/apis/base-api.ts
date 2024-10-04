@@ -1,8 +1,5 @@
 import { baseInstance } from './instance.ts';
-import {
-  IReadRecruitmentByCodeResponse,
-  // isIReadRecruitmentByCodeResponse,
-} from '../lib/model/i-response-body.ts';
+import { IReadRecruitmentByCodeResponse } from './i-response-body/i-response-body.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
 
 /*
