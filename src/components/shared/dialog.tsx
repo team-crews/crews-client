@@ -3,9 +3,9 @@ import {
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogTitle,
-} from '../ui/dialog.tsx';
+} from '../shadcn/dialog.tsx';
 import React from 'react';
-import { Button } from '../ui/button.tsx';
+import { Button } from '../shadcn/button.tsx';
 import { cn } from '../../lib/utils.ts';
 
 const Dialog = ({

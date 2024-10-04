@@ -1,5 +1,5 @@
 import Input, { InputState } from '../../../components/shared/input.tsx';
-import { Button } from '../../../components/ui/button.tsx';
+import { Button } from '../../../components/shadcn/button.tsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useToast } from '../../../hooks/use-toast.ts';
 import { useState } from 'react';

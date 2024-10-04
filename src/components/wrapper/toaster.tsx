@@ -3,7 +3,7 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from '../shared/toast.tsx';
+} from '../shadcn/toast.tsx';
 import { useToast } from '../../hooks/use-toast.ts';
 
 export function Toaster() {

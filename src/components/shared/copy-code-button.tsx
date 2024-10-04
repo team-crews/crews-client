@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '../ui/button.tsx';
+import { Button, ButtonProps } from '../shadcn/button.tsx';
 import { useToast } from '../../hooks/use-toast.ts';
 import React from 'react';
 import { printCustomError } from '../../lib/utils/error.ts';

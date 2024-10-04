@@ -8,7 +8,7 @@ import CircleCheckIcon from '../../assets/icons/circle-check-icon.svg?react';
 import CircleInfoIcon from '../../assets/icons/circle-info-icon.svg?react';
 import TriangleCheckIcon from '../../assets/icons/triangle-exclamation-icon.svg?react';
 
-import { cn } from '../../lib/utils';
+import { cn } from '../../lib/utils.ts';
 
 const ToastProvider = ToastPrimitives.Provider;
 
@@ -67,7 +67,7 @@ const Toast = React.forwardRef<
       ref={ref}
       className={cn(
         className,
-        'overflow-hidden rounded-lg shadow-lg transition-all data-[swipe=cancel]:translate-y-0 data-[swipe=end]:translate-y-[100%] data-[swipe=move]:translate-y-[var(--radix-toast-swipe-move-y)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-bottom-full data-[state=open]:slide-in-from-bottom-full',
+        'shadow-lg overflow-hidden rounded-lg transition-all data-[swipe=cancel]:translate-y-0 data-[swipe=end]:translate-y-[100%] data-[swipe=move]:translate-y-[var(--radix-toast-swipe-move-y)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-bottom-full data-[state=open]:slide-in-from-bottom-full',
       )}
       {...props}
     >

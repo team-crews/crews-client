@@ -1,5 +1,5 @@
 import FooterContainer from '../../../../components/shared/footer-container.tsx';
-import { Button } from '../../../../components/ui/button.tsx';
+import { Button } from '../../../../components/shadcn/button.tsx';
 import Dialog from '../../../../components/shared/dialog.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../../hooks/use-toast.ts';

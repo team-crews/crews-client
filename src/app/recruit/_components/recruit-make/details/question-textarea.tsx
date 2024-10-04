@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import Separator from '../../../../../components/shared/seperator.tsx';
+import Separator from '../../../../../components/shadcn/seperator.tsx';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
 
 interface QuestionTextareaProps {

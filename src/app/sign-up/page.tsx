@@ -5,7 +5,7 @@ import {
   TooltipTrigger,
 } from '../../components/shadcn/tooltip.tsx';
 import Container from '../../components/shared/container.tsx';
-import Seperator from '../../components/shared/seperator.tsx';
+import Seperator from '../../components/shadcn/seperator.tsx';
 import { useState } from 'react';
 import ApplyForm from '../sign-in/_components/apply-form.tsx';
 import RecruitForm from '../sign-in/_components/recruit-form.tsx';
@@ -23,7 +23,7 @@ const Page = () => {
 
   return (
     <Container className="flex items-center justify-center">
-      <section className="shadow-custom-light-shadow w-full max-w-[650px] rounded-md border border-crews-g01 px-32 py-40">
+      <section className="w-full max-w-[650px] rounded-md border border-crews-g01 px-32 py-40 shadow-custom-light-shadow">
         <div className="mb-6 flex flex-col items-center text-3xl tracking-widest">
           <p className="font-bold">
             {loginType === 'APPLICANT' ? '지원자' : '모집자'}

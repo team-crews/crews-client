@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { ISaveApplicationRequest } from '../../../lib/types/models/i-application.ts';
 import { useToast } from '../../../hooks/use-toast';
 import FooterContainer from '../../../components/shared/footer-container';
-import { Button } from '../../../components/ui/button';
+import { Button } from '../../../components/shadcn/button.tsx';
 import ApplySectionHeader from './_components/apply-section-header';
 import {
   checkSelectedAnswer,

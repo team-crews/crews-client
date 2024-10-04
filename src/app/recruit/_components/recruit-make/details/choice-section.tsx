@@ -3,7 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
 import PlusIcon from '../../../../../assets/icons/plus.svg?react';
 import Typography from '../../../../../components/shared/typography.tsx';
-import Separator from '../../../../../components/shared/seperator.tsx';
+import Separator from '../../../../../components/shadcn/seperator.tsx';
 import { useToast } from '../../../../../hooks/use-toast.ts';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
 import { useState } from 'react';

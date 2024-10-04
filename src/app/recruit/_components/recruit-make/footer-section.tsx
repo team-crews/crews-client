@@ -1,4 +1,4 @@
-import { Button } from '../../../../components/ui/button.tsx';
+import { Button } from '../../../../components/shadcn/button.tsx';
 import FooterContainer from '../../../../components/shared/footer-container.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAdminApi from '../../../../apis/admin-api.ts';

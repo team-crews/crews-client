@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Loading from '../../../components/shared/loading.tsx';
 import { printCustomError } from '../../../lib/utils/error.ts';
-import { Button } from '../../../components/ui/button.tsx';
+import { Button } from '../../../components/shadcn/button.tsx';
 
 const Page = () => {
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
