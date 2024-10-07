@@ -31,10 +31,7 @@ const router: ReturnType<typeof createBrowserRouter> =
             <Route path="/sign-in" element={<SignInPage />} />
             <Route path="/sign-up" element={<SignUpPage />} />
 
-            <Route
-              path="recruitment/:recruitmentCode"
-              element={<RecruitmentPage />}
-            />
+            <Route path="recruitment" element={<RecruitmentPage />} />
 
             <Route
               element={<AuthRedirectWrapper availableRoles={['APPLICANT']} />}

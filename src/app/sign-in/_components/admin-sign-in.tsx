@@ -17,7 +17,7 @@ type RecruitInputs = {
   password: string;
 };
 
-const RecruitForm = () => {
+const AdminSignIn = () => {
   const { toast } = useToast();
   const [error, setError] = useState<boolean>(false);
 
@@ -116,4 +116,4 @@ const RecruitForm = () => {
   );
 };
 
-export default RecruitForm;
+export default AdminSignIn;

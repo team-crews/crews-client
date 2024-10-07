@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Tooltip,
   TooltipContent,
@@ -7,18 +7,18 @@ import {
 import Container from '../../components/shared/container.tsx';
 import Seperator from '../../components/shadcn/seperator.tsx';
 import { useState } from 'react';
-import ApplyForm from '../sign-in/_components/apply-form.tsx';
-import RecruitForm from '../sign-in/_components/recruit-form.tsx';
-
-type LoginType = 'RECRUITER' | 'APPLICANT';
+import ApplicantSignUp from './_components/applicant-sign-up.tsx';
+import AdminSignUp from './_components/admin-sign-up.tsx';
+import { IRole } from '../../lib/types/models/i-role.ts';
 
 const Page = () => {
-  const [loginType, setLoginType] = useState<LoginType>('APPLICANT');
+  const location = useLocation();
+  const [loginType, setLoginType] = useState<IRole>(
+    location.state?.loginType ?? 'APPLICANT',
+  );
 
   const toggleLoginType = () => {
-    setLoginType((prevType) =>
-      prevType === 'RECRUITER' ? 'APPLICANT' : 'RECRUITER',
-    );
+    setLoginType((prevType) => (prevType === 'ADMIN' ? 'APPLICANT' : 'ADMIN'));
   };
 
   return (
@@ -29,10 +29,15 @@ const Page = () => {
             {loginType === 'APPLICANT' ? '지원자' : '모집자'}
           </p>
           <p>회원가입</p>
+          {loginType === 'APPLICANT' && (
+            <p className="mt-4 rounded-full bg-crews-g01 px-4 py-1 text-xs tracking-normal text-crews-bk01">
+              이메일은 모집 결과 발송에 활용됩니다.
+            </p>
+          )}
         </div>
 
-        {loginType === 'APPLICANT' && <ApplyForm />}
-        {loginType === 'RECRUITER' && <RecruitForm />}
+        {loginType === 'APPLICANT' && <ApplicantSignUp />}
+        {loginType === 'ADMIN' && <AdminSignUp />}
 
         <div className="my-6 flex w-full items-center gap-2">
           <Seperator
@@ -50,16 +55,16 @@ const Page = () => {
           onClick={toggleLoginType}
           className="w-full rounded py-2 text-sm font-normal tracking-wide text-crews-bk01 outline outline-1 outline-crews-g03 hover:bg-crews-g01"
         >
-          {loginType === 'APPLICANT' ? '지원자' : '모집자'}로 회원가입
+          {loginType === 'APPLICANT' ? '모집자' : '지원자'}로 회원가입
         </button>
 
         <div className="flex w-full justify-center gap-4 py-3 text-sm font-thin text-crews-g05">
-          <Link to="/sign-in" className="hover:underline">
+          <Link to="/sign-in" state={{ loginType }} className="hover:underline">
             로그인
           </Link>
           <Tooltip>
             <TooltipTrigger>
-              <button className="hover:underline">비밀번호 찾기</button>
+              <p className="hover:underline">비밀번호 찾기</p>
             </TooltipTrigger>
             <TooltipContent side="bottom">
               <p>개발중입니다 😅</p>

@@ -5,9 +5,9 @@ import { printCustomError } from '../../lib/utils/error.ts';
 import { Outlet } from 'react-router-dom';
 
 /*
-    @ToDo
-    - 나중에 accessToken 시간 확 줄여서 테스트
-   */
+  @ToDo
+  - 나중에 accessToken 시간 확 줄여서 테스트
+ */
 
 const TryLoginWrapper = () => {
   const [loading, setLoading] = useState(true);

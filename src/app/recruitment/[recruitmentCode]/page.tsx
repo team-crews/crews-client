@@ -4,9 +4,12 @@ import ApplyForm from './_components/apply-form.tsx';
 import InfoSection from './_components/info-section.tsx';
 import { readRecruitmentByCode } from '../../../apis/base-api.ts';
 import { useQuery } from '@tanstack/react-query';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Loading from '../../../components/shared/loading.tsx';
-import { printCustomError } from '../../../lib/utils/error.ts';
+import {
+  printCustomError,
+  throwCustomError,
+} from '../../../lib/utils/error.ts';
 import { Button } from '../../../components/shadcn/button.tsx';
 
 const Page = () => {
@@ -19,8 +22,20 @@ const Page = () => {
 
   const navigate = useNavigate();
 
-  if (readQuery.isFetching) return <Loading />;
-  else if (readQuery.isError || !readQuery.data) {
+  if (readQuery.isFetching || readQuery.isPending) return <Loading />;
+  else if (readQuery.isSuccess)
+    return (
+      <Container className="flex flex-row justify-around">
+        <section className="flex max-w-[375px] flex-grow items-center">
+          <ApplyForm />
+        </section>
+
+        <section className="w-[600px]">
+          <InfoSection recruitment={readQuery.data} />
+        </section>
+      </Container>
+    );
+  else {
     if (printCustomError(readQuery.error, 'readQuery') === 404)
       return (
         <Container className="flex flex-col items-center justify-center gap-2">
@@ -33,19 +48,8 @@ const Page = () => {
           </Button>
         </Container>
       );
-    else return <Navigate to="/error" replace />;
+    else throwCustomError(readQuery.error, 'readRecruitmentByCode');
   }
-  return (
-    <Container className="flex flex-row justify-around">
-      <section className="flex max-w-[375px] flex-grow items-center">
-        <ApplyForm />
-      </section>
-
-      <section className="w-[600px]">
-        <InfoSection recruitment={readQuery.data} />
-      </section>
-    </Container>
-  );
 };
 
 export default Page;

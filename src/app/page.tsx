@@ -2,11 +2,12 @@ import LandingRecruit from '../assets/images/landing-recruit.png';
 import LandingApply from '../assets/images/landing-apply.png';
 import Container from '../components/shared/container.tsx';
 import { Link } from 'react-router-dom';
+import LookupRecruitmentForm from './lookup-recruitment-form.tsx';
 
 const Page = () => {
   return (
     <Container className="flex overflow-hidden">
-      <div className="flex flex-1 justify-center">
+      <section className="flex flex-1 justify-center">
         <div className="mt-32 flex flex-col items-center">
           <div className="flex w-[350px] flex-col text-center">
             <div className="flex flex-col gap-2 text-5xl font-bold tracking-wide text-crews-b05">
@@ -17,15 +18,13 @@ const Page = () => {
               지원할 동아리를 검색하고
               <br /> 지원 후 메일로 합격 여부를 확인해 보세요
             </p>
-            <input
-              placeholder="동아리명"
-              className="mb-20 mt-12 rounded py-2 indent-2 outline outline-crews-g03 placeholder:text-crews-g03 hover:outline-crews-g05"
-            />
+            <LookupRecruitmentForm />
           </div>
           <img alt="지원서 예시" width={550} src={LandingApply} />
         </div>
-      </div>
-      <div className="flex flex-1 justify-center bg-crews-b01">
+      </section>
+
+      <section className="flex flex-1 justify-center bg-crews-b01">
         <div className="mt-32 flex flex-col items-center">
           <div className="flex w-[350px] flex-col text-center">
             <div className="flex flex-col gap-2 text-5xl font-bold tracking-wide text-[#2F3234]">
@@ -51,7 +50,7 @@ const Page = () => {
             className="shadow-custom-shadow"
           />
         </div>
-      </div>
+      </section>
     </Container>
   );
 };

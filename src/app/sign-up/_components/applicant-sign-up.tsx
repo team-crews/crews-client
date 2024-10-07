@@ -14,7 +14,7 @@ type ApplyInputs = {
   password: string;
 };
 
-const ApplyForm = () => {
+const ApplicantSignUp = () => {
   const navigate = useNavigate();
   const { recruitmentCode } = useParams();
 
@@ -110,10 +110,10 @@ const ApplyForm = () => {
       </fieldset>
 
       <Button className="w-full" disabled={error}>
-        지원하기
+        지원자 가입하기
       </Button>
     </form>
   );
 };
 
-export default ApplyForm;
+export default ApplicantSignUp;
