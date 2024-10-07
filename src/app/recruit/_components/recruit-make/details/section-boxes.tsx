@@ -4,7 +4,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 
-import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
+import XMarkIcon from '../../../../../assets/icons/x-mark-icon.svg?react';
 import QuestionBoxes from './question-boxes.tsx';
 import { Button } from '../../../../../components/shadcn/button.tsx';
 import { ICreatedRecruitment } from '../../../../../lib/types/models/i-recruitment.ts';

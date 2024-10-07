@@ -5,8 +5,8 @@ import {
 } from 'react-hook-form';
 
 import CheckIcon from '../../../../../assets/icons/circle-check-icon.svg?react';
-import TextIcon from '../../../../../assets/icons/text.svg?react';
-import XMarkIcon from '../../../../../assets/icons/x-mark.svg?react';
+import TextIcon from '../../../../../assets/icons/text-icon.svg?react';
+import XMarkIcon from '../../../../../assets/icons/x-mark-icon.svg?react';
 
 import QuestionTextarea from './question-textarea.tsx';
 import ChoiceSection from './choice-section.tsx';

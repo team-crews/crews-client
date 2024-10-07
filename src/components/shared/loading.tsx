@@ -1,4 +1,4 @@
-import SpinnerIcon from '../../assets/icons/spinner.svg?react';
+import SpinnerIcon from '../../assets/icons/spinner-icon.svg?react';
 
 const Loading = () => {
   return (
