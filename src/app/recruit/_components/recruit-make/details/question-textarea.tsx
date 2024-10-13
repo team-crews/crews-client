@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import Separator from '../../../../../components/shadcn/seperator.tsx';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
+import useAutosizeTextarea from '../../../../../hooks/use-autosize-textarea.ts';
+import Separator from '../../../../../components/shadcn/seperator.tsx';
+import { cn } from '../../../../../lib/utils/utils.ts';
 
 interface QuestionTextareaProps {
   sectionIndex: number;
@@ -17,18 +19,10 @@ const QuestionTextarea = ({
   const value = watch(
     `sections.${sectionIndex}.questions.${questionIndex}.content`,
   );
-
-  useEffect(() => {
-    const textarea = document.querySelector(
-      `textarea[name="sections.${sectionIndex}.questions.${questionIndex}.content"]`,
-    ) as HTMLTextAreaElement;
-
-    if (textarea) {
-      textarea.style.height = 'auto';
-
-      textarea.style.height = `${textarea.scrollHeight / 16}rem`;
-    }
-  }, [questionIndex, sectionIndex, value]);
+  useAutosizeTextarea(
+    `sections.${sectionIndex}.questions.${questionIndex}.content`,
+    value,
+  );
 
   const [focused, setFocused] = useState<boolean>(false);
 
@@ -37,7 +31,7 @@ const QuestionTextarea = ({
       <textarea
         maxLength={250}
         spellCheck={false}
-        className="h-auto w-full overflow-y-hidden text-sm font-semibold text-crews-bk01"
+        className="text-sm font-semibold text-crews-bk01"
         rows={1}
         placeholder="질문을 작성해주세요."
         onFocus={() => setFocused(true)}
@@ -45,7 +39,7 @@ const QuestionTextarea = ({
           `sections.${sectionIndex}.questions.${questionIndex}.content`,
           {
             validate: {
-              isFilledInput: (v) =>
+              validateIfFilled: (v) =>
                 isFilledInput(v, '채워지지 않은 질문 내용이 존재해요.'),
             },
             onBlur: () => setFocused(false),
@@ -53,7 +47,10 @@ const QuestionTextarea = ({
         )}
       />
       <Separator
-        className={`h-[1px] rounded-full ${focused ? 'bg-crews-b06' : 'bg-crews-g02'}`}
+        className={cn({
+          'bg-crews-b06': focused,
+          'bg-crews-g02': !focused,
+        })}
       />
     </div>
   );

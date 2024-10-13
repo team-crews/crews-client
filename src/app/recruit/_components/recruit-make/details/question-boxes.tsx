@@ -1,5 +1,5 @@
 import {
-  UseFieldArrayRemove,
+  useFieldArray,
   UseFieldArrayUpdate,
   useFormContext,
 } from 'react-hook-form';
@@ -7,33 +7,35 @@ import {
 import CheckIcon from '../../../../../assets/icons/circle-check-icon.svg?react';
 import TextIcon from '../../../../../assets/icons/text-icon.svg?react';
 import XMarkIcon from '../../../../../assets/icons/x-mark-icon.svg?react';
+import PlusIcon from '../../../../../assets/icons/plus-icon.svg?react';
 
 import QuestionTextarea from './question-textarea.tsx';
 import ChoiceSection from './choice-section.tsx';
 import OptionSection from './option-section.tsx';
 import Container from '../../../../../components/shared/container.tsx';
 import { QuestionType } from '../../../../../lib/enums.ts';
-import { cn } from '../../../../../lib/utils.ts';
-import { ICreatedRecruitment } from '../../../../../lib/types/models/i-recruitment.ts';
+import { cn } from '../../../../../lib/utils/utils.ts';
 import { useToast } from '../../../../../hooks/use-toast.ts';
 import {
   CREATED_NARRATIVE_QUESTION,
   CREATED_SELECTIVE_QUESTION,
 } from '../../../../../lib/types/default-data.ts';
-import { ICreatedQuestion } from '../../../../../lib/types/models/i-question.ts';
+import { Button } from '../../../../../components/shadcn/button.tsx';
+import { z } from 'zod';
+import { CreatedRecruitmentSchema } from '../../../../../lib/types/schemas/recruitment-schema.ts';
+
+const buttonDefaultStyle: string = 'h-4 w-4 cursor-pointer text-crews-g06';
 
 const QuestionBox = ({
   sectionIndex,
   questionIndex,
   removeQuestion,
-  disableRemove,
   update,
 }: {
   sectionIndex: number;
   questionIndex: number;
-  update: UseFieldArrayUpdate<ICreatedRecruitment>;
-  disableRemove: boolean;
-  removeQuestion: UseFieldArrayRemove;
+  update: UseFieldArrayUpdate<z.infer<typeof CreatedRecruitmentSchema>>;
+  removeQuestion: () => void;
 }) => {
   const untouchable =
     sectionIndex === 0 &&
@@ -44,38 +46,9 @@ const QuestionBox = ({
     `sections.${sectionIndex}.questions.${questionIndex}.type`,
   );
 
-  const handleNarrativeTypeClick = () => {
-    update(questionIndex, CREATED_NARRATIVE_QUESTION);
-  };
-
-  const handleSelectiveTypeClick = () => {
-    update(questionIndex, CREATED_SELECTIVE_QUESTION);
-  };
-
   const indexProps = {
     sectionIndex: sectionIndex,
     questionIndex: questionIndex,
-  };
-
-  const checkIconColor: string =
-    questionType === QuestionType.SELECTIVE
-      ? 'text-crews-b05'
-      : 'text-crews-g06';
-  const textIconColor: string =
-    questionType === QuestionType.SELECTIVE
-      ? 'text-crews-g06'
-      : 'text-crews-b05';
-
-  const { toast } = useToast();
-  const handleRemoveClick = () => {
-    if (disableRemove) {
-      toast({
-        title: '섹션은 반드시 하나의 질문을 포함해야 합니다.',
-        state: 'warning',
-      });
-      return;
-    }
-    removeQuestion(questionIndex);
   };
 
   return (
@@ -87,16 +60,20 @@ const QuestionBox = ({
         }}
       >
         <CheckIcon
-          className={cn('h-4 w-4 cursor-pointer', checkIconColor)}
-          onClick={handleSelectiveTypeClick}
+          className={cn(buttonDefaultStyle, {
+            'text-crews-b05': questionType === QuestionType.SELECTIVE,
+          })}
+          onClick={() => update(questionIndex, CREATED_SELECTIVE_QUESTION)}
         />
         <TextIcon
-          className={cn('h-4 w-4 cursor-pointer', textIconColor)}
-          onClick={handleNarrativeTypeClick}
+          className={cn(buttonDefaultStyle, {
+            'text-crews-b05': questionType === QuestionType.NARRATIVE,
+          })}
+          onClick={() => update(questionIndex, CREATED_NARRATIVE_QUESTION)}
         />
         <XMarkIcon
-          className="h-4 w-4 cursor-pointer text-crews-g06"
-          onClick={handleRemoveClick}
+          className={buttonDefaultStyle}
+          onClick={() => removeQuestion()}
         />
       </div>
 
@@ -118,26 +95,54 @@ const QuestionBox = ({
   );
 };
 
-const QuestionBoxes = ({
-  questionFields,
-  ...props
-}: {
-  questionFields: ICreatedQuestion[];
-  sectionIndex: number;
-  removeQuestion: UseFieldArrayRemove;
-  update: UseFieldArrayUpdate<ICreatedRecruitment>;
-}) => {
+const QuestionBoxes = ({ sectionIndex }: { sectionIndex: number }) => {
+  const { control } =
+    useFormContext<z.infer<typeof CreatedRecruitmentSchema>>();
+  const { fields, append, remove, update } = useFieldArray({
+    control,
+    name: `sections.${sectionIndex}.questions`,
+  });
+
+  const { toast } = useToast();
+  const appendQuestion = () => {
+    if (fields.length <= 10) append(CREATED_SELECTIVE_QUESTION);
+    else
+      toast({
+        title: '질문은 섹션당 최대 10개 까지만 추가가능 합니다.',
+        state: 'warning',
+      });
+  };
+
+  const removeQuestion = (idx: number) => {
+    if (fields.length > 1) remove(idx);
+    else
+      toast({
+        title: '섹션은 반드시 하나의 질문을 포함해야 합니다.',
+        state: 'warning',
+      });
+  };
+
   return (
-    <section className="flex flex-col gap-4">
-      {questionFields.map((question, questionIndex) => (
-        <QuestionBox
-          disableRemove={questionFields.length == 1}
-          key={question.id}
-          questionIndex={questionIndex}
-          {...props}
-        />
-      ))}
-    </section>
+    <Container className="flex flex-col gap-4 bg-crews-b01 p-4">
+      <section className="flex flex-col gap-4">
+        {fields.map((question, idx) => (
+          <QuestionBox
+            key={question.id}
+            sectionIndex={sectionIndex}
+            questionIndex={idx}
+            removeQuestion={() => removeQuestion(idx)}
+            update={update}
+          />
+        ))}
+      </section>
+      <Button
+        type="button"
+        className="ml-auto h-6 w-6 bg-crews-b04 text-sm font-semibold text-crews-w01"
+        onClick={appendQuestion}
+      >
+        <PlusIcon className="h-3 w-3" />
+      </Button>
+    </Container>
   );
 };
 

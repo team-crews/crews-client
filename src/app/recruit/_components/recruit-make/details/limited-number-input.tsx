@@ -1,8 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import {
-  isFilledInput,
-  isNumber,
-} from '../../../../../lib/utils/validation.ts';
+import { isFilledInput } from '../../../../../lib/utils/validation.ts';
 
 function getLength(value: string | number | undefined): number {
   if (typeof value === 'number') return Math.abs(value).toString().length;
@@ -41,13 +38,11 @@ const LimitedNumberInput = ({
         },
         valueAsNumber: true,
         validate: {
-          isFilledInput: (v) =>
+          validateIfFilled: (v) =>
             isFilledInput(
               v,
               '채워지지 않은 글자수 제한 혹은 선택지 개수 제한이 존재해요.',
             ),
-          isNumber: (v) =>
-            isNumber(v, '글자수 제한 및 선택지 개수 제한은 숫자여야 해요.'),
         },
       })}
       className="text-right text-xs font-bold text-crews-bk02 underline"
