@@ -1,4 +1,3 @@
-import FooterContainer from '../../../../components/shared/footer-container.tsx';
 import { Button } from '../../../../components/shadcn/button.tsx';
 import Dialog from '../../../../components/shared/dialog.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -8,6 +7,7 @@ import { printCustomError } from '../../../../lib/utils/error.ts';
 import Loading from '../../../../components/shared/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { IProgress } from '../../../../lib/types/models/i-progress.ts';
+import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
 
@@ -77,7 +77,7 @@ const FooterSection = ({
       queryClient.isFetching({ queryKey: ['recruitmentProgress'] }) ? (
         <Loading />
       ) : null}
-      <FooterContainer className="flex w-full justify-end">
+      <CrewsFooter>
         <Button
           size="lg"
           disabled={progress === 'ANNOUNCED'}
@@ -92,7 +92,7 @@ const FooterSection = ({
         >
           평가 완료
         </Button>
-      </FooterContainer>
+      </CrewsFooter>
       <Dialog
         {...dialogProps}
         action={handleSendConfirmClick}
