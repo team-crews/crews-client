@@ -1,6 +1,5 @@
 import { IProgress } from './i-progress.ts';
-import { ICreatedSection, ISection } from './i-section.ts';
-import { WithNullableId } from './i-nullable-id.ts';
+import { ISection } from './i-section.ts';
 
 export type IRecruitment = {
   id: number;
@@ -10,11 +9,4 @@ export type IRecruitment = {
   sections: ISection[];
   deadline: string;
   code: string;
-};
-
-export type ICreatedRecruitment = Omit<
-  WithNullableId<IRecruitment>,
-  'sections' | 'code' | 'recruitmentProgress'
-> & {
-  sections: ICreatedSection[];
 };

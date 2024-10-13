@@ -15,7 +15,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { ISaveApplicationRequest } from '../../../lib/types/models/i-application.ts';
 import { useToast } from '../../../hooks/use-toast';
-import FooterContainer from '../../../components/shared/footer-container';
 import { Button } from '../../../components/shadcn/button.tsx';
 import ApplySectionHeader from './_components/apply-section-header';
 import {
@@ -27,6 +26,7 @@ import {
 import { useSectionSelection } from './_hooks/use-section-selection';
 import { printCustomError } from '../../../lib/utils/error';
 import { IQuestion } from '../../../lib/types/models/i-question.ts';
+import CrewsFooter from '../../../components/molecule/crews-footer.tsx';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -337,11 +337,11 @@ const Page = () => {
                 </>
               )}
             </div>
-            <FooterContainer className="flex w-full justify-end">
+            <CrewsFooter>
               <Button type="submit" size="lg" disabled={!ableToSubmit}>
                 {ableToSubmit ? '제출하기' : '모집 기간이 아닙니다.'}
               </Button>
-            </FooterContainer>
+            </CrewsFooter>
           </form>
         </div>
       </Container>

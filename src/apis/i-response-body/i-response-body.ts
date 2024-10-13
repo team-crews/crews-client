@@ -1,4 +1,3 @@
-import { IProgress } from '../../lib/types/models/i-progress.ts';
 import { IRecruitment } from '../../lib/types/models/i-recruitment.ts';
 import {
   IApplication,
@@ -6,27 +5,7 @@ import {
   ITempApplication,
 } from '../../lib/types/models/i-application.ts';
 
-export type IReadRecruitmentProgressResponse = {
-  recruitmentProgress: IProgress;
-};
-
-export type IReadRecruitmentInProgressDetailResponse = {
-  code: string;
-  applicationCount: number;
-  deadline: string;
-};
-
 type NoResponseData = '';
-
-export type IReadRecruitmentResponse = IRecruitment;
-
-export type ISaveRecruitmentResponse = IRecruitment;
-
-export type IStartRecruitmentResponse = NoResponseData;
-
-export type IChangeDeadlineResponse = NoResponseData;
-
-export type ISendEvaluationMailResponse = NoResponseData;
 
 export type IReadApplicationOverviewsResponse = IApplicationOverview[];
 
