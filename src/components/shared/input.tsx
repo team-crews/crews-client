@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import { cn } from '../../lib/utils.ts';
+import { cn } from '../../lib/utils/utils.ts';
 import CircleXMarkIcon from '../../assets/icons/circle-x-mark-icon.svg?react';
 import EyeSlashIcon from '../../assets/icons/eye-slash-icon.svg?react';
 import EyeIcon from '../../assets/icons/eye-icon.svg?react';

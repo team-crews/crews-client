@@ -2,7 +2,7 @@ import AnchorIcon from '../../assets/icons/anchor-icon.svg?react';
 import CircleUserIcon from '../../assets/icons/circle-user-icon.svg?react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useSession from '../../hooks/use-session.ts';
-import { cn } from '../../lib/utils.ts';
+import { cn } from '../../lib/utils/utils.ts';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '../../hooks/use-toast.ts';
 import { printCustomError } from '../../lib/utils/error.ts';
@@ -25,8 +25,8 @@ const CrewsHeader = () => {
   const handleLogoutClick = async () => {
     try {
       await logoutMutation.mutateAsync();
+      navigate('/');
       clearSession();
-      navigate('/sign-in');
     } catch (e) {
       printCustomError(e, 'handleLogoutClick');
       toast({

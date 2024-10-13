@@ -1,5 +1,5 @@
 import { ISection } from '../../../../lib/types/models/i-section.ts';
-import { cn } from '../../../../lib/utils';
+import { cn } from '../../../../lib/utils/utils.ts';
 import { SHARED_SECTION_INDEX } from '../page';
 
 interface ApplySectionHeaderProps {

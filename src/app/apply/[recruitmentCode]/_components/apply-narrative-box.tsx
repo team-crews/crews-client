@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 import Container from '../../../../components/shared/container';
 import Typography from '../../../../components/shared/typography';
-import { cn } from '../../../../lib/utils';
+import { cn } from '../../../../lib/utils/utils.ts';
 import { IFormApplication } from '../page';
 import React, { useEffect } from 'react';
 import { IQuestion } from '../../../../lib/types/models/i-question.ts';

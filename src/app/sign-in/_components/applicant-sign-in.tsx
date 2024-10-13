@@ -2,12 +2,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from '../../../hooks/use-toast.ts';
 import { useState } from 'react';
 import useSession from '../../../hooks/use-session.ts';
-import { validateEmail, validatePassword } from '../../../lib/utils/regex.ts';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Input, { InputState } from '../../../components/shared/input.tsx';
 import { Button } from '../../../components/shadcn/button.tsx';
 import { applicantLogin } from '../../../apis/auth-api.ts';
 import { printCustomError } from '../../../lib/utils/error.ts';
+import {
+  validateEmail,
+  validatePassword,
+} from '../../../lib/utils/validation.ts';
 
 type ApplyInputs = {
   email: string;

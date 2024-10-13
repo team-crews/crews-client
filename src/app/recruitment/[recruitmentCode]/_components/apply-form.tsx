@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
   validateEmail,
   validatePassword,
-} from '../../../../lib/utils/regex.ts';
+} from '../../../../lib/utils/validation.ts';
 
 type ApplyInputs = {
   email: string;

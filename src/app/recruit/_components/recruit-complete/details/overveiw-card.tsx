@@ -2,7 +2,7 @@ import React from 'react';
 import { IApplicationOverview } from '../../../../../lib/types/models/i-application.ts';
 import CircleCheckIcon from '../../../../../assets/icons/circle-check-icon.svg?react';
 import CircleCheckEmptyIcon from '../../../../../assets/icons/circle-check-empty-icon.svg?react';
-import { cn } from '../../../../../lib/utils.ts';
+import { cn } from '../../../../../lib/utils/utils.ts';
 import { IProgress } from '../../../../../lib/types/models/i-progress.ts';
 import useDialog from '../../../../../hooks/use-dialog.ts';
 import ApplicationDetailDialog from './application-detail-dialog.tsx';

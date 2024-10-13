@@ -10,7 +10,7 @@ import { printCustomError } from '../../../lib/utils/error.ts';
 import {
   validateClubName,
   validatePassword,
-} from '../../../lib/utils/regex.ts';
+} from '../../../lib/utils/validation.ts';
 
 type RecruitInputs = {
   clubName: string;

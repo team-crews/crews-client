@@ -8,7 +8,7 @@ import CircleCheckIcon from '../../assets/icons/circle-check-icon.svg?react';
 import CircleInfoIcon from '../../assets/icons/circle-info-icon.svg?react';
 import TriangleCheckIcon from '../../assets/icons/triangle-exclamation-icon.svg?react';
 
-import { cn } from '../../lib/utils.ts';
+import { cn } from '../../lib/utils/utils.ts';
 
 const ToastProvider = ToastPrimitives.Provider;
 

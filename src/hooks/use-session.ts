@@ -1,5 +1,6 @@
 import useSessionStore from './store/use-session-store.ts';
-import extractRole from '../lib/utils/jwt.ts';
+
+import { extractRole } from '../lib/utils/utils.ts';
 
 const useSession = () => {
   const username = useSessionStore((state) => state.username);
