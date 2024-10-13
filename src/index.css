@@ -44,7 +44,6 @@ input[type='number'] {
 }
 
 textarea {
-    border: none;
     overflow: auto;
     outline: none;
 

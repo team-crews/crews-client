@@ -18,7 +18,7 @@ const Page = () => {
   if (readQuery.isFetching || readQuery.isPending) return <Loading />;
   else if (readQuery.isSuccess)
     return (
-      <Container className="mx-auto w-[600px] py-24">
+      <Container className="mx-auto w-[600px] pt-16">
         <RenderByProgress progress={readQuery.data.recruitmentProgress} />
       </Container>
     );

@@ -6,7 +6,7 @@ import {
 } from '../shadcn/dialog.tsx';
 import React from 'react';
 import { Button } from '../shadcn/button.tsx';
-import { cn } from '../../lib/utils.ts';
+import { cn } from '../../lib/utils/utils.ts';
 
 const Dialog = ({
   isOpen,
@@ -24,7 +24,6 @@ const Dialog = ({
   className?: string;
 }) => {
   const handleConfirmClick = async () => {
-    toggleOpen();
     await action();
   };
 
@@ -36,7 +35,7 @@ const Dialog = ({
     <AlertDialog open={isOpen}>
       <AlertDialogContent
         className={cn(
-          'flex max-h-[90%] w-full max-w-[600px] flex-col items-center overflow-y-auto p-4',
+          'flex flex-col items-center overflow-y-auto p-6',
           className,
         )}
       >
@@ -45,15 +44,11 @@ const Dialog = ({
         <section className="w-full flex-1">{children}</section>
         <div className="sticky bottom-0 flex w-full gap-4 bg-transparent">
           {type === 'CONFIRM' && (
-            <Button
-              onClick={handleCancelClick}
-              className="flex-1"
-              variant="gray"
-            >
+            <Button onClick={handleCancelClick} size="sm" variant="gray">
               취소
             </Button>
           )}
-          <Button onClick={handleConfirmClick} className="flex-1">
+          <Button onClick={handleConfirmClick} size="sm">
             확인
           </Button>
         </div>
