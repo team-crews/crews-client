@@ -3,7 +3,7 @@ import Container from '../../../../components/shared/container';
 import Typography from '../../../../components/shared/typography';
 import { IFormApplication } from '../page';
 import ApplyChoiceBox from './apply-choice-box';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IQuestion } from '../../../../lib/types/models/i-question.ts';
 
 interface ApplySelectiveBoxProps {
@@ -21,6 +21,13 @@ const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
     (answer) =>
       answer.questionId === question.id && answer.questionType === 'SELECTIVE',
   );
+
+  //가장 최근 에러가 발생한 choice index
+  const [errorIndex, setErrorIndex] = useState<number | null>(null);
+
+  const handleCoiceValidationError = (index: number) => {
+    setErrorIndex(index);
+  };
 
   // make new answer if not exist, cuurentAnswerIndex === -1인 item 생성 방지를 위해 return null
   useEffect(() => {
@@ -63,20 +70,25 @@ const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
           </Typography>
         </div>
         <div className="flex flex-col gap-1">
-          {question.choices.map((choice) => (
+          {question.choices.map((choice, index) => (
             <ApplyChoiceBox
               key={choice.id}
               choice={choice}
+              index={index}
               currentAnswerIndex={currentAnswerIndex}
+              onCoiceValidationError={handleCoiceValidationError}
             />
           ))}
         </div>
       </div>
-      {errors.answers?.[currentAnswerIndex] && (
+      {errors.answers?.[currentAnswerIndex]?.choiceIds && errorIndex ? (
         <Typography className="text-xs text-crews-r03">
-          {errors.answers[currentAnswerIndex]?.message}
+          {
+            errors.answers?.[currentAnswerIndex]?.choiceIds?.[errorIndex]
+              ?.message
+          }
         </Typography>
-      )}
+      ) : null}
     </Container>
   );
 };

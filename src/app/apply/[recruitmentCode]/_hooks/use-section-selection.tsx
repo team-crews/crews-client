@@ -3,11 +3,11 @@ import { IRecruitment } from '../../../../lib/types/models/i-recruitment.ts';
 import { useEffect, useState } from 'react';
 import { getInitialSectionSelection } from '../_utils/utils';
 import { SHARED_SECTION_INDEX } from '../page';
-import { ITempApplication } from '../../../../lib/types/models/i-application.ts';
+import { IReadApplication } from '../../../../lib/types/models/i-application.ts';
 
 interface UseSectionSelectionParams {
   recruitment: IRecruitment | undefined;
-  application: ITempApplication | undefined;
+  application: IReadApplication | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   clearErrors: UseFormClearErrors<any>;
 }

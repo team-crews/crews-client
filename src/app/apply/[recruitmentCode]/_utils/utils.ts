@@ -1,24 +1,24 @@
 import {
   ICreatedAnswer,
-  ITempAnswer,
-  ITempApplication,
-  ITempNarrativeAnswer,
-  ITempSelectiveAnswer,
+  IReadAnswer,
+  IReadApplication,
+  IReadNarrativeAnswer,
+  IReadSelectiveAnswer,
 } from '../../../../lib/types/models/i-application.ts';
 import { ISection } from '../../../../lib/types/models/i-section.ts';
 import { IFormAnswer, SHARED_SECTION_INDEX } from '../page';
 
 // Convert ICreatedApplication to IFormApplication
 export const convertAnswerToFormAnswer = (
-  application: ITempApplication,
+  application: IReadApplication,
 ): IFormAnswer[] => {
   const convertedFormAnswers: IFormAnswer[] = application.answers.reduce(
-    (acc: IFormAnswer[], answer: ITempAnswer) => {
+    (acc: IFormAnswer[], answer: IReadAnswer) => {
       if (answer.type === 'NARRATIVE') {
         // NARRATIVE 타입의 답변 변환
         const narrativeAnswer: IFormAnswer = {
           answerId: answer.answerId,
-          content: (answer as ITempNarrativeAnswer).content,
+          content: (answer as IReadNarrativeAnswer).content,
           choiceIds: null,
           questionId: answer.questionId,
           questionType: 'NARRATIVE',
@@ -33,13 +33,13 @@ export const convertAnswerToFormAnswer = (
 
         if (selectiveAnswerIndex !== -1) {
           acc[selectiveAnswerIndex].choiceIds?.push(
-            (answer as ITempSelectiveAnswer).choiceId,
+            (answer as IReadSelectiveAnswer).choiceId,
           );
         } else {
           const selectiveAnswer: IFormAnswer = {
             answerId: answer.answerId,
             content: null,
-            choiceIds: [(answer as ITempSelectiveAnswer).choiceId],
+            choiceIds: [(answer as IReadSelectiveAnswer).choiceId],
             questionId: answer.questionId,
             questionType: 'SELECTIVE',
           };
@@ -155,7 +155,7 @@ export const checkSelectedAnswer = (
 };
 
 export const getInitialSectionSelection = (
-  answers: ITempAnswer[] | undefined,
+  answers: IReadAnswer[] | undefined,
   sections: ISection[] | undefined,
   sharedSection: ISection | undefined,
 ) => {

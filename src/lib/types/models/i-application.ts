@@ -50,22 +50,20 @@ export type ISaveApplicationRequest = ICreatedApplication & {
   recruitmentCode: string;
 };
 
-export type ITempNarrativeAnswer = IBaseAnswer & {
+export type IReadNarrativeAnswer = IBaseAnswer & {
   content: string;
   choiceId: null;
   type: 'NARRATIVE';
 };
 
-export type ITempSelectiveAnswer = IBaseAnswer & {
+export type IReadSelectiveAnswer = IBaseAnswer & {
   content: null;
   choiceId: number;
   type: 'SELECTIVE';
 };
 
-export type ITempAnswer = ITempNarrativeAnswer | ITempSelectiveAnswer;
+export type IReadAnswer = IReadNarrativeAnswer | IReadSelectiveAnswer;
 
-export type ITempApplication = Omit<IApplicationOverview, 'outcome'> & {
-  answers: ITempAnswer[];
+export type IReadApplication = Omit<IApplicationOverview, 'outcome'> & {
+  answers: IReadAnswer[];
 };
-
-export type ITempReadApplicationResponse = ITempApplication;

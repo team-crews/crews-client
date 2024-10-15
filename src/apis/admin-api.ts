@@ -50,6 +50,8 @@ const useAdminApi = () => {
     z.infer<typeof ReadRecruitmentResponseSchema>
   > {
     const response = await authInstance.get('/recruitments/ready');
+    console.log(response.data);
+    return response.data;
     return ReadRecruitmentResponseSchema.parse(response.data);
   }
 
@@ -66,7 +68,7 @@ const useAdminApi = () => {
       /^(\d{2})-(\d{2})-(\d{2})-(\d{2})$/,
     );
     const [_, year, month, day, hour] = match!;
-    requestBody.deadline = `20${year}-${month}-${day}T${hour}:00:00`;
+    requestBody.deadline = `20${year}-${month}-${day}T${hour}:00:00.000Z`;
 
     const response = await authInstance.post('/recruitments', requestBody);
     return SaveRecruitmentResponseSchema.parse(response.data);
