@@ -25,7 +25,7 @@ const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
   //가장 최근 에러가 발생한 choice index
   const [errorIndex, setErrorIndex] = useState<number | null>(null);
 
-  const handleCoiceValidationError = (index: number) => {
+  const handleErrorIndexChange = (index: number) => {
     setErrorIndex(index);
   };
 
@@ -74,9 +74,10 @@ const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
             <ApplyChoiceBox
               key={choice.id}
               choice={choice}
+              question={question}
               index={index}
               currentAnswerIndex={currentAnswerIndex}
-              onCoiceValidationError={handleCoiceValidationError}
+              onErrorIndexChange={handleErrorIndexChange}
             />
           ))}
         </div>

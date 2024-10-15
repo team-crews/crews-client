@@ -1,20 +1,22 @@
 import { useFormContext } from 'react-hook-form';
 
 import { IFormApplication } from '../page';
-import { IChoice } from '../../../../lib/types/models/i-question.ts';
+import { IChoice, IQuestion } from '../../../../lib/types/models/i-question.ts';
 
 interface ApplyChoiceBoxProps {
   choice: IChoice;
+  question: IQuestion;
   index: number;
   currentAnswerIndex: number;
-  onCoiceValidationError: (index: number) => void;
+  onErrorIndexChange: (index: number) => void;
 }
 
 const ApplyChoiceBox = ({
   choice,
+  question,
   index,
   currentAnswerIndex,
-  onCoiceValidationError,
+  onErrorIndexChange,
 }: ApplyChoiceBoxProps) => {
   const { getValues, setValue, clearErrors, register } =
     useFormContext<IFormApplication>();
@@ -39,11 +41,34 @@ const ApplyChoiceBox = ({
       `answers.${currentAnswerIndex}.choiceIds`,
     )?.filter((value) => value !== false);
 
-    if (!currentChoiceIds || (currentChoiceIds.length === 0 && !value)) {
-      onCoiceValidationError(index);
+    const necessityValidation =
+      question.necessity &&
+      (!currentChoiceIds || currentChoiceIds?.length === 0);
 
-      return '선택지를 선택해주세요.';
+    const maximumSelectionValidation =
+      question.maximumSelection &&
+      currentChoiceIds &&
+      currentChoiceIds.length > question.maximumSelection;
+
+    const minimumSelectionValidation =
+      question.minimumSelection &&
+      currentChoiceIds &&
+      currentChoiceIds.length < question.minimumSelection;
+
+    if (necessityValidation) {
+      onErrorIndexChange(index);
+
+      return '해당 필드는 응답 필수입니다.';
+    } else if (maximumSelectionValidation) {
+      onErrorIndexChange(index);
+
+      return `최대 ${question.maximumSelection}개 이하로 선택해주세요.`;
+    } else if (minimumSelectionValidation) {
+      onErrorIndexChange(index);
+
+      return `최소 ${question.minimumSelection}개 이상 선택해주세요.`;
     }
+
     // return true;
   };
 
