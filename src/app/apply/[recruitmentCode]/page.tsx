@@ -19,7 +19,6 @@ import FooterContainer from '../../../components/shared/footer-container';
 import { Button } from '../../../components/ui/button';
 import ApplySectionHeader from './_components/apply-section-header';
 import {
-  checkSelectedAnswer,
   convertAnswerToFormAnswer,
   convertFormAnswerToAnswer,
   filterSelectedAnswer,
@@ -120,78 +119,8 @@ const Page = () => {
       saveApplication(requestBody),
   });
 
-  // chocie의 경우 submit 시 validation
-  // const validateChoices = (answers: IFormAnswer[] | null) => {
-  //   if (!answers || !sharedSection) return;
-
-  //   let valid: boolean = true;
-
-  //   const getQuestionInfo = (questionId: number) =>
-  //     recruitment?.sections
-  //       .flatMap((section) => section.questions)
-  //       .find(
-  //         (question) =>
-  //           question.id === questionId && question.type === 'SELECTIVE',
-  //       );
-
-  //   answers.forEach((answer, index) => {
-  //     if (answer.questionType === 'NARRATIVE') return;
-
-  //     const isSelectedSectionAnswer = checkSelectedAnswer(
-  //       answer,
-  //       selectedSection,
-  //       sharedSection,
-  //     );
-
-  //     if (!isSelectedSectionAnswer) return;
-
-  //     const question = getQuestionInfo(answer.questionId);
-
-  //     if (question?.necessity && answer.choiceIds?.length === 0) {
-  //       methods.setError(`answers.${index}`, {
-  //         type: 'necessity',
-  //         message: '해당 필드는 응답 필수입니다.',
-  //       });
-
-  //       valid = false;
-  //     } else if (
-  //       question?.minimumSelection &&
-  //       answer.choiceIds &&
-  //       answer.choiceIds.length > 0 &&
-  //       answer.choiceIds.length < question.minimumSelection
-  //     ) {
-  //       methods.setError(`answers.${index}`, {
-  //         type: 'minimumSelection',
-  //         message: `최소 ${question.minimumSelection}개 이상 선택해주세요.`,
-  //       });
-
-  //       valid = false;
-  //     } else if (
-  //       question?.maximumSelection &&
-  //       answer.choiceIds &&
-  //       answer.choiceIds.length > 0 &&
-  //       answer.choiceIds.length > question.maximumSelection
-  //     ) {
-  //       methods.setError(`answers.${index}`, {
-  //         type: 'maximumSelection',
-  //         message: `최대 ${question.maximumSelection}개 이하로 선택해주세요.`,
-  //       });
-
-  //       valid = false;
-  //     }
-  //   });
-
-  //   return valid;
-  // };
-
   const onSubmit = async (data: IFormApplication) => {
-    // submit 시 choice validation 수행
-    // const choiceValidate = validateChoices(data.answers);
-
-    if (
-      // !choiceValidate ||
-      !sharedSection
-    ) {
+    if (!sharedSection) {
       onFormError();
       return;
     }
@@ -243,9 +172,6 @@ const Page = () => {
   };
 
   const onFormError = () => {
-    // narrtive에서 에러 발생 시, onSubmit이 실행되지 않기 떄문에 choice에 대한 validation을 에러 시에 추가로 수행
-    // validateChoices(answers);
-
     toast({
       title: '입력을 다시 확인해주세요.',
       state: 'error',

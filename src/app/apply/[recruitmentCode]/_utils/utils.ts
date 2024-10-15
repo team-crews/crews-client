@@ -124,36 +124,6 @@ export const filterSelectedAnswer = (
   return filteredAnswers;
 };
 
-/**
- * Check answer is related to selected or shared section
- * If selected section is undefined, check only shared section
- * @param answer - answer to check
- * @param selectedSection - selected section
- * @param sharedSection - shared section
- * @returns boolean
- */
-export const checkSelectedAnswer = (
-  answer: IFormAnswer,
-  selectedSection: ISection | undefined,
-  sharedSection: ISection,
-) => {
-  if (!selectedSection) {
-    const questionIds = [
-      ...sharedSection.questions.map((question) => question.id),
-    ];
-
-    return questionIds.includes(answer.questionId);
-  }
-
-  // questionIds 추출
-  const questionIds = [
-    ...selectedSection.questions.map((question) => question.id),
-    ...sharedSection.questions.map((question) => question.id),
-  ];
-
-  return questionIds.includes(answer.questionId);
-};
-
 export const getInitialSectionSelection = (
   answers: IReadAnswer[] | undefined,
   sections: ISection[] | undefined,
