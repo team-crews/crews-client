@@ -8,7 +8,7 @@ import React from 'react';
 import { Button } from '../shadcn/button.tsx';
 import { cn } from '../../lib/utils/utils.ts';
 
-const Dialog = ({
+const CrewsDialog = ({
   isOpen,
   toggleOpen,
   children,
@@ -18,7 +18,7 @@ const Dialog = ({
 }: {
   isOpen: boolean;
   toggleOpen: () => void;
-  action?: () => Promise<void>;
+  action?: (() => Promise<void>) | (() => void);
   type?: 'ALERT' | 'CONFIRM';
   children: React.ReactNode;
   className?: string;
@@ -42,13 +42,18 @@ const Dialog = ({
         <AlertDialogTitle className="hidden" />
         <AlertDialogDescription className="hidden" />
         <section className="w-full flex-1">{children}</section>
-        <div className="sticky bottom-0 flex w-full gap-4 bg-transparent">
+        <div className="sticky bottom-0 flex w-full gap-4 bg-transparent pt-6">
           {type === 'CONFIRM' && (
-            <Button onClick={handleCancelClick} size="sm" variant="gray">
+            <Button
+              className="flex-1"
+              onClick={handleCancelClick}
+              size="sm"
+              variant="gray"
+            >
               취소
             </Button>
           )}
-          <Button onClick={handleConfirmClick} size="sm">
+          <Button className="flex-1" onClick={handleConfirmClick} size="sm">
             확인
           </Button>
         </div>
@@ -57,4 +62,4 @@ const Dialog = ({
   );
 };
 
-export default Dialog;
+export default CrewsDialog;

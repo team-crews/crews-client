@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { formatNumberTime } from '../../../../lib/utils/time.ts';
 import dayjs from 'dayjs';
+import { formatNumberTime } from '../../../../lib/utils/utils.ts';
+import { z } from 'zod';
+import { DeadlineSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
 
 const DeadlineSection = ({
   recruiting,
@@ -9,7 +11,7 @@ const DeadlineSection = ({
 }: {
   recruiting: boolean;
   stopRecruiting: () => void;
-  deadline: Date;
+  deadline: z.infer<typeof DeadlineSchema>;
 }) => {
   const [diff, setDiff] = useState<number>(dayjs(deadline).diff(dayjs()));
   const day = Math.floor(diff / (1000 * 60 * 60 * 24));
