@@ -53,10 +53,11 @@ const Page = () => {
           {loginType === 'APPLICANT' ? '모집자' : '지원자'}로 로그인
         </button>
 
-        <div className="flex w-full justify-center gap-4 py-3 text-sm font-thin text-crews-g05">
+        <div className="flex w-full items-center justify-center gap-2 py-3 text-sm font-thin text-crews-g05">
           <Link to="/sign-up" state={{ loginType }} className="hover:underline">
             회원가입
           </Link>
+          <Seperator orientation="vertical" className="h-4 bg-crews-g02" />
           <Tooltip>
             <TooltipTrigger>
               <p className="hover:underline">비밀번호 찾기</p>

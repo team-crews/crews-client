@@ -1,5 +1,5 @@
 import { Button } from '../../../../components/shadcn/button.tsx';
-import Dialog from '../../../../components/shared/dialog.tsx';
+import CrewsDialog from '../../../../components/molecule/crews-dialog.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import useDialog from '../../../../hooks/use-dialog.ts';
@@ -78,6 +78,7 @@ const FooterSection = ({
         <Loading />
       ) : null}
       <CrewsFooter>
+        <Button size="lg">CSV 추출</Button>
         <Button
           size="lg"
           disabled={progress === 'ANNOUNCED'}
@@ -93,7 +94,7 @@ const FooterSection = ({
           평가 완료
         </Button>
       </CrewsFooter>
-      <Dialog
+      <CrewsDialog
         {...dialogProps}
         action={handleSendConfirmClick}
         className="w-80 p-4 text-center"
@@ -119,7 +120,7 @@ const FooterSection = ({
             에 피드백을 남겨주세요 🥹
           </p>
         </div>
-      </Dialog>
+      </CrewsDialog>
     </>
   );
 };

@@ -1,15 +1,13 @@
+/*
+  ToDo
+  - Migrating types to zod!
+  - This file should be removed
+ */
+
 import { IRecruitment } from '../../lib/types/models/i-recruitment.ts';
-import {
-  IApplication,
-  IApplicationOverview,
-  ITempApplication,
-} from '../../lib/types/models/i-application.ts';
+import { IApplication, ITempApplication } from '../../lib/types/models/i-application.ts';
 
 type NoResponseData = '';
-
-export type IReadApplicationOverviewsResponse = IApplicationOverview[];
-
-export type IReadApplicationDetailResponse = IApplication;
 
 export type ISaveEvaluationResponse = NoResponseData;
 

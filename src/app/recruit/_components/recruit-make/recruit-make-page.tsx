@@ -5,7 +5,7 @@ import Container from '../../../../components/shared/container.tsx';
 import HeaderSection from './header-section.tsx';
 import FooterSection from './footer-section.tsx';
 import RecruitMetaSection from './details/recruit-meta-section.tsx';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Loading from '../../../../components/shared/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
@@ -25,7 +25,6 @@ const RecruitMakePage = () => {
   const methods = useForm<z.infer<typeof CreatedRecruitmentSchema>>({
     defaultValues: CREATED_RECRUITMENT,
   });
-  const [recruitmentCode, setRecruitmentCode] = useState<string | null>(null);
 
   const { readRecruitment } = useAdminApi();
   const readQuery = useQuery({
@@ -37,7 +36,6 @@ const RecruitMakePage = () => {
   const updateRecruitment = (data: z.infer<typeof RecruitmentSchema>) => {
     data.deadline = convertSeoulToUTC(data.deadline);
     methods.reset(convertRecruitmentToCreatedRecruitment(data));
-    setRecruitmentCode(data.code);
   };
 
   useEffect(() => {
@@ -53,10 +51,7 @@ const RecruitMakePage = () => {
         <FormProvider {...methods}>
           <RecruitMetaSection />
           <SectionBoxes />
-          <FooterSection
-            recruitmentCode={recruitmentCode}
-            updateRecruitment={updateRecruitment}
-          />
+          <FooterSection updateRecruitment={updateRecruitment} />
         </FormProvider>
       </Container>
     );

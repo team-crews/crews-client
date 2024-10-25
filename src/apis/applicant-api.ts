@@ -1,5 +1,5 @@
 import useAuthInstance from './instance.ts';
-import { ISaveApplicationResponse } from './i-response-body/i-response-body.ts';
+import { ISaveApplicationResponse } from './i-response-body/deprecated-response-body.ts';
 import {
   ISaveApplicationRequest,
   ITempReadApplicationResponse,

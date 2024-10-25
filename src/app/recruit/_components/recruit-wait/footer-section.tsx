@@ -1,6 +1,6 @@
 import { Button } from '../../../../components/shadcn/button.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Dialog from '../../../../components/shared/dialog.tsx';
+import CrewsDialog from '../../../../components/molecule/crews-dialog.tsx';
 import useDialog from '../../../../hooks/use-dialog.ts';
 import { useForm } from 'react-hook-form';
 import {
@@ -94,7 +94,14 @@ const FooterSection = ({
           지원서 평가
         </Button>
       </CrewsFooter>
-      <Dialog {...dialogReturns} action={handleSubmit(onSubmit, onError)}>
+      <CrewsDialog {...dialogReturns} action={handleSubmit(onSubmit, onError)}>
+        <div className="mb-6 flex flex-col gap-2 text-center">
+          <p className="text-2xl font-semibold">⏰ 마감 기간 연장</p>
+          <p className="text-sm font-light">
+            기간 연장 후 단축은 불가능하니 주의해주세요.
+          </p>
+        </div>
+
         <div className="flex flex-col gap-6">
           <div className="w-full">
             <Label>마감 일자</Label>
@@ -127,7 +134,7 @@ const FooterSection = ({
                         deadlineDate: getValues('deadlineDate'),
                         deadlineTime: v,
                       }),
-                      '마감 기간은 현재 시간 이후로 지정해주세요.',
+                      '마감 기간은 연장만 가능합니다.',
                     );
                   },
                 },
@@ -145,7 +152,7 @@ const FooterSection = ({
             </select>
           </div>
         </div>
-      </Dialog>
+      </CrewsDialog>
     </>
   );
 };

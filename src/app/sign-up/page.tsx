@@ -1,9 +1,4 @@
 import { Link, useLocation } from 'react-router-dom';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '../../components/shadcn/tooltip.tsx';
 import Container from '../../components/shared/container.tsx';
 import Seperator from '../../components/shadcn/seperator.tsx';
 import { useState } from 'react';
@@ -62,14 +57,6 @@ const Page = () => {
           <Link to="/sign-in" state={{ loginType }} className="hover:underline">
             로그인
           </Link>
-          <Tooltip>
-            <TooltipTrigger>
-              <p className="hover:underline">비밀번호 찾기</p>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>개발중입니다 😅</p>
-            </TooltipContent>
-          </Tooltip>
         </div>
       </section>
     </Container>

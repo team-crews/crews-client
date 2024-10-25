@@ -5,7 +5,6 @@ import { useToast } from '../../../../hooks/use-toast.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
 import { useFormContext } from 'react-hook-form';
 import Loading from '../../../../components/shared/loading.tsx';
-import CopyCodeButton from '../../../../components/shared/copy-code-button.tsx';
 import { findFirstErrorMessage } from '../../../../lib/utils/utils.ts';
 import { z } from 'zod';
 import {
@@ -17,10 +16,8 @@ import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { SaveRecruitmentRequestSchema } from '../../../../apis/i-response-body/response-body-schema.ts';
 
 const FooterSection = ({
-  recruitmentCode,
   updateRecruitment,
 }: {
-  recruitmentCode: string | null;
   updateRecruitment: (data: z.infer<typeof RecruitmentSchema>) => void;
 }) => {
   const { handleSubmit } =
@@ -106,9 +103,6 @@ const FooterSection = ({
     <>
       {(saveMutation.isPending || startMutation.isPending) && <Loading />}
       <CrewsFooter>
-        {recruitmentCode && (
-          <CopyCodeButton size="lg" variant="black" code={recruitmentCode} />
-        )}
         <Button
           size="lg"
           onClick={handleSubmit(
