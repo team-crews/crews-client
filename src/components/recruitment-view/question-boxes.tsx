@@ -1,45 +1,64 @@
 import Container from '../shared/container.tsx';
 import Typography from '../shared/typography.tsx';
+import { z } from 'zod';
 import {
-  IAnswer,
-  INarrativeAnswer,
-  ISelectiveAnswer,
-} from '../../lib/types/models/i-application.ts';
+  AnswerSchema,
+  NarrativeAnswerSchema,
+  SelectiveAnswerSchema,
+} from '../../lib/types/schemas/application-schema.ts';
 import {
-  INarrativeQuestion,
-  IQuestion,
-  ISelectiveQuestion,
-} from '../../lib/types/models/i-question.ts';
+  NarrativeQuestionSchema,
+  QuestionSchema,
+  SelectiveQuestionSchema,
+} from '../../lib/types/schemas/question-schema.ts';
 
 const QuestionBoxes = ({
   questions,
   answers,
 }: {
-  questions: IQuestion[];
-  answers?: IAnswer[];
+  questions: z.infer<typeof QuestionSchema>[];
+  answers?: z.infer<typeof AnswerSchema>[];
 }) => {
+  const selectiveAnswerMap = answers
+    ?.filter((ans) => ans.type === 'SELECTIVE')
+    .reduce(
+      (map, ans) => {
+        map[ans.questionId] = ans;
+        return map;
+      },
+      {} as Record<
+        z.infer<typeof SelectiveAnswerSchema>['questionId'],
+        z.infer<typeof SelectiveAnswerSchema>
+      >,
+    );
+
+  const narrativeAnswerMap = answers
+    ?.filter((ans) => ans.type === 'NARRATIVE')
+    .reduce(
+      (map, ans) => {
+        map[ans.questionId] = ans;
+        return map;
+      },
+      {} as Record<
+        z.infer<typeof NarrativeAnswerSchema>['questionId'],
+        z.infer<typeof NarrativeAnswerSchema>
+      >,
+    );
+
   return (
     <section className="flex h-fit flex-col gap-4">
       {questions.map((question) => {
-        const filteredAnswers = answers
-          ? answers.filter((ans) => ans.questionId === question.id)
-          : undefined;
-
         return question.type === 'SELECTIVE' ? (
           <SelectiveBox
             key={crypto.randomUUID()}
             question={question}
-            answers={filteredAnswers as ISelectiveAnswer[]}
+            answer={selectiveAnswerMap?.[question.id]}
           />
         ) : (
           <NarrativeBox
             key={crypto.randomUUID()}
             question={question}
-            answers={
-              filteredAnswers
-                ? (filteredAnswers[0] as INarrativeAnswer)
-                : undefined
-            }
+            answer={narrativeAnswerMap?.[question.id]}
           />
         );
       })}
@@ -49,10 +68,10 @@ const QuestionBoxes = ({
 
 const SelectiveBox = ({
   question,
-  answers,
+  answer,
 }: {
-  question: ISelectiveQuestion;
-  answers?: ISelectiveAnswer[];
+  question: z.infer<typeof SelectiveQuestionSchema>;
+  answer?: z.infer<typeof SelectiveAnswerSchema>;
 }) => {
   const necessityText = question.necessity ? '응답 필수' : '';
 
@@ -62,8 +81,6 @@ const SelectiveBox = ({
   const displayText = [necessityText, minText, maxText]
     .filter(Boolean)
     .join(', ');
-
-  const choices = answers?.map((ans) => ans.choiceId);
 
   return (
     <Container className="rounded-xl bg-crews-w01 p-3">
@@ -79,7 +96,7 @@ const SelectiveBox = ({
         <div className="flex flex-col gap-1">
           {question.choices.map((choice) => (
             <div key={choice.id} className="flex items-center gap-2">
-              {choices?.includes(choice.id) ? (
+              {(answer?.choiceIds ?? []).includes(choice.id) ? (
                 <div className="flex h-3 w-3 items-center justify-center rounded-full border border-crews-g03">
                   <div className="h-2 w-2 rounded-full bg-crews-b05" />
                 </div>
@@ -99,14 +116,14 @@ const SelectiveBox = ({
 
 const NarrativeBox = ({
   question,
-  answers,
+  answer,
 }: {
-  question: INarrativeQuestion;
-  answers?: INarrativeAnswer;
+  question: z.infer<typeof NarrativeQuestionSchema>;
+  answer?: z.infer<typeof NarrativeAnswerSchema>;
 }) => {
   const necessityText = question.necessity ? '응답 필수' : '';
 
-  const wordLimitText = `글자수 (${answers?.content.length ?? 0}/${question.wordLimit})`;
+  const wordLimitText = `글자수 (${(answer?.content ?? '').length ?? 0}/${question.wordLimit})`;
 
   const displayText = [necessityText, wordLimitText].filter(Boolean).join(', ');
 
@@ -127,7 +144,7 @@ const NarrativeBox = ({
           className="w-full rounded-lg p-2 text-xs outline outline-1 outline-crews-g02 placeholder:font-light placeholder:text-crews-g03"
           disabled={true}
           placeholder="이곳에 답변을 입력해주세요."
-          value={answers?.content ?? ''}
+          value={answer?.content ?? ''}
         />
       </div>
     </Container>

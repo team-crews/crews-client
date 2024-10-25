@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { ProgressSchema } from './progress-schema.ts';
 import { CreatedSectionSchema, SectionSchema } from './section-schema.ts';
-import WithNullableIdSchema from './nullable-id-schema.ts';
 
 export const RecruitmentSchema = z.object({
   id: z.number(),
@@ -9,15 +8,26 @@ export const RecruitmentSchema = z.object({
   description: z.string(),
   recruitmentProgress: ProgressSchema,
   sections: z.array(SectionSchema),
-  deadline: z.string(),
+  deadline: z.string().datetime({ offset: true }),
   code: z.string(),
 });
 
-export const CreatedRecruitmentSchema = WithNullableIdSchema(RecruitmentSchema)
-  .omit({
-    code: true,
-    recruitmentProgress: true,
-  })
-  .extend({
-    sections: z.array(CreatedSectionSchema),
-  });
+export const CreatedRecruitmentSchema = RecruitmentSchema.omit({
+  deadline: true,
+  code: true,
+  recruitmentProgress: true,
+}).extend({
+  id: RecruitmentSchema.shape.id.nullable(),
+  sections: z.array(CreatedSectionSchema),
+  deadlineDate: z.string().date(),
+  deadlineTime: z.string().time(),
+});
+
+export const DeadlineSchema = RecruitmentSchema.pick({
+  deadline: true,
+}).transform((data) => data.deadline);
+
+export const DateAndTimeSchema = CreatedRecruitmentSchema.pick({
+  deadlineDate: true,
+  deadlineTime: true,
+});

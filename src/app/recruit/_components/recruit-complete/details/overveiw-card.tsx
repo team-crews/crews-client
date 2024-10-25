@@ -20,10 +20,6 @@ const OverviewCard = ({
   passId: (id: number) => void;
   unpassId: (id: number) => void;
 }) => {
-  const bgColor: string = isPass
-    ? 'bg-crews-b02 border-crews-b02'
-    : 'bg-crews-w01 border-crews-g02';
-
   const handlePassClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     passId(applicationOverview.id);
@@ -35,26 +31,19 @@ const OverviewCard = ({
   };
 
   const dialogProps = useDialog();
-  const handleOverviewClick = () => {
-    dialogProps.toggleOpen();
-  };
 
   return (
     <>
       <div
-        onClick={handleOverviewClick}
+        onClick={() => dialogProps.toggleOpen()}
         className={cn(
-          'flex cursor-pointer items-center justify-between rounded-lg border p-4 hover:bg-crews-g01',
-          bgColor,
+          'flex cursor-pointer items-center justify-between rounded-lg border border-crews-g02 bg-crews-w01 p-4 hover:bg-crews-g01',
+          isPass && 'border-crews-b02 bg-crews-b02',
         )}
       >
-        <div>
-          <p className="text-sm font-semibold text-crews-bk01">
-            {applicationOverview.studentNumber}
-          </p>
-          <p className="text-sm font-semibold text-crews-bk01">
-            {applicationOverview.name}
-          </p>
+        <div className="text-sm font-semibold text-crews-bk01">
+          <p>{applicationOverview.studentNumber}</p>
+          <p>{applicationOverview.name}</p>
           <p className="mt-1 text-xs text-crews-g05">
             {applicationOverview.major}
           </p>

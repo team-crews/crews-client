@@ -1,6 +1,13 @@
 import { z } from 'zod';
 import { ProgressSchema } from '../../lib/types/schemas/progress-schema.ts';
-import { RecruitmentSchema } from '../../lib/types/schemas/recruitment-schema.ts';
+import {
+  CreatedRecruitmentSchema,
+  RecruitmentSchema,
+} from '../../lib/types/schemas/recruitment-schema.ts';
+import {
+  ApplicationDetailSchema,
+  ApplicationOverviewSchema,
+} from '../../lib/types/schemas/application-schema.ts';
 
 const NoResponseDataSchema = z.literal('');
 
@@ -11,7 +18,7 @@ export const ReadRecruitmentProgressResponseSchema = z.object({
 export const ReadRecruitmentInProgressDetailResponseSchema = z.object({
   code: z.string(),
   applicationCount: z.number(),
-  deadline: z.string(),
+  deadline: RecruitmentSchema.shape.deadline,
 });
 
 export const StartRecruitmentResponseSchema = NoResponseDataSchema;
@@ -32,19 +39,24 @@ export const LogoutResponseSchema = NoResponseDataSchema;
 export const ReadRecruitmentResponseSchema =
   RecruitmentSchema.or(NoResponseDataSchema);
 
+export const SaveRecruitmentRequestSchema = CreatedRecruitmentSchema.omit({
+  deadlineDate: true,
+  deadlineTime: true,
+}).extend({
+  deadline: RecruitmentSchema.shape.deadline,
+});
 export const SaveRecruitmentResponseSchema = RecruitmentSchema;
+
+export const ReadApplicationOverviewsResponseSchema = z.array(
+  ApplicationOverviewSchema,
+);
+
+export const ReadApplicationDetailResponseSchema = ApplicationDetailSchema;
 
 /*
   ToDo
   -  change to zod type system
  */
-
-// export const iReadApplicationOverviewsResponseSchema = z.array(
-//   iApplicationOverviewSchema,
-// );
-//
-// export const iReadApplicationDetailResponseSchema = iApplicationSchema;
-//
 // export const iReadApplicationResponseSchema = iApplicationSchema;
 //
 // export const iSaveApplicationResponseSchema = iTempApplicationSchema;
