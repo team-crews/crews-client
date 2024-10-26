@@ -64,6 +64,53 @@ export type IReadSelectiveAnswer = IBaseAnswer & {
 
 export type IReadAnswer = IReadNarrativeAnswer | IReadSelectiveAnswer;
 
-export type IReadApplication = Omit<IApplicationOverview, 'outcome'> & {
-  answers: IReadAnswer[];
+// export type IReadApplication = Omit<IApplicationOverview, 'outcome'> & {
+//   answers: IReadAnswer[];
+// };
+
+type AnswerType = 'NARRATIVE' | 'SELECTIVE';
+
+export type IReadApplication = {
+  id: number;
+  studentNumber: string;
+  major: string;
+  name: string;
+  sections: {
+    sectionId: number;
+    answers: {
+      questionId: number;
+      content: string | null;
+      choiceIds: number[] | null;
+      type: AnswerType;
+    }[];
+  }[];
+};
+
+export type ISaveApplication = {
+  id: number | null;
+  studentNumber: string;
+  major: string;
+  name: string;
+  sections: {
+    sectionId: number;
+    answers: {
+      questionId: number;
+      content: string | null;
+      choiceIds: number[] | null;
+      type: AnswerType;
+    }[];
+  }[];
+  recruitmentCode: string;
+};
+
+export type IFormApplicationTemp = {
+  sections: {
+    sectionId: number;
+    answers: {
+      questionId: number;
+      content: string | null;
+      choiceIds: (number | boolean)[] | null;
+      type: AnswerType;
+    }[];
+  }[];
 };

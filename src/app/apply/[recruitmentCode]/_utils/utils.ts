@@ -1,166 +1,137 @@
 import {
-  ICreatedAnswer,
-  IReadAnswer,
+  IFormApplicationTemp,
   IReadApplication,
-  IReadNarrativeAnswer,
-  IReadSelectiveAnswer,
+  ISaveApplication,
 } from '../../../../lib/types/models/i-application.ts';
 import { ISection } from '../../../../lib/types/models/i-section.ts';
-import { IFormAnswer, SHARED_SECTION_INDEX } from '../page';
+import { ChoiceMap } from '../_hooks/use-choice-map.tsx';
+import { SHARED_SECTION_INDEX } from '../page';
 
-// Convert ICreatedApplication to IFormApplication
-export const convertAnswerToFormAnswer = (
+export const convertToFormApplication = (
   application: IReadApplication,
-): IFormAnswer[] => {
-  const convertedFormAnswers: IFormAnswer[] = application.answers.reduce(
-    (acc: IFormAnswer[], answer: IReadAnswer) => {
-      if (answer.type === 'NARRATIVE') {
-        // NARRATIVE 타입의 답변 변환
-        const narrativeAnswer: IFormAnswer = {
-          answerId: answer.answerId,
-          content: (answer as IReadNarrativeAnswer).content,
-          choiceIds: null,
-          questionId: answer.questionId,
-          questionType: 'NARRATIVE',
-        };
-        acc.push(narrativeAnswer);
-      } else if (answer.type === 'SELECTIVE') {
-        const selectiveAnswerIndex = acc.findIndex(
-          (fa) =>
-            fa.questionId === answer.questionId &&
-            fa.questionType === 'SELECTIVE',
-        );
-
-        if (selectiveAnswerIndex !== -1) {
-          acc[selectiveAnswerIndex].choiceIds?.push(
-            (answer as IReadSelectiveAnswer).choiceId,
+  choiceMap: ChoiceMap,
+): IFormApplicationTemp => {
+  return {
+    sections: application.sections.map((section) => ({
+      sectionId: section.sectionId,
+      answers: section.answers.map((answer) => {
+        if (answer.type === 'SELECTIVE') {
+          // choiceMap에 존재하는 choiceId 중, 선택된 choiceId는 choiceId로, 아닌 경우는 false로 변환
+          const convertedChoiceIds = choiceMap[answer.questionId].map(
+            (choiceId) =>
+              answer.choiceIds?.includes(choiceId) ? choiceId : false,
           );
-        } else {
-          const selectiveAnswer: IFormAnswer = {
-            answerId: answer.answerId,
-            content: null,
-            choiceIds: [(answer as IReadSelectiveAnswer).choiceId],
-            questionId: answer.questionId,
-            questionType: 'SELECTIVE',
-          };
-          acc.push(selectiveAnswer);
-        }
-      }
-      return acc;
-    },
-    [] as IFormAnswer[],
-  );
 
-  return convertedFormAnswers;
+          return {
+            questionId: answer.questionId,
+            content: null,
+            choiceIds: convertedChoiceIds as (number | boolean)[],
+            type: answer.type,
+          };
+        } else {
+          return {
+            questionId: answer.questionId,
+            content: answer.content,
+            choiceIds: null,
+            type: answer.type,
+          };
+        }
+      }),
+    })),
+  };
 };
 
-export const convertFormAnswerToAnswer = (answers: IFormAnswer[]) => {
-  const convertedAnswers = answers.flatMap((answer) => {
-    if (answer.questionType === 'NARRATIVE') {
-      return [
-        {
-          answerId: null,
-          questionId: answer.questionId,
-          content: answer.content,
-          choiceId: null,
-          questionType: 'NARRATIVE',
-        } as ICreatedAnswer,
-      ];
-    } else if (answer.questionType === 'SELECTIVE') {
-      return (
-        answer.choiceIds?.map(
-          (choiceId) =>
-            ({
-              answerId: null,
-              questionId: answer.questionId,
-              content: null,
-              choiceId: choiceId,
-              questionType: 'SELECTIVE',
-            }) as ICreatedAnswer,
-        ) || []
-      );
-    }
-    return [];
-  });
+export const convertToSaveApplication = (
+  sections: IFormApplicationTemp['sections'],
+): ISaveApplication['sections'] => {
+  const convertedSections = sections.map((section) => ({
+    sectionId: section.sectionId,
+    answers: section.answers.map((answer) => {
+      if (answer.type === 'SELECTIVE') {
+        const filteredChoiceIds =
+          (
+            answer.choiceIds?.filter(
+              (choiceId) => choiceId !== false,
+            ) as number[]
+          ).map((choiceId) => Number(choiceId)) || [];
 
-  return convertedAnswers;
+        return {
+          questionId: answer.questionId,
+          content: null,
+          choiceIds: filteredChoiceIds.length === 0 ? null : filteredChoiceIds,
+          type: answer.type,
+        };
+      } else {
+        return {
+          ...answer,
+          choiceIds: null,
+        };
+      }
+    }),
+  }));
+
+  return convertedSections;
 };
 
 /**
  * Filter answers related to selected or shared section
- * If selected section is undefined, filter only shared section
- * @param answers - answers to filter
- * @param selectedSection - selected section
- * @param sharedSection - shared section
+ * If isOnlySharedSection is true, filter only shared section
+ * @param sections - answers for each section
+ * @param selectedSectionIndex - selected section index
+ * @param isOnlySharedSection - whether to filter only shared section
  * @returns filtered answers
  */
 export const filterSelectedAnswer = (
-  answers: IFormAnswer[],
-  selectedSection: ISection | undefined,
-  sharedSection: ISection,
-) => {
-  if (!selectedSection) {
-    // questionIds 추출
-    const questionIds = [
-      ...sharedSection.questions.map((question) => question.id),
-    ];
+  sections: IFormApplicationTemp['sections'],
+  selectedSectionIndex: number,
+  isOnlySharedSection: boolean,
+): IFormApplicationTemp['sections'] => {
+  const filteredAnswers = sections.map((section, index) => {
+    const isSharedSection = index === SHARED_SECTION_INDEX;
+    const isSelectedSection =
+      !isOnlySharedSection && index === selectedSectionIndex;
 
-    const filteredAnswers = answers.filter((answer) =>
-      questionIds.includes(answer.questionId),
-    );
-
-    return filteredAnswers;
-  }
-  // questionIds 추출
-  const questionIds = [
-    ...selectedSection.questions.map((question) => question.id),
-    ...sharedSection.questions.map((question) => question.id),
-  ];
-
-  const filteredAnswers = answers.filter((answer) =>
-    questionIds.includes(answer.questionId),
-  );
+    if (isSharedSection || isSelectedSection) {
+      return section;
+    } else {
+      return {
+        ...section,
+        answers: section.answers.map((answer) => {
+          if (answer.type === 'NARRATIVE') {
+            return {
+              ...answer,
+              content: null,
+            };
+          } else if (answer.type === 'SELECTIVE') {
+            return {
+              ...answer,
+              choiceIds: [],
+            };
+          }
+          return answer; // 기본적으로 answer 그대로 반환
+        }),
+      };
+    }
+  });
 
   return filteredAnswers;
 };
 
 export const getInitialSectionSelection = (
-  answers: IReadAnswer[] | undefined,
-  sections: ISection[] | undefined,
-  sharedSection: ISection | undefined,
+  applicationSections:
+    | Pick<IReadApplication, 'sections'>['sections']
+    | undefined,
+  recruitmentSections: ISection[] | undefined,
 ) => {
-  if (!answers || !sections) return 1;
+  if (!applicationSections || !recruitmentSections) return 1;
 
-  const sharedQuestionIds =
-    sharedSection?.questions.map((question) => question.id) || [];
+  // answers에 답변이 있는 첫 번째 section 찾기
+  const initialSection = applicationSections.find((section) =>
+    section.answers.some(
+      (answer) => answer.content || answer.choiceIds?.length,
+    ),
+  );
 
-  let initialSectionSelection: number = 1;
-
-  // answer중 sharedSection이 아닌 첫번쨰 questionId 추출, 공통 섹션만 있을 경우 1번째 섹션 선택
-  const nonSharedAnswers = answers.filter((answer) => {
-    if (sharedQuestionIds.includes(answer.questionId)) {
-      return false;
-    }
-
-    return true;
-  });
-
-  if (nonSharedAnswers.length === 0) {
-    return 1;
-  }
-
-  const questionId = nonSharedAnswers[0].questionId;
-
-  sections.forEach((section, index) => {
-    if (index === SHARED_SECTION_INDEX) return;
-
-    const questionIds = section.questions.map((question) => question.id);
-
-    if (questionIds.includes(questionId)) {
-      initialSectionSelection = index;
-      return;
-    }
-  });
-
-  return initialSectionSelection;
+  // 답변이 있는 섹션이 있으면 해당 sectionId를 반환, 없으면 1 반환
+  return initialSection ? initialSection.sectionId : 1;
 };

@@ -13,19 +13,23 @@ import { QuestionType } from '../../../lib/enums';
 import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { ISaveApplicationRequest } from '../../../lib/types/models/i-application.ts';
+import {
+  IFormApplicationTemp,
+  ISaveApplication,
+} from '../../../lib/types/models/i-application.ts';
 import { useToast } from '../../../hooks/use-toast';
 import FooterContainer from '../../../components/shared/footer-container';
 import { Button } from '../../../components/ui/button';
 import ApplySectionHeader from './_components/apply-section-header';
 import {
-  convertAnswerToFormAnswer,
-  convertFormAnswerToAnswer,
+  convertToFormApplication,
+  convertToSaveApplication,
   filterSelectedAnswer,
 } from './_utils/utils';
 import { useSectionSelection } from './_hooks/use-section-selection';
 import { printCustomError } from '../../../lib/utils/error';
 import { IQuestion } from '../../../lib/types/models/i-question.ts';
+import { useChoiceMap } from './_hooks/use-choice-map.tsx';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -33,36 +37,21 @@ const untouchedFieldIndex = {
   major: 2,
 };
 
-export interface IFormApplication {
-  id: number | null;
-  studentNumber: string;
-  major: string;
-  name: string;
-  answers: IFormAnswer[]; // answers 배열은 여러 답변 타입을 포함
-}
-
-export type IFormAnswer = {
-  answerId: number | null;
-  content: string | null;
-  choiceIds: (number | boolean)[] | null;
-  questionId: number;
-  questionType: 'SELECTIVE' | 'NARRATIVE';
+const defaultUntouchedField = {
+  name: 'DEFAULT_NAME',
+  studentNumber: 'DEFAULT_STUDENT_NUMBER',
+  major: 'DEFAULT_MAJOR',
 };
 
-// type IFormChoice = {
-
-const defaultApplication: IFormApplication = {
-  id: null,
-  studentNumber: '00000000',
-  name: 'DEFAULT_NAME',
-  major: 'DEFAULT_MAJOR',
-  answers: [],
+const defaultApplication: IFormApplicationTemp = {
+  sections: [],
 };
 
 export const SHARED_SECTION_INDEX = 0;
 
 const Page = () => {
   const { toast } = useToast();
+
   const [ableToSubmit, setAbleToSubmit] = useState<boolean>(false);
 
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
@@ -84,29 +73,75 @@ const Page = () => {
     enabled: !!recruitmentCode,
   });
 
+  const { choiceMap } = useChoiceMap({ recruitment });
+
   /**
    * Hook Form Control
    */
-  const methods = useForm<IFormApplication>({
+  const methods = useForm<IFormApplicationTemp>({
     defaultValues: defaultApplication,
   });
 
-  const name = methods.watch(`answers.${untouchedFieldIndex.name}.content`);
-  const major = methods.watch(`answers.${untouchedFieldIndex.major}.content`);
-  const studentNumber = methods.watch(
-    `answers.${untouchedFieldIndex.studentNumber}.content`,
-  );
+  // choice를 선택하지 않은 경우, false로 초기화
+  useEffect(() => {
+    if (application) {
+      //Convert ICreatedApplication to IFormApplication
+      const formApplication: IFormApplicationTemp = convertToFormApplication(
+        application,
+        choiceMap,
+      );
 
-  const answers = methods.watch('answers');
+      methods.reset(formApplication);
+    } else {
+      // 각 섹션에 대한 초기값 설정
+      const initialSections = recruitment?.sections.map((section) => ({
+        sectionId: section.id,
+        answers: section.questions.map((question) => {
+          if (question.type === QuestionType.NARRATIVE) {
+            return {
+              questionId: question.id,
+              content: null,
+              choiceIds: null,
+              type: QuestionType.NARRATIVE,
+            };
+          } else {
+            return {
+              questionId: question.id,
+              content: null,
+              choiceIds: [],
+              type: QuestionType.SELECTIVE,
+            };
+          }
+        }),
+      }));
 
-  console.log('answers', answers);
+      methods.reset({
+        sections: initialSections || [],
+      });
+    }
+  }, [application, choiceMap, methods, recruitment?.sections]);
+
+  useEffect(() => {
+    if (recruitment) {
+      const now = new Date().getTime(); // 현재 시간
+      const deadline = new Date(recruitment.deadline).getTime(); // 마감일
+
+      if (now > deadline) {
+        setAbleToSubmit(false); // 마감일이 지났으면 제출 불가능
+      } else {
+        setAbleToSubmit(true); // 마감일이 지나지 않았으면 제출 가능
+      }
+    }
+  }, [recruitment]);
+
   /**
    *  Section Selection Control
    */
   const {
     sharedSection,
-    sectionSelections,
+    selectedSectionIndex,
     selectedSection,
+    isOnlySharedSection,
     handleSectionSelectionChange,
   } = useSectionSelection({
     recruitment,
@@ -115,47 +150,52 @@ const Page = () => {
   });
 
   const saveMutate = useMutation({
-    mutationFn: (requestBody: ISaveApplicationRequest) =>
-      saveApplication(requestBody),
+    mutationFn: (requestBody: ISaveApplication) => saveApplication(requestBody),
   });
 
-  const onSubmit = async (data: IFormApplication) => {
+  const onSubmit = async (data: IFormApplicationTemp) => {
     if (!sharedSection) {
       onFormError();
       return;
     }
 
-    // 선택된 섹션에 해당하는 질문만 필터링
+    // // 선택된 섹션에 해당하는 질문만 필터링
     const selectedSectionAnswers = filterSelectedAnswer(
-      data.answers,
-      selectedSection,
-      sharedSection,
+      data.sections,
+      selectedSectionIndex,
+      isOnlySharedSection,
     );
 
-    // FIXME: 강제로 answerId null로 설정하였는데, 기존 값이 있을 경우에는 그대로 사용하도록 수정 필요 (IFormApplication type 수정)
-    const convertedAnswers = convertFormAnswerToAnswer(selectedSectionAnswers);
+    const convertedAnswers = convertToSaveApplication(selectedSectionAnswers);
+
+    const name = methods.getValues(
+      `sections.${SHARED_SECTION_INDEX}.answers.${untouchedFieldIndex.name}.content`,
+    );
+    const studentNumber = methods.getValues(
+      `sections.${SHARED_SECTION_INDEX}.answers.${untouchedFieldIndex.studentNumber}.content`,
+    );
+    const major = methods.getValues(
+      `sections.${SHARED_SECTION_INDEX}.answers.${untouchedFieldIndex.major}.content`,
+    );
 
     const requestBody = {
-      id: data.id,
-      studentNumber: studentNumber || defaultApplication.studentNumber,
-      name: name || defaultApplication.name,
-      major: major || defaultApplication.major,
-      answers: convertedAnswers,
+      id: application?.id || null,
+      studentNumber: studentNumber || defaultUntouchedField.studentNumber,
+      name: name || defaultUntouchedField.name,
+      major: major || defaultUntouchedField.major,
+      sections: convertedAnswers,
       recruitmentCode: recruitmentCode!,
     };
 
     try {
       const response = await saveMutate.mutateAsync(requestBody);
 
-      const convertedAnswers = convertAnswerToFormAnswer(response);
+      const convertedApplication = convertToFormApplication(
+        response,
+        choiceMap,
+      );
 
-      methods.reset({
-        id: response.id,
-        studentNumber: response.studentNumber,
-        name: response.name,
-        major: response.major,
-        answers: convertedAnswers,
-      });
+      methods.reset(convertedApplication);
 
       toast({
         title: '지원서 저장이 완료되었습니다.',
@@ -177,34 +217,6 @@ const Page = () => {
       state: 'error',
     });
   };
-
-  useEffect(() => {
-    if (application) {
-      //Convert ICreatedApplication to IFormApplication
-      const formAnswers: IFormAnswer[] = convertAnswerToFormAnswer(application);
-
-      methods.reset({
-        id: application.id,
-        studentNumber: application.studentNumber,
-        name: application.name,
-        major: application.major,
-        answers: formAnswers,
-      });
-    }
-  }, [application, methods]);
-
-  useEffect(() => {
-    if (recruitment) {
-      const now = new Date().getTime(); // 현재 시간
-      const deadline = new Date(recruitment.deadline).getTime(); // 마감일
-
-      if (now > deadline) {
-        setAbleToSubmit(false); // 마감일이 지났으면 제출 불가능
-      } else {
-        setAbleToSubmit(true); // 마감일이 지나지 않았으면 제출 가능
-      }
-    }
-  }, [recruitment]);
 
   const isRecruitmentError =
     recruitmentQuery.error || !recruitment || !sharedSection;
@@ -233,8 +245,13 @@ const Page = () => {
                 description={sharedSection.description}
               >
                 <div className="flex flex-col gap-8">
-                  {sharedSection.questions.map((question) => (
-                    <RenderQuestion key={question.id} question={question} />
+                  {sharedSection.questions.map((question, index) => (
+                    <RenderQuestion
+                      key={question.id}
+                      question={question}
+                      questionIndex={index}
+                      sectionIndex={SHARED_SECTION_INDEX}
+                    />
                   ))}
                 </div>
               </ApplySectionBox>
@@ -246,7 +263,7 @@ const Page = () => {
                   <div className="flex w-full flex-col">
                     <ApplySectionHeader
                       sections={recruitment.sections}
-                      selectionIndex={sectionSelections}
+                      selectionIndex={selectedSectionIndex}
                       handleSelectionChange={handleSectionSelectionChange}
                     />
 
@@ -257,10 +274,12 @@ const Page = () => {
                       isSelectable={true}
                     >
                       <div className="flex flex-col gap-8">
-                        {selectedSection.questions.map((question) => (
+                        {selectedSection.questions.map((question, index) => (
                           <RenderQuestion
                             key={question.id}
                             question={question}
+                            questionIndex={index}
+                            sectionIndex={selectedSectionIndex}
                           />
                         ))}
                       </div>
@@ -282,12 +301,34 @@ const Page = () => {
 };
 
 // 질문 타입별 확장성을 위한 컴포넌트 렌더링
-const RenderQuestion = ({ question }: { question: IQuestion }) => {
+const RenderQuestion = ({
+  question,
+  questionIndex,
+  sectionIndex,
+}: {
+  question: IQuestion;
+  questionIndex: number;
+  sectionIndex: number;
+}) => {
   switch (question.type) {
     case QuestionType.NARRATIVE:
-      return <ApplyNarrativeBox question={question} />;
+      return (
+        <ApplyNarrativeBox
+          key={question.id}
+          question={question}
+          questionIndex={questionIndex}
+          sectionIndex={sectionIndex}
+        />
+      );
     case QuestionType.SELECTIVE:
-      return <ApplySelectiveBox key={question.id} question={question} />;
+      return (
+        <ApplySelectiveBox
+          key={question.id}
+          question={question}
+          questionIndex={questionIndex}
+          sectionIndex={sectionIndex}
+        />
+      );
     default:
       return null;
   }

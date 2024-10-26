@@ -1,8 +1,8 @@
 import useAuthInstance from './instance.ts';
-import { ISaveApplicationResponse } from './i-response-body/i-response-body.ts';
+
 import {
-  ISaveApplicationRequest,
   IReadApplication,
+  ISaveApplication,
 } from '../lib/types/models/i-application.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
 
@@ -33,8 +33,8 @@ const useApplicantApi = (recruitmentCode: string) => {
   }
 
   async function saveApplication(
-    requestBody: ISaveApplicationRequest,
-  ): Promise<ISaveApplicationResponse> {
+    requestBody: ISaveApplication,
+  ): Promise<IReadApplication> {
     try {
       const response = await authInstance.post('applications', requestBody);
 

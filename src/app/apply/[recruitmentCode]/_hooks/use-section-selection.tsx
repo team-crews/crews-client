@@ -22,34 +22,36 @@ export const useSectionSelection = ({
 
   // 초기 focus 섹션 index
   const initalSectionSelections = getInitialSectionSelection(
-    application?.answers,
+    application?.sections,
     recruitment?.sections,
-    sharedSection,
   );
 
   // 선택된 섹션 index
-  const [sectionSelections, setSectionSelections] = useState<number>(
+  const [selectedSectionIndex, setSelectedSectionIndex] = useState<number>(
     initalSectionSelections,
   );
 
   // 선택된 섹션
-  const selectedSection = recruitment?.sections[sectionSelections];
+  const selectedSection = recruitment?.sections[selectedSectionIndex];
+
+  const isOnlySharedSection = recruitment?.sections.length === 1;
 
   useEffect(() => {
-    setSectionSelections(initalSectionSelections);
+    setSelectedSectionIndex(initalSectionSelections);
   }, [initalSectionSelections]);
 
   const handleSectionSelectionChange = (index: number) => {
-    setSectionSelections(index);
+    setSelectedSectionIndex(index);
 
     // 선택된 섹션 변경 시, 에러 메시지 초기화
-    clearErrors(`answers`);
+    clearErrors(`sections.${selectedSectionIndex}.answers`);
   };
 
   return {
     sharedSection,
-    sectionSelections,
+    selectedSectionIndex,
     selectedSection,
+    isOnlySharedSection,
     handleSectionSelectionChange,
   };
 };

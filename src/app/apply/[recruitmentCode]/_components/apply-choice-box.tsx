@@ -1,36 +1,43 @@
 import { useFormContext } from 'react-hook-form';
 
-import { IFormApplication } from '../page';
 import { IChoice, IQuestion } from '../../../../lib/types/models/i-question.ts';
+import { IFormApplicationTemp } from '../../../../lib/types/models/i-application.ts';
 
 interface ApplyChoiceBoxProps {
   choice: IChoice;
   question: IQuestion;
-  index: number;
-  currentAnswerIndex: number;
+  choiceIndex: number;
+  questionIndex: number;
+  sectionIndex: number;
   onErrorIndexChange: (index: number) => void;
 }
 
 const ApplyChoiceBox = ({
   choice,
   question,
-  index,
-  currentAnswerIndex,
+  choiceIndex,
+  questionIndex,
+  sectionIndex,
   onErrorIndexChange,
 }: ApplyChoiceBoxProps) => {
-  const { getValues, register } = useFormContext<IFormApplication>();
+  const { getValues, register } = useFormContext<IFormApplicationTemp>();
 
   /**
    * Validate choice
    */
   const onChoiceValidationError = () => {
     const currentChoiceIds = getValues(
-      `answers.${currentAnswerIndex}.choiceIds`,
+      `sections.${sectionIndex}.answers.${questionIndex}.choiceIds`,
     )?.filter((value) => value !== false);
 
+    const choiceLength = currentChoiceIds?.length;
+
+    // 필수가 아니고, 선택이 없는 경우에는 선택 개수 valid check를 하지 않는다.
+    const shouldSkipValidation =
+      !question.necessity && (!currentChoiceIds || choiceLength === 0);
+
     const necessityValidation =
-      question.necessity &&
-      (!currentChoiceIds || currentChoiceIds?.length === 0);
+      question.necessity && (!currentChoiceIds || choiceLength === 0);
 
     const maximumSelectionValidation =
       question.maximumSelection &&
@@ -42,14 +49,16 @@ const ApplyChoiceBox = ({
       currentChoiceIds &&
       currentChoiceIds.length < question.minimumSelection;
 
-    onErrorIndexChange(index);
+    onErrorIndexChange(choiceIndex);
 
     if (necessityValidation) {
       return '해당 필드는 응답 필수입니다.';
-    } else if (maximumSelectionValidation) {
-      return `최대 ${question.maximumSelection}개 이하로 선택해주세요.`;
-    } else if (minimumSelectionValidation) {
-      return `최소 ${question.minimumSelection}개 이상 선택해주세요.`;
+    } else if (!shouldSkipValidation) {
+      if (maximumSelectionValidation) {
+        return `최대 ${question.maximumSelection}개 이하로 선택해주세요.`;
+      } else if (minimumSelectionValidation) {
+        return `최소 ${question.minimumSelection}개 이상 선택해주세요.`;
+      }
     }
 
     return true;
@@ -59,9 +68,12 @@ const ApplyChoiceBox = ({
     <div key={choice.id} className="flex items-center gap-2">
       <input
         type="checkbox"
-        {...register(`answers.${currentAnswerIndex}.choiceIds.${index}`, {
-          validate: onChoiceValidationError,
-        })}
+        {...register(
+          `sections.${sectionIndex}.answers.${questionIndex}.choiceIds.${choiceIndex}`,
+          {
+            validate: onChoiceValidationError,
+          },
+        )}
         value={choice.id}
       />
       <div className="text-sm font-light text-crews-bk01">{choice.content}</div>
