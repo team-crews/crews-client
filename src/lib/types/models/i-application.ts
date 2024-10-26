@@ -45,31 +45,6 @@ export type ICreatedApplication = {
   answers: ICreatedAnswer[];
 };
 
-//FIXME: 임시 type... 추후 수정 필요
-export type ISaveApplicationRequest = ICreatedApplication & {
-  recruitmentCode: string;
-};
-
-export type IReadNarrativeAnswer = IBaseAnswer & {
-  content: string;
-  choiceId: null;
-  type: 'NARRATIVE';
-};
-
-export type IReadSelectiveAnswer = IBaseAnswer & {
-  content: null;
-  choiceId: number;
-  type: 'SELECTIVE';
-};
-
-export type IReadAnswer = IReadNarrativeAnswer | IReadSelectiveAnswer;
-
-// export type IReadApplication = Omit<IApplicationOverview, 'outcome'> & {
-//   answers: IReadAnswer[];
-// };
-
-type AnswerType = 'NARRATIVE' | 'SELECTIVE';
-
 export type IReadApplication = {
   id: number;
   studentNumber: string;
@@ -81,7 +56,7 @@ export type IReadApplication = {
       questionId: number;
       content: string | null;
       choiceIds: number[] | null;
-      type: AnswerType;
+      type: 'NARRATIVE' | 'SELECTIVE';
     }[];
   }[];
 };
@@ -97,7 +72,7 @@ export type ISaveApplication = {
       questionId: number;
       content: string | null;
       choiceIds: number[] | null;
-      type: AnswerType;
+      type: 'NARRATIVE' | 'SELECTIVE';
     }[];
   }[];
   recruitmentCode: string;
@@ -110,7 +85,7 @@ export type IFormApplicationTemp = {
       questionId: number;
       content: string | null;
       choiceIds: (number | boolean)[] | null;
-      type: AnswerType;
+      type: 'NARRATIVE' | 'SELECTIVE';
     }[];
   }[];
 };
