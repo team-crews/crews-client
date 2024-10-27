@@ -75,7 +75,6 @@ const Page = () => {
     enabled: !!recruitmentCode,
   });
 
-  /** 저장된 값 없을 시 default로 set 하도록 에러 핸들링 */
   const { data: application, ...applicationQuery } = useQuery({
     queryKey: ['readApplication', recruitmentCode],
     queryFn: () => readApplication(),
@@ -91,10 +90,10 @@ const Page = () => {
     defaultValues: defaultApplication,
   });
 
-  // choice를 선택하지 않은 경우, false로 초기화
   useEffect(() => {
+    // 저장된 지원서가 존재하면, initialize
     if (application && isChoiceMapReady) {
-      //Convert ICreatedApplication to IFormApplication
+      //Convert IReadApplication to IFormApplication
       const formApplication: IFormApplication = convertToFormApplication(
         application,
         choiceMap,
@@ -102,7 +101,7 @@ const Page = () => {
 
       methods.reset(formApplication);
     } else {
-      // 각 섹션에 대한 초기값 설정
+      // 저장된 지원서가 없다면, 각 답변에 대한 초기값 initialize
       const initialSections = recruitment?.sections.map((section) => ({
         sectionId: section.id,
         answers: section.questions.map((question) => {
@@ -181,6 +180,7 @@ const Page = () => {
       isOnlySharedSection,
     );
 
+    // IFormApplication to ISaveApplication
     const convertedAnswers = convertToSaveApplication(selectedSectionAnswers);
 
     const name = methods.getValues(
@@ -205,6 +205,7 @@ const Page = () => {
     try {
       const response = await saveMutate.mutateAsync(requestBody);
 
+      // ISaveApplication to IFormApplication
       const convertedApplication = convertToFormApplication(
         response,
         choiceMap,
