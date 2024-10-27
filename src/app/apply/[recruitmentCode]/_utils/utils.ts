@@ -59,11 +59,12 @@ export const convertToSaveApplication = (
           questionId: answer.questionId,
           content: null,
           choiceIds: filteredChoiceIds.length === 0 ? null : filteredChoiceIds,
-          type: answer.type,
+          questionType: answer.type,
         };
       } else {
         return {
           ...answer,
+          questionType: answer.type,
           choiceIds: null,
         };
       }
@@ -126,12 +127,14 @@ export const getInitialSectionSelection = (
   if (!applicationSections || !recruitmentSections) return 1;
 
   // answers에 답변이 있는 첫 번째 section 찾기
-  const initialSection = applicationSections.find((section) =>
-    section.answers.some(
-      (answer) => answer.content || answer.choiceIds?.length,
-    ),
-  );
+  const initialSectionIndex = applicationSections
+    .slice(1)
+    .findIndex((section) =>
+      section.answers.some(
+        (answer) => answer.content || answer.choiceIds?.length,
+      ),
+    );
 
   // 답변이 있는 섹션이 있으면 해당 sectionId를 반환, 없으면 1 반환
-  return initialSection ? initialSection.sectionId : 1;
+  return initialSectionIndex !== -1 ? initialSectionIndex + 1 : 1;
 };

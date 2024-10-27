@@ -50,8 +50,7 @@ const useAdminApi = () => {
     z.infer<typeof ReadRecruitmentResponseSchema>
   > {
     const response = await authInstance.get('/recruitments/ready');
-    console.log(response.data);
-    return response.data;
+
     return ReadRecruitmentResponseSchema.parse(response.data);
   }
 

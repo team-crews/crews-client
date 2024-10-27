@@ -9,6 +9,7 @@ export type ChoiceMap = { [questionId: number]: number[] };
 
 export const useChoiceMap = ({ recruitment }: UseChoiceMapParams) => {
   const [choiceMap, setChoiceMap] = useState<ChoiceMap>({});
+  const [isChoiceMapReady, setIsChoiceMapReady] = useState(false);
 
   useEffect(() => {
     if (recruitment?.sections) {
@@ -23,10 +24,12 @@ export const useChoiceMap = ({ recruitment }: UseChoiceMapParams) => {
       });
 
       setChoiceMap(map);
+      setIsChoiceMapReady(Object.keys(map).length > 0);
     }
   }, [recruitment]);
 
   return {
     choiceMap,
+    isChoiceMapReady,
   };
 };

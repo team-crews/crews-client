@@ -72,7 +72,7 @@ export type ISaveApplication = {
       questionId: number;
       content: string | null;
       choiceIds: number[] | null;
-      type: 'NARRATIVE' | 'SELECTIVE';
+      questionType: 'NARRATIVE' | 'SELECTIVE';
     }[];
   }[];
   recruitmentCode: string;

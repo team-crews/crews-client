@@ -73,7 +73,7 @@ const Page = () => {
     enabled: !!recruitmentCode,
   });
 
-  const { choiceMap } = useChoiceMap({ recruitment });
+  const { choiceMap, isChoiceMapReady } = useChoiceMap({ recruitment });
 
   /**
    * Hook Form Control
@@ -84,7 +84,7 @@ const Page = () => {
 
   // choice를 선택하지 않은 경우, false로 초기화
   useEffect(() => {
-    if (application) {
+    if (application && isChoiceMapReady) {
       //Convert ICreatedApplication to IFormApplication
       const formApplication: IFormApplicationTemp = convertToFormApplication(
         application,
@@ -119,7 +119,13 @@ const Page = () => {
         sections: initialSections || [],
       });
     }
-  }, [application, choiceMap, methods, recruitment?.sections]);
+  }, [
+    application,
+    choiceMap,
+    isChoiceMapReady,
+    methods,
+    recruitment?.sections,
+  ]);
 
   useEffect(() => {
     if (recruitment) {
