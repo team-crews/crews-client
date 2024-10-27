@@ -77,15 +77,3 @@ export type ISaveApplication = {
   }[];
   recruitmentCode: string;
 };
-
-export type IFormApplicationTemp = {
-  sections: {
-    sectionId: number;
-    answers: {
-      questionId: number;
-      content: string | null;
-      choiceIds: (number | boolean)[] | null;
-      type: 'NARRATIVE' | 'SELECTIVE';
-    }[];
-  }[];
-};

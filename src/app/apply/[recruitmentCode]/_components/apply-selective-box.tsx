@@ -5,7 +5,7 @@ import Typography from '../../../../components/shared/typography';
 import ApplyChoiceBox from './apply-choice-box';
 import { useState } from 'react';
 import { IQuestion } from '../../../../lib/types/models/i-question.ts';
-import { IFormApplicationTemp } from '../../../../lib/types/models/i-application.ts';
+import { IFormApplication } from '../page.tsx';
 
 interface ApplySelectiveBoxProps {
   question: IQuestion;
@@ -20,7 +20,7 @@ const ApplySelectiveBox = ({
 }: ApplySelectiveBoxProps) => {
   const {
     formState: { errors },
-  } = useFormContext<IFormApplicationTemp>();
+  } = useFormContext<IFormApplication>();
 
   //가장 최근 에러가 발생한 choice index
   const [errorIndex, setErrorIndex] = useState<number | null>(null);

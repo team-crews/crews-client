@@ -1,16 +1,15 @@
 import {
-  IFormApplicationTemp,
   IReadApplication,
   ISaveApplication,
 } from '../../../../lib/types/models/i-application.ts';
 import { ISection } from '../../../../lib/types/models/i-section.ts';
 import { ChoiceMap } from '../_hooks/use-choice-map.tsx';
-import { SHARED_SECTION_INDEX } from '../page';
+import { IFormApplication, SHARED_SECTION_INDEX } from '../page';
 
 export const convertToFormApplication = (
   application: IReadApplication,
   choiceMap: ChoiceMap,
-): IFormApplicationTemp => {
+): IFormApplication => {
   return {
     sections: application.sections.map((section) => ({
       sectionId: section.sectionId,
@@ -42,7 +41,7 @@ export const convertToFormApplication = (
 };
 
 export const convertToSaveApplication = (
-  sections: IFormApplicationTemp['sections'],
+  sections: IFormApplication['sections'],
 ): ISaveApplication['sections'] => {
   const convertedSections = sections.map((section) => ({
     sectionId: section.sectionId,
@@ -83,10 +82,10 @@ export const convertToSaveApplication = (
  * @returns filtered answers
  */
 export const filterSelectedAnswer = (
-  sections: IFormApplicationTemp['sections'],
+  sections: IFormApplication['sections'],
   selectedSectionIndex: number,
   isOnlySharedSection: boolean,
-): IFormApplicationTemp['sections'] => {
+): IFormApplication['sections'] => {
   const filteredAnswers = sections.map((section, index) => {
     const isSharedSection = index === SHARED_SECTION_INDEX;
     const isSelectedSection =

@@ -13,10 +13,7 @@ import { QuestionType } from '../../../lib/enums';
 import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import {
-  IFormApplicationTemp,
-  ISaveApplication,
-} from '../../../lib/types/models/i-application.ts';
+import { ISaveApplication } from '../../../lib/types/models/i-application.ts';
 import { useToast } from '../../../hooks/use-toast';
 import FooterContainer from '../../../components/shared/footer-container';
 import { Button } from '../../../components/ui/button';
@@ -31,6 +28,18 @@ import { printCustomError } from '../../../lib/utils/error';
 import { IQuestion } from '../../../lib/types/models/i-question.ts';
 import { useChoiceMap } from './_hooks/use-choice-map.tsx';
 
+export type IFormApplication = {
+  sections: {
+    sectionId: number;
+    answers: {
+      questionId: number;
+      content: string | null;
+      choiceIds: (number | boolean)[] | null;
+      type: 'NARRATIVE' | 'SELECTIVE';
+    }[];
+  }[];
+};
+
 const untouchedFieldIndex = {
   name: 0,
   studentNumber: 1,
@@ -43,7 +52,7 @@ const defaultUntouchedField = {
   major: 'DEFAULT_MAJOR',
 };
 
-const defaultApplication: IFormApplicationTemp = {
+const defaultApplication: IFormApplication = {
   sections: [],
 };
 
@@ -78,7 +87,7 @@ const Page = () => {
   /**
    * Hook Form Control
    */
-  const methods = useForm<IFormApplicationTemp>({
+  const methods = useForm<IFormApplication>({
     defaultValues: defaultApplication,
   });
 
@@ -86,7 +95,7 @@ const Page = () => {
   useEffect(() => {
     if (application && isChoiceMapReady) {
       //Convert ICreatedApplication to IFormApplication
-      const formApplication: IFormApplicationTemp = convertToFormApplication(
+      const formApplication: IFormApplication = convertToFormApplication(
         application,
         choiceMap,
       );
@@ -159,7 +168,7 @@ const Page = () => {
     mutationFn: (requestBody: ISaveApplication) => saveApplication(requestBody),
   });
 
-  const onSubmit = async (data: IFormApplicationTemp) => {
+  const onSubmit = async (data: IFormApplication) => {
     if (!sharedSection) {
       onFormError();
       return;

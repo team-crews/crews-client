@@ -3,7 +3,7 @@ import Container from '../../../../components/shared/container';
 import Typography from '../../../../components/shared/typography';
 import { cn } from '../../../../lib/utils';
 import { IQuestion } from '../../../../lib/types/models/i-question.ts';
-import { IFormApplicationTemp } from '../../../../lib/types/models/i-application.ts';
+import { IFormApplication } from '../page.tsx';
 
 interface ApplyNarrativeBoxProps {
   question: IQuestion;
@@ -20,7 +20,7 @@ const ApplyNarrativeBox = ({
     register,
     watch,
     formState: { errors },
-  } = useFormContext<IFormApplicationTemp>();
+  } = useFormContext<IFormApplication>();
 
   const currentContent =
     watch(`sections.${sectionIndex}.answers.${questionIndex}.content`) || '';

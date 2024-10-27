@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
 import { IChoice, IQuestion } from '../../../../lib/types/models/i-question.ts';
-import { IFormApplicationTemp } from '../../../../lib/types/models/i-application.ts';
+import { IFormApplication } from '../page.tsx';
 
 interface ApplyChoiceBoxProps {
   choice: IChoice;
@@ -20,7 +20,7 @@ const ApplyChoiceBox = ({
   sectionIndex,
   onErrorIndexChange,
 }: ApplyChoiceBoxProps) => {
-  const { getValues, register } = useFormContext<IFormApplicationTemp>();
+  const { getValues, register } = useFormContext<IFormApplication>();
 
   /**
    * Validate choice
