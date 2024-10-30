@@ -1,11 +1,14 @@
 import { useFormContext } from 'react-hook-form';
-
-import { IChoice, IQuestion } from '../../../../lib/types/models/i-question.ts';
 import { IFormApplication } from '../page.tsx';
+import { z } from 'zod';
+import {
+  ChoiceSchema,
+  QuestionSchema,
+} from '../../../../lib/types/schemas/question-schema.ts';
 
 interface ApplyChoiceBoxProps {
-  choice: IChoice;
-  question: IQuestion;
+  choice: z.infer<typeof ChoiceSchema>;
+  question: z.infer<typeof QuestionSchema>;
   choiceIndex: number;
   questionIndex: number;
   sectionIndex: number;

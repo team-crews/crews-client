@@ -53,12 +53,9 @@ export const ReadApplicationOverviewsResponseSchema = z.array(
 
 export const ReadApplicationDetailResponseSchema = ApplicationDetailSchema;
 
-/*
-  ToDo
-  -  change to zod type system
- */
-// export const iReadApplicationResponseSchema = iApplicationSchema;
-//
-// export const iSaveApplicationResponseSchema = iTempApplicationSchema;
+export const ReadApplicationResponseSchema =
+  ApplicationDetailSchema.or(NoResponseDataSchema);
+
+export const SaveApplicationResponseSchema = ApplicationDetailSchema;
 
 export const ReadRecruitmentByCodeResponseSchema = RecruitmentSchema;

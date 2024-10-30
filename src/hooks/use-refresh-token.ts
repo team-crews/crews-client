@@ -1,19 +1,20 @@
 import { baseInstance } from '../apis/instance.ts';
 import useSession from './use-session.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
-import { ILoginResponse } from '../apis/i-response-body/deprecated-response-body.ts';
+import { z } from 'zod';
+import { LoginResponseSchema } from '../apis/response-body-schema.ts';
 
 const useRefreshToken = () => {
   const { setSession } = useSession();
 
   const refresh = async () => {
     try {
-      const response = await baseInstance.post<ILoginResponse>(
+      const response = await baseInstance.post<z.infer<typeof LoginResponseSchema>>(
         '/auth/refresh',
         {},
         {
-          withCredentials: true,
-        },
+          withCredentials: true
+        }
       );
 
       const { accessToken, username } = response.data;

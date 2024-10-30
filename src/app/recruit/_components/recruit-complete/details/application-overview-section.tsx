@@ -1,11 +1,11 @@
-import { IApplicationOverview } from '../../../../../lib/types/models/i-application.ts';
 import OverviewCard from './overveiw-card.tsx';
 import { z } from 'zod';
 import { ProgressSchema } from '../../../../../lib/types/schemas/progress-schema.ts';
+import { ApplicationOverviewSchema } from '../../../../../lib/types/schemas/application-schema.ts';
 
 type Props = {
   progress: z.infer<typeof ProgressSchema>;
-  applicationOverviews: IApplicationOverview[];
+  applicationOverviews: z.infer<typeof ApplicationOverviewSchema>[];
   passedApplicationIds: number[];
   passId: (id: number) => void;
   unpassId: (id: number) => void;

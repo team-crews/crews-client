@@ -1,13 +1,15 @@
 import { UseFormClearErrors } from 'react-hook-form';
-import { IRecruitment } from '../../../../lib/types/models/i-recruitment.ts';
 import { useEffect, useState } from 'react';
 import { getInitialSectionSelection } from '../_utils/utils';
 import { SHARED_SECTION_INDEX } from '../page';
-import { IReadApplication } from '../../../../lib/types/models/i-application.ts';
+import { z } from 'zod';
+import { RecruitmentSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
+import { ApplicationDetailSchema } from '../../../../lib/types/schemas/application-schema.ts';
 
 interface UseSectionSelectionParams {
-  recruitment: IRecruitment | undefined;
-  application: IReadApplication | undefined;
+  recruitment: z.infer<typeof RecruitmentSchema> | undefined;
+  application: z.infer<typeof ApplicationDetailSchema> | undefined;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   clearErrors: UseFormClearErrors<any>;
 }

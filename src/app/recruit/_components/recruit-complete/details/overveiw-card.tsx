@@ -1,5 +1,4 @@
 import React from 'react';
-import { IApplicationOverview } from '../../../../../lib/types/models/i-application.ts';
 import CircleCheckIcon from '../../../../../assets/icons/circle-check-icon.svg?react';
 import CircleCheckEmptyIcon from '../../../../../assets/icons/circle-check-empty-icon.svg?react';
 import { cn } from '../../../../../lib/utils/utils.ts';
@@ -7,6 +6,7 @@ import useDialog from '../../../../../hooks/use-dialog.ts';
 import ApplicationDetailDialog from './application-detail-dialog.tsx';
 import { z } from 'zod';
 import { ProgressSchema } from '../../../../../lib/types/schemas/progress-schema.ts';
+import { ApplicationOverviewSchema } from '../../../../../lib/types/schemas/application-schema.ts';
 
 const OverviewCard = ({
   applicationOverview,
@@ -15,7 +15,7 @@ const OverviewCard = ({
   passId,
   unpassId,
 }: {
-  applicationOverview: IApplicationOverview;
+  applicationOverview: z.infer<typeof ApplicationOverviewSchema>;
   progress: z.infer<typeof ProgressSchema>;
   isPass: boolean;
   passId: (id: number) => void;

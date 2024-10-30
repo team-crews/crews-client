@@ -38,3 +38,28 @@ export const ApplicationDetailSchema = ApplicationOverviewSchema.omit({
 }).extend({
   sections: z.array(AnswersBySectionSchema),
 });
+
+/* FixMe */
+export const SaveApplicationDetailSchema = ApplicationDetailSchema.extend({
+  id: ApplicationDetailSchema.shape.id.nullable(),
+  recruitmentCode: z.string(),
+});
+
+export type ISaveApplication = {
+  id: number | null;
+  studentNumber: string;
+  major: string;
+  name: string;
+  sections: {
+    sectionId: number;
+    answers: {
+      questionId: number;
+      content: string | null;
+      choiceIds: number[] | null;
+      // FixMe
+      // type으로 고치고 해당 파트 날리기
+      questionType: 'NARRATIVE' | 'SELECTIVE';
+    }[];
+  }[];
+  recruitmentCode: string;
+};
