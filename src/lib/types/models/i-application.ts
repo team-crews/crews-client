@@ -45,27 +45,35 @@ export type ICreatedApplication = {
   answers: ICreatedAnswer[];
 };
 
-//FIXME: 임시 type... 추후 수정 필요
-export type ISaveApplicationRequest = ICreatedApplication & {
+export type IReadApplication = {
+  id: number;
+  studentNumber: string;
+  major: string;
+  name: string;
+  sections: {
+    sectionId: number;
+    answers: {
+      questionId: number;
+      content: string | null;
+      choiceIds: number[] | null;
+      type: 'NARRATIVE' | 'SELECTIVE';
+    }[];
+  }[];
+};
+
+export type ISaveApplication = {
+  id: number | null;
+  studentNumber: string;
+  major: string;
+  name: string;
+  sections: {
+    sectionId: number;
+    answers: {
+      questionId: number;
+      content: string | null;
+      choiceIds: number[] | null;
+      questionType: 'NARRATIVE' | 'SELECTIVE';
+    }[];
+  }[];
   recruitmentCode: string;
 };
-
-export type ITempNarrativeAnswer = IBaseAnswer & {
-  content: string;
-  choiceId: null;
-  type: 'NARRATIVE';
-};
-
-export type ITempSelectiveAnswer = IBaseAnswer & {
-  content: null;
-  choiceId: number;
-  type: 'SELECTIVE';
-};
-
-export type ITempAnswer = ITempNarrativeAnswer | ITempSelectiveAnswer;
-
-export type ITempApplication = Omit<IApplicationOverview, 'outcome'> & {
-  answers: ITempAnswer[];
-};
-
-export type ITempReadApplicationResponse = ITempApplication;

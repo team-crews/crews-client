@@ -3,7 +3,7 @@ import { IRecruitment } from '../../lib/types/models/i-recruitment.ts';
 import {
   IApplication,
   IApplicationOverview,
-  ITempApplication,
+  IReadApplication,
 } from '../../lib/types/models/i-application.ts';
 
 export type IReadRecruitmentProgressResponse = {
@@ -36,7 +36,7 @@ export type ISaveEvaluationResponse = NoResponseData;
 
 export type IReadApplicationResponse = IApplication;
 
-export type ISaveApplicationResponse = ITempApplication;
+export type ISaveApplicationResponse = IReadApplication;
 
 export type IReadRecruitmentByCodeResponse = IRecruitment;
 

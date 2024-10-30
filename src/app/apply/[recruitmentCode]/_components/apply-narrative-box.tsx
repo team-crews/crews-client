@@ -2,51 +2,36 @@ import { useFormContext } from 'react-hook-form';
 import Container from '../../../../components/shared/container';
 import Typography from '../../../../components/shared/typography';
 import { cn } from '../../../../lib/utils';
-import { IFormApplication } from '../page';
-import React, { useEffect } from 'react';
 import { IQuestion } from '../../../../lib/types/models/i-question.ts';
+import { IFormApplication } from '../page.tsx';
 
 interface ApplyNarrativeBoxProps {
   question: IQuestion;
-  textareaProps?: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+  questionIndex: number;
+  sectionIndex: number;
 }
 
-const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
+const ApplyNarrativeBox = ({
+  question,
+  questionIndex,
+  sectionIndex,
+}: ApplyNarrativeBoxProps) => {
   const {
     register,
     watch,
-    setValue,
     formState: { errors },
   } = useFormContext<IFormApplication>();
 
-  const currentAnswerIndex = watch('answers').findIndex(
-    (answer) =>
-      answer.questionId === question.id && answer.questionType === 'NARRATIVE',
-  );
-
-  useEffect(() => {
-    if (currentAnswerIndex === -1) {
-      setValue('answers', [
-        ...watch('answers'),
-        {
-          answerId: null,
-          questionId: question.id,
-          content: '',
-          choiceIds: null,
-          questionType: 'NARRATIVE',
-        },
-      ]);
-    }
-  }, [currentAnswerIndex, question.id, setValue, watch]);
-
-  const currentContent = watch(`answers.${currentAnswerIndex}.content`) || '';
+  const currentContent =
+    watch(`sections.${sectionIndex}.answers.${questionIndex}.content`) || '';
   const necessityText = question.necessity ? '응답 필수' : '';
 
   const wordLimitText = question.wordLimit
     ? `글자수 (${currentContent.length}/${question.wordLimit})`
     : '';
 
-  const isFieldError = errors.answers?.[currentAnswerIndex]?.content;
+  const fieldError =
+    errors.sections?.[sectionIndex]?.answers?.[questionIndex]?.content;
 
   const displayText = [necessityText, wordLimitText].filter(Boolean).join(', ');
 
@@ -67,17 +52,20 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
           className={cn(
             'w-full rounded-lg p-2 text-xs outline outline-1 outline-crews-g02 placeholder:font-light placeholder:text-crews-g03',
             {
-              'outline-crews-g04': !isFieldError,
-              'outline-crews-r03': isFieldError,
+              'outline-crews-g04': !fieldError,
+              'outline-crews-r03': fieldError,
             },
           )}
           placeholder="이곳에 답변을 입력해주세요."
-          {...register(`answers.${currentAnswerIndex}.content`, {
-            required: question.necessity
-              ? '해당 필드는 응답 필수입니다.'
-              : false,
-            maxLength: question.wordLimit || undefined,
-          })}
+          {...register(
+            `sections.${sectionIndex}.answers.${questionIndex}.content`,
+            {
+              required: question.necessity
+                ? '해당 필드는 응답 필수입니다.'
+                : false,
+              maxLength: question.wordLimit || undefined,
+            },
+          )}
           maxLength={question.wordLimit || undefined}
           onInput={(e) => {
             // 한글 타이핑 시 글자수 제한을 넘기는 이슈 방지
@@ -90,9 +78,9 @@ const ApplyNarrativeBox = ({ question }: ApplyNarrativeBoxProps) => {
           }}
         />
       </div>
-      {isFieldError && (
+      {fieldError && (
         <Typography className="text-xs text-crews-r03">
-          {errors.answers?.[currentAnswerIndex]?.content?.message}
+          {fieldError?.message}
         </Typography>
       )}
     </Container>
