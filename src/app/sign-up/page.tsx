@@ -4,11 +4,12 @@ import Seperator from '../../components/shadcn/seperator.tsx';
 import { useState } from 'react';
 import ApplicantSignUp from './_components/applicant-sign-up.tsx';
 import AdminSignUp from './_components/admin-sign-up.tsx';
-import { IRole } from '../../lib/types/models/i-role.ts';
+import { z } from 'zod';
+import { RoleSchema } from '../../lib/types/schemas/role-schema.ts';
 
 const Page = () => {
   const location = useLocation();
-  const [loginType, setLoginType] = useState<IRole>(
+  const [loginType, setLoginType] = useState<z.infer<typeof RoleSchema>>(
     location.state?.loginType ?? 'APPLICANT',
   );
 

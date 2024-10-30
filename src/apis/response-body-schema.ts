@@ -1,13 +1,13 @@
 import { z } from 'zod';
-import { ProgressSchema } from '../../lib/types/schemas/progress-schema.ts';
+import { ProgressSchema } from '../lib/types/schemas/progress-schema.ts';
 import {
   CreatedRecruitmentSchema,
   RecruitmentSchema,
-} from '../../lib/types/schemas/recruitment-schema.ts';
+} from '../lib/types/schemas/recruitment-schema.ts';
 import {
   ApplicationDetailSchema,
   ApplicationOverviewSchema,
-} from '../../lib/types/schemas/application-schema.ts';
+} from '../lib/types/schemas/application-schema.ts';
 
 const NoResponseDataSchema = z.literal('');
 

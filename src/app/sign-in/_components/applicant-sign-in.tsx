@@ -1,16 +1,20 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '../../../hooks/use-toast.ts';
 import { useState } from 'react';
 import useSession from '../../../hooks/use-session.ts';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Input, { InputState } from '../../../components/shared/input.tsx';
+import Input from '../../../components/shared/input.tsx';
 import { Button } from '../../../components/shadcn/button.tsx';
-import { applicantLogin } from '../../../apis/auth-api.ts';
+import { applicantSignIn } from '../../../apis/auth-api.ts';
 import { printCustomError } from '../../../lib/utils/error.ts';
 import {
-  validateEmail,
-  validatePassword,
+  isFilledInput,
+  isProperEmail,
+  isProperPassword,
 } from '../../../lib/utils/validation.ts';
+import { findFirstErrorMessage } from '../../../lib/utils/utils.ts';
+import { useMutation } from '@tanstack/react-query';
+import Loading from '../../../components/shared/loading.tsx';
 
 type ApplyInputs = {
   email: string;
@@ -19,42 +23,33 @@ type ApplyInputs = {
 
 const ApplicantSignIn = () => {
   const navigate = useNavigate();
-  const { recruitmentCode } = useParams();
-
   const { toast } = useToast();
   const [error, setError] = useState<boolean>(false);
 
   const { setSession } = useSession();
 
-  const { register, resetField, handleSubmit, formState } =
-    useForm<ApplyInputs>({
-      defaultValues: {
-        email: '',
-        password: '',
-      },
-    });
+  const { register, resetField, handleSubmit } = useForm<ApplyInputs>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: (formData: ApplyInputs) => applicantSignIn(formData),
+  });
 
   const onSubmit: SubmitHandler<ApplyInputs> = async (data) => {
-    const emailValidation = validateEmail(data.email);
-    const passwordValidation = validatePassword(data.password);
-
-    if (emailValidation || passwordValidation) {
-      toast({
-        title: emailValidation || passwordValidation,
-        state: 'error',
-      });
-      setError(true);
-      return;
-    }
-
     try {
-      const { accessToken, username } = await applicantLogin(data);
-
-      if (recruitmentCode)
-        localStorage.setItem('recruitmentCode', recruitmentCode);
-
+      const { accessToken, username } = await mutation.mutateAsync(data);
       setSession(accessToken, username);
-      navigate(`/apply/${recruitmentCode}`);
+
+      toast({
+        title: `${username}님 환영합니다 😃`,
+        state: 'success',
+      });
+
+      navigate(`/`);
     } catch (e) {
       const errorStatus = printCustomError(e, 'applicantLogin');
 
@@ -70,52 +65,70 @@ const ApplicantSignIn = () => {
     }
   };
 
-  const inputState: Record<keyof ApplyInputs, InputState> = {
-    email: error ? 'error' : formState.dirtyFields.email ? 'filled' : 'empty',
-    password: error
-      ? 'error'
-      : formState.dirtyFields.password
-        ? 'filled'
-        : 'empty',
+  const onError = (errors: object) => {
+    const msg = findFirstErrorMessage(errors);
+
+    msg &&
+      toast({
+        title: msg,
+        state: 'information',
+      });
+    setError(true);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-      <fieldset className="mb-3">
-        <Input
-          state={inputState.email}
-          className="mb-3"
-          registerReturns={register('email', {
-            onChange: () => {
+    <>
+      {mutation.isPending && <Loading />}
+      <form onSubmit={handleSubmit(onSubmit, onError)} className="w-full">
+        <fieldset className="mb-3">
+          <Input
+            maxLength={50}
+            state={error ? 'error' : 'default'}
+            className="mb-3"
+            registerReturns={register('email', {
+              onChange: () => {
+                setError(false);
+              },
+              validate: {
+                validateIfFilled: (v) =>
+                  isFilledInput(v, '이메일을 입력해주세요.'),
+                validateIfProperEmail: (v) =>
+                  isProperEmail(v, '잘못된 이메일 형식입니다.'),
+              },
+            })}
+            clearInput={() => {
+              resetField('email');
               setError(false);
-            },
-          })}
-          clearInput={() => {
-            resetField('email');
-            setError(false);
-          }}
-          placeholder="이메일"
-        />
-        <Input
-          state={inputState.password}
-          type="password"
-          registerReturns={register('password', {
-            onChange: () => {
+            }}
+            placeholder="이메일"
+          />
+          <Input
+            state={error ? 'error' : 'default'}
+            type="password"
+            registerReturns={register('password', {
+              onChange: () => {
+                setError(false);
+              },
+              validate: {
+                validateIfFilled: (v) =>
+                  isFilledInput(v, '비밀번호를 입력해주세요.'),
+                validateIfProperPW: (v) =>
+                  isProperPassword(v, '잘못된 비밀번호 형식입니다.'),
+              },
+            })}
+            clearInput={() => {
+              resetField('password');
               setError(false);
-            },
-          })}
-          clearInput={() => {
-            resetField('password');
-            setError(false);
-          }}
-          placeholder="비밀번호"
-        />
-      </fieldset>
+            }}
+            placeholder="비밀번호"
+          />
+        </fieldset>
 
-      <Button className="w-full" disabled={error}>
-        지원하기
-      </Button>
-    </form>
+        <Button className="w-full" disabled={error}>
+          지원하기
+        </Button>
+      </form>
+    </>
   );
 };
 

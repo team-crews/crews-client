@@ -13,7 +13,7 @@ import {
 } from '../../../../lib/types/schemas/recruitment-schema.ts';
 import { convertDateAndTimeToDeadline } from '../../../../lib/utils/convert.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
-import { SaveRecruitmentRequestSchema } from '../../../../apis/i-response-body/response-body-schema.ts';
+import { SaveRecruitmentRequestSchema } from '../../../../apis/response-body-schema.ts';
 
 const FooterSection = ({
   updateRecruitment,

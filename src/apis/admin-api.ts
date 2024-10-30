@@ -11,7 +11,7 @@ import {
   SaveRecruitmentResponseSchema,
   SendEvaluationMailResponseSchema,
   StartRecruitmentResponseSchema,
-} from './i-response-body/response-body-schema.ts';
+} from './response-body-schema.ts';
 import { z } from 'zod';
 import {
   convertDateAndTimeToDeadline,

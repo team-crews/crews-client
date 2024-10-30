@@ -3,9 +3,10 @@ import { IApplicationOverview } from '../../../../../lib/types/models/i-applicat
 import CircleCheckIcon from '../../../../../assets/icons/circle-check-icon.svg?react';
 import CircleCheckEmptyIcon from '../../../../../assets/icons/circle-check-empty-icon.svg?react';
 import { cn } from '../../../../../lib/utils/utils.ts';
-import { IProgress } from '../../../../../lib/types/models/i-progress.ts';
 import useDialog from '../../../../../hooks/use-dialog.ts';
 import ApplicationDetailDialog from './application-detail-dialog.tsx';
+import { z } from 'zod';
+import { ProgressSchema } from '../../../../../lib/types/schemas/progress-schema.ts';
 
 const OverviewCard = ({
   applicationOverview,
@@ -15,7 +16,7 @@ const OverviewCard = ({
   unpassId,
 }: {
   applicationOverview: IApplicationOverview;
-  progress: IProgress;
+  progress: z.infer<typeof ProgressSchema>;
   isPass: boolean;
   passId: (id: number) => void;
   unpassId: (id: number) => void;

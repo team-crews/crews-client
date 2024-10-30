@@ -9,6 +9,7 @@ export const baseInstance = axios.create({
   baseURL: baseURL,
   timeout: 5000,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
 const authInstance = axios.create({
@@ -25,6 +26,7 @@ const useAuthInstance = () => {
   useEffect(() => {
     const requestIntercept = authInstance.interceptors.request.use(
       (config) => {
+        console.log();
         if (!config.headers?.Authorization)
           config.headers.Authorization = accessToken;
 
@@ -65,8 +67,9 @@ const useAuthInstance = () => {
       - ESLint: React Hook useEffect has missing dependencies: 'accessToken' and 'refresh'. Either include them or remove the dependency array. (react-hooks/exhaustive-deps)
      */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accessToken]);
 
   return { authInstance };
 };
+
 export default useAuthInstance;

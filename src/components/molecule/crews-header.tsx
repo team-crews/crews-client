@@ -6,29 +6,32 @@ import { cn } from '../../lib/utils/utils.ts';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '../../hooks/use-toast.ts';
 import { printCustomError } from '../../lib/utils/error.ts';
-import { useLogout } from '../../apis/auth-api.ts';
+import { useSignOut } from '../../apis/auth-api.ts';
 
 const CrewsHeader = () => {
   const location = useLocation();
-  const displayButtons = !(
-    location.pathname === '/sign-in' || location.pathname === '/sign-up'
-  );
 
   const { accessToken, role, username, clearSession } = useSession();
 
-  const { logout } = useLogout();
-  const logoutMutation = useMutation({ mutationFn: logout });
+  const { signOut } = useSignOut();
+  const signOutMutation = useMutation({ mutationFn: signOut });
 
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleLogoutClick = async () => {
+  const handleSignOutClick = async () => {
     try {
-      await logoutMutation.mutateAsync();
-      navigate('/');
+      await signOutMutation.mutateAsync();
+      navigate('/', { state: { logout: true } });
+
+      toast({
+        title: `안녕히가세요 👋`,
+        state: 'success',
+      });
+
       clearSession();
     } catch (e) {
-      printCustomError(e, 'handleLogoutClick');
+      printCustomError(e, 'handleSignOutClick');
       toast({
         title: '예기치 못한 문제가 발생하였습니다.',
         state: 'error',
@@ -39,24 +42,38 @@ const CrewsHeader = () => {
   return (
     <header
       className={cn(
-        'fixed left-0 top-0 z-10 flex w-dvw items-center border-b px-6 py-3 backdrop-blur',
-        { 'border-b-0 backdrop-blur-none': location.pathname === '/' },
+        'fixed left-0 top-0 z-10 flex w-dvw items-center px-6 py-3',
+        { 'border-b backdrop-blur': location.pathname !== '/' },
       )}
     >
-      <div className="flex h-fit flex-1 gap-10">
+      <div className="flex h-fit flex-1 items-center gap-10">
         <Link to="/" className="flex items-center gap-1 text-crews-b05">
           <AnchorIcon className="h-7 w-7" />
           <p className="text-3xl font-semibold">Crews</p>
         </Link>
+        <a href={import.meta.env.VITE_TEAM_INTRODUCE} target="_blank">
+          <p className="font-normal hover:underline">팀 소개</p>
+        </a>
+        <a href={import.meta.env.VITE_GUIDE_BOOK} target="_blank">
+          <p className="font-normal hover:underline">안내서</p>
+        </a>
+        <a href={import.meta.env.VITE_SLASHPAGE} target="_blank">
+          <p className="font-normal hover:underline">고객센터</p>
+        </a>
       </div>
-      {displayButtons &&
-        (accessToken ? (
+
+      <div
+        className={cn({
+          hidden: ['/sign-in', '/sign-up'].includes(location.pathname),
+        })}
+      >
+        {accessToken ? (
           <div className="flex items-center gap-3 text-crews-bk01">
             <div className="flex items-center gap-2">
               <CircleUserIcon className="h-7 w-7" />
               <p className="font-medium">{`${role === 'ADMIN' ? '운영진' : '지원자'} | ${username}`}</p>
             </div>
-            <button onClick={handleLogoutClick}>
+            <button onClick={handleSignOutClick}>
               <p className="text-xs font-light underline">로그아웃</p>
             </button>
           </div>
@@ -75,7 +92,8 @@ const CrewsHeader = () => {
               회원가입
             </Link>
           </div>
-        ))}
+        )}
+      </div>
     </header>
   );
 };

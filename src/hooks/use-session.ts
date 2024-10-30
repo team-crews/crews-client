@@ -12,6 +12,7 @@ const useSession = () => {
   const clearState = useSessionStore((state) => state.clearState);
 
   function setSession(accessToken: string, id: string) {
+    clearSession();
     const role = extractRole(accessToken);
 
     updateUsername(id);

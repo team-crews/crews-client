@@ -58,19 +58,3 @@ export function findSelectedSection(
     return acc;
   }, []);
 }
-
-// export function jsonToCsv(jsonData: object) {
-//   let csv = '';
-//
-//   // Extract headers
-//   const headers = Object.keys(jsonData[0]);
-//   csv += headers.join(',') + '\n';
-//
-//   // Extract values
-//   jsonData.forEach((obj) => {
-//     const values = headers.map((header) => obj[header]);
-//     csv += values.join(',') + '\n';
-//   });
-//
-//   return csv;
-// }

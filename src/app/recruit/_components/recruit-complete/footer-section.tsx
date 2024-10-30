@@ -6,8 +6,9 @@ import useDialog from '../../../../hooks/use-dialog.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
 import Loading from '../../../../components/shared/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
-import { IProgress } from '../../../../lib/types/models/i-progress.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
+import { z } from 'zod';
+import { ProgressSchema } from '../../../../lib/types/schemas/progress-schema.ts';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
 
@@ -16,7 +17,7 @@ const FooterSection = ({
   progress,
 }: {
   passApplicationIds: number[];
-  progress: IProgress;
+  progress: z.infer<typeof ProgressSchema>;
 }) => {
   const { saveEvaluation, sendEvaluationMail } = useAdminApi();
 
