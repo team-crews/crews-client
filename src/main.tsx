@@ -25,7 +25,7 @@ const queryClient = new QueryClient({
   },
 });
 
-if (import.meta.env.MODE !== 'development') {
+if (import.meta.env.PROD) {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     integrations: [
