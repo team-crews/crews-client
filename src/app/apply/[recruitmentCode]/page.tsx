@@ -13,20 +13,32 @@ import { QuestionType } from '../../../lib/enums';
 import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { ISaveApplicationRequest } from '../../../lib/types/models/i-application.ts';
+import { ISaveApplication } from '../../../lib/types/models/i-application.ts';
 import { useToast } from '../../../hooks/use-toast';
-import { Button } from '../../../components/shadcn/button.tsx';
+import FooterContainer from '../../../components/shared/footer-container';
+import { Button } from '../../../components/ui/button';
 import ApplySectionHeader from './_components/apply-section-header';
 import {
-  checkSelectedAnswer,
-  convertAnswerToFormAnswer,
-  convertFormAnswerToAnswer,
+  convertToFormApplication,
+  convertToSaveApplication,
   filterSelectedAnswer,
 } from './_utils/utils';
 import { useSectionSelection } from './_hooks/use-section-selection';
 import { printCustomError } from '../../../lib/utils/error';
 import { IQuestion } from '../../../lib/types/models/i-question.ts';
-import CrewsFooter from '../../../components/molecule/crews-footer.tsx';
+import { useChoiceMap } from './_hooks/use-choice-map.tsx';
+
+export type IFormApplication = {
+  sections: {
+    sectionId: number;
+    answers: {
+      questionId: number;
+      content: string | null;
+      choiceIds: (number | boolean)[] | null;
+      type: 'NARRATIVE' | 'SELECTIVE';
+    }[];
+  }[];
+};
 
 const untouchedFieldIndex = {
   name: 0,
@@ -34,34 +46,21 @@ const untouchedFieldIndex = {
   major: 2,
 };
 
-export interface IFormApplication {
-  id: number | null;
-  studentNumber: string;
-  major: string;
-  name: string;
-  answers: IFormAnswer[]; // answers 배열은 여러 답변 타입을 포함
-}
-
-export type IFormAnswer = {
-  answerId: number | null;
-  content: string | null;
-  choiceIds: number[] | null;
-  questionId: number;
-  questionType: 'SELECTIVE' | 'NARRATIVE';
+const defaultUntouchedField = {
+  name: 'DEFAULT_NAME',
+  studentNumber: 'DEFAULT_STUDENT_NUMBER',
+  major: 'DEFAULT_MAJOR',
 };
 
 const defaultApplication: IFormApplication = {
-  id: null,
-  studentNumber: '00000000',
-  name: 'DEFAULT_NAME',
-  major: 'DEFAULT_MAJOR',
-  answers: [],
+  sections: [],
 };
 
 export const SHARED_SECTION_INDEX = 0;
 
 const Page = () => {
   const { toast } = useToast();
+
   const [ableToSubmit, setAbleToSubmit] = useState<boolean>(false);
 
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
@@ -76,12 +75,13 @@ const Page = () => {
     enabled: !!recruitmentCode,
   });
 
-  /** 저장된 값 없을 시 default로 set 하도록 에러 핸들링 */
   const { data: application, ...applicationQuery } = useQuery({
     queryKey: ['readApplication', recruitmentCode],
     queryFn: () => readApplication(),
     enabled: !!recruitmentCode,
   });
+
+  const { choiceMap, isChoiceMapReady } = useChoiceMap({ recruitment });
 
   /**
    * Hook Form Control
@@ -90,21 +90,72 @@ const Page = () => {
     defaultValues: defaultApplication,
   });
 
-  const name = methods.watch(`answers.${untouchedFieldIndex.name}.content`);
-  const major = methods.watch(`answers.${untouchedFieldIndex.major}.content`);
-  const studentNumber = methods.watch(
-    `answers.${untouchedFieldIndex.studentNumber}.content`,
-  );
+  useEffect(() => {
+    // 저장된 지원서가 존재하면, initialize
+    if (application && isChoiceMapReady) {
+      //Convert IReadApplication to IFormApplication
+      const formApplication: IFormApplication = convertToFormApplication(
+        application,
+        choiceMap,
+      );
 
-  const answers = methods.watch('answers');
+      methods.reset(formApplication);
+    } else {
+      // 저장된 지원서가 없다면, 각 답변에 대한 초기값 initialize
+      const initialSections = recruitment?.sections.map((section) => ({
+        sectionId: section.id,
+        answers: section.questions.map((question) => {
+          if (question.type === QuestionType.NARRATIVE) {
+            return {
+              questionId: question.id,
+              content: null,
+              choiceIds: null,
+              type: QuestionType.NARRATIVE,
+            };
+          } else {
+            return {
+              questionId: question.id,
+              content: null,
+              choiceIds: [],
+              type: QuestionType.SELECTIVE,
+            };
+          }
+        }),
+      }));
+
+      methods.reset({
+        sections: initialSections || [],
+      });
+    }
+  }, [
+    application,
+    choiceMap,
+    isChoiceMapReady,
+    methods,
+    recruitment?.sections,
+  ]);
+
+  useEffect(() => {
+    if (recruitment) {
+      const now = new Date().getTime(); // 현재 시간
+      const deadline = new Date(recruitment.deadline).getTime(); // 마감일
+
+      if (now > deadline) {
+        setAbleToSubmit(false); // 마감일이 지났으면 제출 불가능
+      } else {
+        setAbleToSubmit(true); // 마감일이 지나지 않았으면 제출 가능
+      }
+    }
+  }, [recruitment]);
 
   /**
    *  Section Selection Control
    */
   const {
     sharedSection,
-    sectionSelections,
+    selectedSectionIndex,
     selectedSection,
+    isOnlySharedSection,
     handleSectionSelectionChange,
   } = useSectionSelection({
     recruitment,
@@ -113,114 +164,54 @@ const Page = () => {
   });
 
   const saveMutate = useMutation({
-    mutationFn: (requestBody: ISaveApplicationRequest) =>
-      saveApplication(requestBody),
+    mutationFn: (requestBody: ISaveApplication) => saveApplication(requestBody),
   });
 
-  // chocie의 경우 submit 시 validation
-  const validateChoices = (answers: IFormAnswer[] | null) => {
-    if (!answers || !sharedSection) return;
-
-    let valid: boolean = true;
-
-    const getQuestionInfo = (questionId: number) =>
-      recruitment?.sections
-        .flatMap((section) => section.questions)
-        .find(
-          (question) =>
-            question.id === questionId && question.type === 'SELECTIVE',
-        );
-
-    answers.forEach((answer, index) => {
-      if (answer.questionType === 'NARRATIVE') return;
-
-      const isSelectedSectionAnswer = checkSelectedAnswer(
-        answer,
-        selectedSection,
-        sharedSection,
-      );
-
-      if (!isSelectedSectionAnswer) return;
-
-      const question = getQuestionInfo(answer.questionId);
-
-      if (question?.necessity && answer.choiceIds?.length === 0) {
-        methods.setError(`answers.${index}`, {
-          type: 'necessity',
-          message: '해당 필드는 응답 필수입니다.',
-        });
-
-        valid = false;
-      } else if (
-        question?.minimumSelection &&
-        answer.choiceIds &&
-        answer.choiceIds.length > 0 &&
-        answer.choiceIds.length < question.minimumSelection
-      ) {
-        methods.setError(`answers.${index}`, {
-          type: 'minimumSelection',
-          message: `최소 ${question.minimumSelection}개 이상 선택해주세요.`,
-        });
-
-        valid = false;
-      } else if (
-        question?.maximumSelection &&
-        answer.choiceIds &&
-        answer.choiceIds.length > 0 &&
-        answer.choiceIds.length > question.maximumSelection
-      ) {
-        methods.setError(`answers.${index}`, {
-          type: 'maximumSelection',
-          message: `최대 ${question.maximumSelection}개 이하로 선택해주세요.`,
-        });
-
-        valid = false;
-      }
-    });
-
-    return valid;
-  };
-
   const onSubmit = async (data: IFormApplication) => {
-    // submit 시 choice validation 수행
-    const choiceValidate = validateChoices(data.answers);
-
-    if (!choiceValidate || !sharedSection) {
+    if (!sharedSection) {
       onFormError();
       return;
     }
 
-    // 선택된 섹션에 해당하는 질문만 필터링
+    // // 선택된 섹션에 해당하는 질문만 필터링
     const selectedSectionAnswers = filterSelectedAnswer(
-      data.answers,
-      selectedSection,
-      sharedSection,
+      data.sections,
+      selectedSectionIndex,
+      isOnlySharedSection,
     );
 
-    // FIXME: 강제로 answerId null로 설정하였는데, 기존 값이 있을 경우에는 그대로 사용하도록 수정 필요 (IFormApplication type 수정)
-    const convertedAnswers = convertFormAnswerToAnswer(selectedSectionAnswers);
+    // IFormApplication to ISaveApplication
+    const convertedAnswers = convertToSaveApplication(selectedSectionAnswers);
+
+    const name = methods.getValues(
+      `sections.${SHARED_SECTION_INDEX}.answers.${untouchedFieldIndex.name}.content`,
+    );
+    const studentNumber = methods.getValues(
+      `sections.${SHARED_SECTION_INDEX}.answers.${untouchedFieldIndex.studentNumber}.content`,
+    );
+    const major = methods.getValues(
+      `sections.${SHARED_SECTION_INDEX}.answers.${untouchedFieldIndex.major}.content`,
+    );
 
     const requestBody = {
-      id: data.id,
-      studentNumber: studentNumber || defaultApplication.studentNumber,
-      name: name || defaultApplication.name,
-      major: major || defaultApplication.major,
-      answers: convertedAnswers,
+      id: application?.id || null,
+      studentNumber: studentNumber || defaultUntouchedField.studentNumber,
+      name: name || defaultUntouchedField.name,
+      major: major || defaultUntouchedField.major,
+      sections: convertedAnswers,
       recruitmentCode: recruitmentCode!,
     };
 
     try {
       const response = await saveMutate.mutateAsync(requestBody);
 
-      const convertedAnswers = convertAnswerToFormAnswer(response);
+      // ISaveApplication to IFormApplication
+      const convertedApplication = convertToFormApplication(
+        response,
+        choiceMap,
+      );
 
-      methods.reset({
-        id: response.id,
-        studentNumber: response.studentNumber,
-        name: response.name,
-        major: response.major,
-        answers: convertedAnswers,
-      });
+      methods.reset(convertedApplication);
 
       toast({
         title: '지원서 저장이 완료되었습니다.',
@@ -237,42 +228,11 @@ const Page = () => {
   };
 
   const onFormError = () => {
-    // narrtive에서 에러 발생 시, onSubmit이 실행되지 않기 떄문에 choice에 대한 validation을 에러 시에 추가로 수행
-    validateChoices(answers);
-
     toast({
       title: '입력을 다시 확인해주세요.',
       state: 'error',
     });
   };
-
-  useEffect(() => {
-    if (application) {
-      //Convert ICreatedApplication to IFormApplication
-      const formAnswers: IFormAnswer[] = convertAnswerToFormAnswer(application);
-
-      methods.reset({
-        id: application.id,
-        studentNumber: application.studentNumber,
-        name: application.name,
-        major: application.major,
-        answers: formAnswers,
-      });
-    }
-  }, [application, methods]);
-
-  useEffect(() => {
-    if (recruitment) {
-      const now = new Date().getTime(); // 현재 시간
-      const deadline = new Date(recruitment.deadline).getTime(); // 마감일
-
-      if (now > deadline) {
-        setAbleToSubmit(false); // 마감일이 지났으면 제출 불가능
-      } else {
-        setAbleToSubmit(true); // 마감일이 지나지 않았으면 제출 가능
-      }
-    }
-  }, [recruitment]);
 
   const isRecruitmentError =
     recruitmentQuery.error || !recruitment || !sharedSection;
@@ -301,8 +261,13 @@ const Page = () => {
                 description={sharedSection.description}
               >
                 <div className="flex flex-col gap-8">
-                  {sharedSection.questions.map((question) => (
-                    <RenderQuestion key={question.id} question={question} />
+                  {sharedSection.questions.map((question, index) => (
+                    <RenderQuestion
+                      key={question.id}
+                      question={question}
+                      questionIndex={index}
+                      sectionIndex={SHARED_SECTION_INDEX}
+                    />
                   ))}
                 </div>
               </ApplySectionBox>
@@ -314,7 +279,7 @@ const Page = () => {
                   <div className="flex w-full flex-col">
                     <ApplySectionHeader
                       sections={recruitment.sections}
-                      selectionIndex={sectionSelections}
+                      selectionIndex={selectedSectionIndex}
                       handleSelectionChange={handleSectionSelectionChange}
                     />
 
@@ -325,10 +290,12 @@ const Page = () => {
                       isSelectable={true}
                     >
                       <div className="flex flex-col gap-8">
-                        {selectedSection.questions.map((question) => (
+                        {selectedSection.questions.map((question, index) => (
                           <RenderQuestion
                             key={question.id}
                             question={question}
+                            questionIndex={index}
+                            sectionIndex={selectedSectionIndex}
                           />
                         ))}
                       </div>
@@ -337,11 +304,11 @@ const Page = () => {
                 </>
               )}
             </div>
-            <CrewsFooter>
+            <FooterContainer className="flex w-full justify-end">
               <Button type="submit" size="lg" disabled={!ableToSubmit}>
                 {ableToSubmit ? '제출하기' : '모집 기간이 아닙니다.'}
               </Button>
-            </CrewsFooter>
+            </FooterContainer>
           </form>
         </div>
       </Container>
@@ -350,12 +317,34 @@ const Page = () => {
 };
 
 // 질문 타입별 확장성을 위한 컴포넌트 렌더링
-const RenderQuestion = ({ question }: { question: IQuestion }) => {
+const RenderQuestion = ({
+  question,
+  questionIndex,
+  sectionIndex,
+}: {
+  question: IQuestion;
+  questionIndex: number;
+  sectionIndex: number;
+}) => {
   switch (question.type) {
     case QuestionType.NARRATIVE:
-      return <ApplyNarrativeBox question={question} />;
+      return (
+        <ApplyNarrativeBox
+          key={question.id}
+          question={question}
+          questionIndex={questionIndex}
+          sectionIndex={sectionIndex}
+        />
+      );
     case QuestionType.SELECTIVE:
-      return <ApplySelectiveBox key={question.id} question={question} />;
+      return (
+        <ApplySelectiveBox
+          key={question.id}
+          question={question}
+          questionIndex={questionIndex}
+          sectionIndex={sectionIndex}
+        />
+      );
     default:
       return null;
   }

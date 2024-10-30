@@ -1,8 +1,8 @@
 import useAuthInstance from './instance.ts';
-import { ISaveApplicationResponse } from './i-response-body/deprecated-response-body.ts';
+
 import {
-  ISaveApplicationRequest,
-  ITempReadApplicationResponse,
+  IReadApplication,
+  ISaveApplication,
 } from '../lib/types/models/i-application.ts';
 import { throwCustomError } from '../lib/utils/error.ts';
 
@@ -18,7 +18,7 @@ const useApplicantApi = (recruitmentCode: string) => {
     Assume role check is completed in require-auth wrapper.
    */
 
-  async function readApplication(): Promise<ITempReadApplicationResponse> {
+  async function readApplication(): Promise<IReadApplication> {
     try {
       const response = await authInstance.get(
         `/applications/mine?code=${recruitmentCode}`,
@@ -33,8 +33,8 @@ const useApplicantApi = (recruitmentCode: string) => {
   }
 
   async function saveApplication(
-    requestBody: ISaveApplicationRequest,
-  ): Promise<ISaveApplicationResponse> {
+    requestBody: ISaveApplication,
+  ): Promise<IReadApplication> {
     try {
       const response = await authInstance.post('applications', requestBody);
 

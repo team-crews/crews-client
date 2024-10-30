@@ -1,42 +1,33 @@
 import { useFormContext } from 'react-hook-form';
 import Container from '../../../../components/shared/container';
 import Typography from '../../../../components/shared/typography';
-import { IFormApplication } from '../page';
+
 import ApplyChoiceBox from './apply-choice-box';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { IQuestion } from '../../../../lib/types/models/i-question.ts';
+import { IFormApplication } from '../page.tsx';
 
 interface ApplySelectiveBoxProps {
   question: IQuestion;
+  questionIndex: number;
+  sectionIndex: number;
 }
 
-const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
+const ApplySelectiveBox = ({
+  question,
+  questionIndex,
+  sectionIndex,
+}: ApplySelectiveBoxProps) => {
   const {
-    watch,
-    setValue,
     formState: { errors },
   } = useFormContext<IFormApplication>();
 
-  const currentAnswerIndex = watch('answers').findIndex(
-    (answer) =>
-      answer.questionId === question.id && answer.questionType === 'SELECTIVE',
-  );
+  //가장 최근 에러가 발생한 choice index
+  const [errorIndex, setErrorIndex] = useState<number | null>(null);
 
-  // make new answer if not exist, cuurentAnswerIndex === -1인 item 생성 방지를 위해 return null
-  useEffect(() => {
-    if (currentAnswerIndex === -1) {
-      setValue('answers', [
-        ...watch('answers'),
-        {
-          answerId: null,
-          questionId: question.id,
-          content: null,
-          choiceIds: [],
-          questionType: 'SELECTIVE',
-        },
-      ]);
-    }
-  }, [currentAnswerIndex, question.id, setValue, watch]);
+  const handleErrorIndexChange = (index: number) => {
+    setErrorIndex(index);
+  };
 
   const necessityText = question.necessity ? '응답 필수' : '';
 
@@ -51,6 +42,12 @@ const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
     .filter(Boolean)
     .join(', ');
 
+  const fieldError = errorIndex
+    ? errors.sections?.[sectionIndex]?.answers?.[questionIndex]?.choiceIds?.[
+        errorIndex
+      ]
+    : false;
+
   return (
     <Container className="rounded-xl bg-crews-w01 p-3">
       <div className="flex flex-col gap-4">
@@ -63,20 +60,24 @@ const ApplySelectiveBox = ({ question }: ApplySelectiveBoxProps) => {
           </Typography>
         </div>
         <div className="flex flex-col gap-1">
-          {question.choices.map((choice) => (
+          {question.choices.map((choice, index) => (
             <ApplyChoiceBox
               key={choice.id}
               choice={choice}
-              currentAnswerIndex={currentAnswerIndex}
+              question={question}
+              choiceIndex={index}
+              questionIndex={questionIndex}
+              sectionIndex={sectionIndex}
+              onErrorIndexChange={handleErrorIndexChange}
             />
           ))}
         </div>
       </div>
-      {errors.answers?.[currentAnswerIndex] && (
+      {fieldError ? (
         <Typography className="text-xs text-crews-r03">
-          {errors.answers[currentAnswerIndex]?.message}
+          {fieldError?.message}
         </Typography>
-      )}
+      ) : null}
     </Container>
   );
 };
