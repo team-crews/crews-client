@@ -1,97 +1,86 @@
-import { ISection } from '../../lib/types/models/i-section.ts';
-import { IAnswer } from '../../lib/types/models/i-application.ts';
 import QuestionBoxes from './question-boxes.tsx';
-import { useEffect } from 'react';
+import useAutosizeTextArea from '../../hooks/use-autosize-textarea.ts';
+import { z } from 'zod';
+import { SectionSchema } from '../../lib/types/schemas/section-schema.ts';
+import {
+  AnswersBySectionSchema,
+  AnswerSchema,
+} from '../../lib/types/schemas/application-schema.ts';
+import { findSelectedSection } from '../../lib/utils/utils.ts';
 
 const SectionBox = ({
-  name,
-  description,
-  questions,
+  section,
   answers,
-}: { answers?: IAnswer[] } & Pick<
-  ISection,
-  'name' | 'description' | 'questions'
->) => {
-  useEffect(() => {
-    const textarea = document.querySelector(
-      '#description-textarea',
-    ) as HTMLTextAreaElement;
-
-    if (textarea) {
-      textarea.style.height = 'auto';
-      textarea.style.height = `${textarea.scrollHeight / 16}rem`;
-    }
-  }, []);
+}: {
+  section: z.infer<typeof SectionSchema>;
+  answers?: z.infer<typeof AnswerSchema>[];
+}) => {
+  useAutosizeTextArea('KARINA_IS_GOD', section.description);
 
   return (
     <div className="overflow-hidden rounded-xl">
       <div className="flex h-fit w-full flex-col gap-1 bg-crews-b04 p-4">
         <p className="w-full bg-inherit text-base font-bold text-crews-w01">
-          {name}
+          {section.name}
         </p>
         <textarea
           readOnly
-          id="description-textarea"
+          name="KARINA_IS_GOD"
           rows={1}
           className="cursor-default bg-inherit text-xs text-crews-w01"
-          value={description}
+          value={section.description}
         />
       </div>
 
       <div className="flex h-fit w-full flex-col gap-4 bg-crews-b01 p-4">
-        <QuestionBoxes questions={questions} answers={answers} />
+        <QuestionBoxes questions={section.questions} answers={answers} />
       </div>
     </div>
   );
 };
 
-function findSelectedSection(
-  sections: ISection[],
-  answers: IAnswer[],
-): number[] {
-  const answerMap = new Map(
-    answers.map((answer) => [answer.questionId, answer]),
-  );
-
-  return sections.reduce((answeredSections: number[], section) => {
-    const hasAnsweredQuestion = section.questions.some((question) => {
-      const answer = answerMap.get(question.id);
-      // @ts-expect-error Fix Me later answer type or question type?
-      return answer && answer.type === question.type;
-    });
-
-    if (hasAnsweredQuestion) {
-      answeredSections.push(section.id);
-    }
-
-    return answeredSections;
-  }, []);
-}
-
 const SectionBoxes = ({
   sections,
-  answers,
+  answersBySection,
 }: {
-  sections: ISection[];
-  answers?: IAnswer[];
+  sections: z.infer<typeof SectionSchema>[];
+  answersBySection?: z.infer<typeof AnswersBySectionSchema>[];
 }) => {
-  const selectedSectionIds = answers
-    ? findSelectedSection(sections, answers)
-    : false;
+  /*
+    ReadMe
+    - This component is a view only section box component
+    - It may have answers or may only render the recruitment
+   */
+
+  const selectedSectionIds = answersBySection
+    ? findSelectedSection(answersBySection)
+    : null;
+
+  const answersMap = answersBySection?.reduce(
+    (map, ansBySec) => {
+      map[ansBySec.sectionId] = ansBySec.answers;
+      return map;
+    },
+    {} as Record<
+      z.infer<typeof AnswersBySectionSchema>['sectionId'],
+      z.infer<typeof AnswersBySectionSchema>['answers']
+    >,
+  );
 
   return (
     <section className="flex h-fit w-full flex-col gap-8">
-      {sections.map((section) =>
-        !selectedSectionIds || selectedSectionIds.includes(section.id) ? (
-          <SectionBox
-            key={section.id}
-            name={section.name}
-            answers={answers}
-            description={section.description}
-            questions={section.questions}
-          />
-        ) : null,
-      )}
+      {sections.map((section) => {
+        if (!selectedSectionIds || selectedSectionIds.includes(section.id)) {
+          return (
+            <SectionBox
+              key={section.id}
+              section={section}
+              answers={answersMap?.[section.id]}
+            />
+          );
+        }
+        return null;
+      })}
     </section>
   );
 };

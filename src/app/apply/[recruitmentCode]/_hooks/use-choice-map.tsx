@@ -1,8 +1,9 @@
-import { IRecruitment } from '../../../../lib/types/models/i-recruitment.ts';
 import { useEffect, useState } from 'react';
+import { z } from 'zod';
+import { RecruitmentSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
 
 interface UseChoiceMapParams {
-  recruitment: IRecruitment | undefined;
+  recruitment: z.infer<typeof RecruitmentSchema> | undefined;
 }
 
 export type ChoiceMap = { [questionId: number]: number[] };

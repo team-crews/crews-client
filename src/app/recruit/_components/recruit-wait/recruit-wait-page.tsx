@@ -1,14 +1,14 @@
 import HeaderSection from './header-section.tsx';
-import Container from '../../../../components/shared/container.tsx';
 import ApplicantSection from './applicant-section.tsx';
 import DeadlineSection from './deadline-section.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import Loading from '../../../../components/shared/loading.tsx';
-import { printCustomError } from '../../../../lib/utils/error.ts';
-import { Navigate } from 'react-router-dom';
+import { throwCustomError } from '../../../../lib/utils/error.ts';
+import Container from '../../../../components/shared/container.tsx';
 import FooterSection from './footer-section.tsx';
+import CopySection from './copy-section.tsx';
 
 const RecruitWaitPage = () => {
   const [recruiting, setRecruiting] = useState<boolean>(true);
@@ -23,29 +23,29 @@ const RecruitWaitPage = () => {
     enabled: recruiting,
   });
 
-  if (readQuery.isFetching) return <Loading />;
-  else if (readQuery.isError || !readQuery.data) {
-    printCustomError(readQuery.error, 'readQuery');
-    return <Navigate to="/error" replace />;
-  }
-  return (
-    <Container className="flex flex-col">
-      <HeaderSection />
-      <div className="my-8 flex flex-1 flex-col justify-center gap-12">
-        <ApplicantSection applicationCount={readQuery.data.applicationCount} />
-        <DeadlineSection
+  if (readQuery.isFetching || readQuery.isPending) return <Loading />;
+  else if (readQuery.isSuccess)
+    return (
+      <Container className="flex h-auto flex-col gap-8 py-8">
+        <HeaderSection />
+        <div className="my-8 flex flex-col justify-center gap-12">
+          <CopySection recruitmentCode={readQuery.data.code} />
+          <ApplicantSection
+            applicationCount={readQuery.data.applicationCount}
+          />
+          <DeadlineSection
+            recruiting={recruiting}
+            stopRecruiting={stopRecruiting}
+            deadline={readQuery.data.deadline}
+          />
+        </div>
+        <FooterSection
           recruiting={recruiting}
-          stopRecruiting={stopRecruiting}
-          deadline={new Date(readQuery.data.deadline)}
+          deadline={readQuery.data.deadline}
         />
-      </div>
-      <FooterSection
-        recruiting={recruiting}
-        recruitmentCode={readQuery.data.code}
-        deadline={readQuery.data.deadline}
-      />
-    </Container>
-  );
+      </Container>
+    );
+  else throwCustomError(readQuery.error, 'readRecruitmentInProgressDetail');
 };
 
 export default RecruitWaitPage;

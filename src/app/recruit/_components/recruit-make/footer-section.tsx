@@ -1,52 +1,33 @@
-import { Button } from '../../../../components/ui/button.tsx';
-import FooterContainer from '../../../../components/shared/footer-container.tsx';
+import { Button } from '../../../../components/shadcn/button.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAdminApi from '../../../../apis/admin-api.ts';
-import { ICreatedRecruitment } from '../../../../lib/types/models/i-recruitment.ts';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
 import { useFormContext } from 'react-hook-form';
 import Loading from '../../../../components/shared/loading.tsx';
-import CopyCodeButton from '../../../../components/shared/copy-code-button.tsx';
-import dayjs from 'dayjs';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function findFirstErrorMessage(errors: any): string | null {
-  if (typeof errors === 'object' && errors !== null) {
-    if (errors.message) {
-      return errors.message;
-    }
-
-    // eslint-disable-next-line prefer-const
-    for (let key in errors) {
-      if (Array.isArray(errors[key])) {
-        // eslint-disable-next-line prefer-const
-        for (let item of errors[key]) {
-          const message = findFirstErrorMessage(item);
-          if (message) return message;
-        }
-      } else {
-        const message = findFirstErrorMessage(errors[key]);
-        if (message) return message;
-      }
-    }
-  }
-
-  return null;
-}
+import { findFirstErrorMessage } from '../../../../lib/utils/utils.ts';
+import { z } from 'zod';
+import {
+  CreatedRecruitmentSchema,
+  RecruitmentSchema,
+} from '../../../../lib/types/schemas/recruitment-schema.ts';
+import { convertDateAndTimeToDeadline } from '../../../../lib/utils/convert.ts';
+import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
+import { SaveRecruitmentRequestSchema } from '../../../../apis/response-body-schema.ts';
 
 const FooterSection = ({
-  recruitmentCode = null,
+  updateRecruitment,
 }: {
-  recruitmentCode?: string | null;
+  updateRecruitment: (data: z.infer<typeof RecruitmentSchema>) => void;
 }) => {
-  const { handleSubmit, reset } = useFormContext<ICreatedRecruitment>();
+  const { handleSubmit } =
+    useFormContext<z.infer<typeof CreatedRecruitmentSchema>>();
 
   const queryClient = useQueryClient();
   const { saveRecruitment, startRecruitment } = useAdminApi();
 
   const saveMutation = useMutation({
-    mutationFn: (requestBody: ICreatedRecruitment) =>
+    mutationFn: (requestBody: z.infer<typeof SaveRecruitmentRequestSchema>) =>
       saveRecruitment(requestBody),
   });
 
@@ -55,18 +36,26 @@ const FooterSection = ({
   });
 
   const { toast } = useToast();
-  const handleSaveRecruitmentClick = async (data: ICreatedRecruitment) => {
+  const handleSaveRecruitmentClick = async (
+    data: z.infer<typeof CreatedRecruitmentSchema>,
+  ) => {
     try {
-      const response = await saveMutation.mutateAsync(data);
-      response.deadline = dayjs(response.deadline).format('YY-MM-DD-HH');
-      reset(response);
+      updateRecruitment(
+        await saveMutation.mutateAsync({
+          ...data,
+          deadline: convertDateAndTimeToDeadline({
+            deadlineDate: data.deadlineDate,
+            deadlineTime: data.deadlineTime,
+          }),
+        }),
+      );
 
       toast({
         title: '임시저장이 완료되었습니다.',
         state: 'success',
       });
     } catch (e) {
-      printCustomError(e, 'handleStartRecruitmentClick');
+      printCustomError(e, 'handleSaveRecruitmentClick');
       toast({
         title: '예기치 못한 문제가 발생했습니다.',
         state: 'error',
@@ -74,9 +63,19 @@ const FooterSection = ({
     }
   };
 
-  const handleStartRecruitmentClick = async (data: ICreatedRecruitment) => {
+  const handleStartRecruitmentClick = async (
+    data: z.infer<typeof CreatedRecruitmentSchema>,
+  ) => {
     try {
-      reset(await saveMutation.mutateAsync(data));
+      updateRecruitment(
+        await saveMutation.mutateAsync({
+          ...data,
+          deadline: convertDateAndTimeToDeadline({
+            deadlineDate: data.deadlineDate,
+            deadlineTime: data.deadlineTime,
+          }),
+        }),
+      );
       await startMutation.mutateAsync();
       await queryClient.invalidateQueries({
         queryKey: ['recruitmentProgress'],
@@ -92,6 +91,7 @@ const FooterSection = ({
 
   const handleFormRequirement = (errors: object) => {
     const msg = findFirstErrorMessage(errors);
+
     msg &&
       toast({
         title: msg,
@@ -101,24 +101,17 @@ const FooterSection = ({
 
   return (
     <>
-      {saveMutation.isPending ||
-      startMutation.isPending ||
-      queryClient.isFetching({ queryKey: ['recruitmentProgress'] }) ? (
-        <Loading />
-      ) : null}
-      <FooterContainer className="flex justify-end">
-        {recruitmentCode && (
-          <CopyCodeButton size="lg" variant="gray" code={recruitmentCode} />
-        )}
+      {(saveMutation.isPending || startMutation.isPending) && <Loading />}
+      <CrewsFooter>
         <Button
           size="lg"
           onClick={handleSubmit(
             handleSaveRecruitmentClick,
             handleFormRequirement,
           )}
-          variant="gray"
+          variant="black"
         >
-          저장하기
+          임시 저장
         </Button>
         <Button
           size="lg"
@@ -129,7 +122,7 @@ const FooterSection = ({
         >
           모집 시작
         </Button>
-      </FooterContainer>
+      </CrewsFooter>
     </>
   );
 };

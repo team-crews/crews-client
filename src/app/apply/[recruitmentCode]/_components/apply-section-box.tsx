@@ -1,8 +1,10 @@
-import { ISection } from '../../../../lib/types/models/i-section.ts';
-import { cn } from '../../../../lib/utils';
+import { cn } from '../../../../lib/utils/utils.ts';
 import React from 'react';
+import { z } from 'zod';
+import { SectionSchema } from '../../../../lib/types/schemas/section-schema.ts';
 
-interface ApplySectionBoxProps extends Pick<ISection, 'name' | 'description'> {
+interface ApplySectionBoxProps
+  extends Pick<z.infer<typeof SectionSchema>, 'name' | 'description'> {
   children?: React.ReactNode;
   isSelectable?: boolean;
 }

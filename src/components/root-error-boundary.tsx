@@ -3,7 +3,6 @@ import React from 'react';
 import * as Sentry from '@sentry/react';
 import Container from './shared/container.tsx';
 import { getErrorMessage } from '../lib/utils/error.ts';
-import HelpButton from './shared/help-button.tsx';
 import FaceSadTearIcon from '../assets/icons/face-sad-tear-icon.svg?react';
 
 const RootErrorBoundary = () => {
@@ -27,8 +26,15 @@ const RootErrorBoundary = () => {
             이용에 불편을 드려 죄송합니다 ( ᴗ_ᴗ̩̩. ) 더 나은 서비스를 제공하기
             위해 노력하겠습니다.
             <br />
-            문제가 지속해서 발생할 경우 좌측 하단의 🚨를 눌러 관리자에게
-            문의해주세요.
+            문제가 지속해서 발생할 경우{' '}
+            <a
+              className="font-semibold text-crews-b05 underline hover:text-crews-b06"
+              href={import.meta.env.VITE_KAKAO_OPEN_CHAT}
+              target="_blank"
+            >
+              여기
+            </a>
+            를 눌러 관리자에게 문의해주세요.
           </p>
 
           <button
@@ -39,7 +45,6 @@ const RootErrorBoundary = () => {
           </button>
         </div>
       </Container>
-      <HelpButton />
     </>
   );
 };

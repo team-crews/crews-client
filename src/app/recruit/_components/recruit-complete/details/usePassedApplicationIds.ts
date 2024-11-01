@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { IApplicationOverview } from '../../../../../lib/types/models/i-application.ts';
+import { z } from 'zod';
+import { ApplicationOverviewSchema } from '../../../../../lib/types/schemas/application-schema.ts';
 
-const usePassedApplicationIds = (data: IApplicationOverview[] | null) => {
+const usePassedApplicationIds = (
+  data: z.infer<typeof ApplicationOverviewSchema>[] | null,
+) => {
   const [passApplicationIds, setPassApplicationIds] = useState<number[] | null>(
     null,
   );

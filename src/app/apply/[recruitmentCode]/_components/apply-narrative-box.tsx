@@ -1,12 +1,13 @@
 import { useFormContext } from 'react-hook-form';
 import Container from '../../../../components/shared/container';
 import Typography from '../../../../components/shared/typography';
-import { cn } from '../../../../lib/utils';
-import { IQuestion } from '../../../../lib/types/models/i-question.ts';
 import { IFormApplication } from '../page.tsx';
+import { cn } from '../../../../lib/utils/utils.ts';
+import { z } from 'zod';
+import { QuestionSchema } from '../../../../lib/types/schemas/question-schema.ts';
 
 interface ApplyNarrativeBoxProps {
-  question: IQuestion;
+  question: z.infer<typeof QuestionSchema>;
   questionIndex: number;
   sectionIndex: number;
 }

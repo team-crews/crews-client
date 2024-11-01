@@ -1,13 +1,14 @@
-import {
-  IReadApplication,
-  ISaveApplication,
-} from '../../../../lib/types/models/i-application.ts';
-import { ISection } from '../../../../lib/types/models/i-section.ts';
 import { ChoiceMap } from '../_hooks/use-choice-map.tsx';
 import { IFormApplication, SHARED_SECTION_INDEX } from '../page';
+import { z } from 'zod';
+import { SectionSchema } from '../../../../lib/types/schemas/section-schema.ts';
+import {
+  ApplicationDetailSchema,
+  ISaveApplication,
+} from '../../../../lib/types/schemas/application-schema.ts';
 
 export const convertToFormApplication = (
-  application: IReadApplication,
+  application: z.infer<typeof ApplicationDetailSchema>,
   choiceMap: ChoiceMap,
 ): IFormApplication => {
   return {
@@ -119,9 +120,9 @@ export const filterSelectedAnswer = (
 
 export const getInitialSectionSelection = (
   applicationSections:
-    | Pick<IReadApplication, 'sections'>['sections']
+    | Pick<z.infer<typeof ApplicationDetailSchema>, 'sections'>['sections']
     | undefined,
-  recruitmentSections: ISection[] | undefined,
+  recruitmentSections: z.infer<typeof SectionSchema>[] | undefined,
 ) => {
   if (!applicationSections || !recruitmentSections) return 1;
 

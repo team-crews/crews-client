@@ -4,11 +4,12 @@ import Typography from '../../../../components/shared/typography';
 
 import ApplyChoiceBox from './apply-choice-box';
 import { useState } from 'react';
-import { IQuestion } from '../../../../lib/types/models/i-question.ts';
 import { IFormApplication } from '../page.tsx';
+import { z } from 'zod';
+import { QuestionSchema } from '../../../../lib/types/schemas/question-schema.ts';
 
 interface ApplySelectiveBoxProps {
-  question: IQuestion;
+  question: z.infer<typeof QuestionSchema>;
   questionIndex: number;
   sectionIndex: number;
 }

@@ -14,8 +14,8 @@ const HeaderSection = () => {
             확인해 보세요.
           </p>
           <p className="text-base font-light">
-            필요 시 마감 기간을 연장하실 수 있지만 마감 일정을 당기는 것은
-            불가하니 주의해주세요. 😔
+            필요 시 마감 기간을 연장하실 수 있지만 조기 마감은 불가하니
+            주의해주세요. 😔
           </p>
         </div>
       </div>

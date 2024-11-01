@@ -3,57 +3,54 @@ export function isFilledInput(value: string, msg: string) {
   else return true;
 }
 
-export function isProperDeadlinePattern(value: string): true | string {
-  const match = value.match(/^(\d{2})-(\d{2})-(\d{2})-(\d{2})$/);
-  if (!match) return '마감일자 형식을 [YY-MM-DD-HH]로 맞춰주세요.';
+export function isProperEmail(value: string, msg: string) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return msg;
 
-  const [_, year, month, day, hour] = match;
-  const formattedDate = `20${year}-${month}-${day}T${hour}:00:00`;
-
-  const deadline = new Date(formattedDate);
-
-  const isValid =
-    deadline.getFullYear() === parseInt(`20${year}`, 10) &&
-    deadline.getMonth() + 1 === parseInt(month, 10) &&
-    deadline.getDate() === parseInt(day, 10) &&
-    deadline.getHours() === parseInt(hour, 10);
-
-  if (!isValid) return '날짜를 확인해주세요.';
-
-  if (deadline.getTime() <= new Date().getTime())
-    return '마감 시간은 현 시점 이전이 될 수 없습니다.';
+  if (
+    !/\.(com|net|org|edu|gov|mil|int|co|biz|info|mobi|name|ly|io|me|ai)$/.test(
+      value.split('@')[1],
+    )
+  )
+    return msg;
 
   return true;
 }
 
-export function isProperNewDeadline(
-  value: string,
-  originDeadline: string,
-): true | string {
-  const match = value.match(/^(\d{2})-(\d{2})-(\d{2})-(\d{2})$/);
-  if (!match) return '마감일자 형식을 [YY-MM-DD-HH]로 맞춰주세요.';
+export function isProperPassword(value: string, msg: string) {
+  if (value.length < 8 || value.length > 32) return msg;
 
-  const [_, year, month, day, hour] = match;
-  const formattedDate = `20${year}-${month}-${day}T${hour}:00:00`;
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) return msg;
 
-  const deadline = new Date(formattedDate);
-
-  const isValid =
-    deadline.getFullYear() === parseInt(`20${year}`, 10) &&
-    deadline.getMonth() + 1 === parseInt(month, 10) &&
-    deadline.getDate() === parseInt(day, 10) &&
-    deadline.getHours() === parseInt(hour, 10);
-
-  if (!isValid) return '날짜를 확인해주세요.';
-
-  if (deadline.getTime() <= new Date(originDeadline).getTime())
-    return '새로운 마감 일자는 기존 일자 이전이 될 수 없습니다.';
+  if (/\s/.test(value)) return msg;
 
   return true;
 }
 
-export function isNumber(value: string, msg: string) {
-  if (!/^\d+$/.test(value)) return msg;
-  if (isNaN(Number(value))) return msg;
+export function isProperClubName(value: string, msg: string) {
+  if (!/^[가-힣a-zA-Z0-9-_ ]+$/.test(value)) return msg;
   return true;
+}
+
+export function isProperTime(
+  beforeDateString: string,
+  afterDateString: string,
+  msg: string,
+) {
+  if (
+    new Date(beforeDateString).getTime() >= new Date(afterDateString).getTime()
+  )
+    return msg;
+  else return true;
+}
+
+export function validateRecruitmentCode(targetString: string): string {
+  const uuidRegex =
+    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+  return uuidRegex.test(targetString) ? '' : '잘못된 형태의 모집 코드입니다.';
+}
+
+export function validatePublicRoute(pathname: string) {
+  const patterns = [/^\/$/, /^\/recruitment\/.+$/, /^\/sign-in$/, /^\/error$/];
+
+  return patterns.some((pattern) => pattern.test(pathname));
 }

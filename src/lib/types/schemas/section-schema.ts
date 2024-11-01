@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { CreatedQuestionSchema, QuestionSchema } from './question-schema.ts';
-import WithNullableIdSchema from './nullable-id-schema.ts';
 
 export const SectionSchema = z.object({
   id: z.number(),
@@ -9,6 +8,7 @@ export const SectionSchema = z.object({
   questions: z.array(QuestionSchema),
 });
 
-export const CreatedSectionSchema = WithNullableIdSchema(SectionSchema).extend({
+export const CreatedSectionSchema = SectionSchema.extend({
+  id: SectionSchema.shape.id.nullable(),
   questions: z.array(CreatedQuestionSchema),
 });

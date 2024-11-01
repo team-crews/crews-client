@@ -1,12 +1,15 @@
+import { CreatedRecruitmentSchema } from './schemas/recruitment-schema.ts';
+import { z } from 'zod';
 import {
-  ICreatedChoice,
-  ICreatedNarrativeQuestion,
-  ICreatedSelectiveQuestion,
-} from './models/i-question.ts';
-import { ICreatedSection } from './models/i-section.ts';
-import { ICreatedRecruitment } from './models/i-recruitment.ts';
+  CreatedChoiceSchema,
+  CreatedNarrativeQuestionSchema,
+  CreatedSelectiveQuestionSchema,
+} from './schemas/question-schema.ts';
+import { CreatedSectionSchema } from './schemas/section-schema.ts';
 
-export const CREATED_NARRATIVE_QUESTION: ICreatedNarrativeQuestion = {
+export const CREATED_NARRATIVE_QUESTION: z.infer<
+  typeof CreatedNarrativeQuestionSchema
+> = {
   id: null,
   type: 'NARRATIVE',
   content: '',
@@ -18,7 +21,9 @@ export const CREATED_NARRATIVE_QUESTION: ICreatedNarrativeQuestion = {
   order: -1,
 };
 
-export const CREATED_SELECTIVE_QUESTION: ICreatedSelectiveQuestion = {
+export const CREATED_SELECTIVE_QUESTION: z.infer<
+  typeof CreatedSelectiveQuestionSchema
+> = {
   id: null,
   type: 'SELECTIVE',
   content: '',
@@ -35,23 +40,24 @@ export const CREATED_SELECTIVE_QUESTION: ICreatedSelectiveQuestion = {
   order: -1,
 };
 
-export const CREATED_SECTION: ICreatedSection = {
+export const CREATED_SECTION: z.infer<typeof CreatedSectionSchema> = {
   id: null,
   name: '',
   description: '',
   questions: [CREATED_SELECTIVE_QUESTION],
 };
 
-export const CREATED_CHOICE: ICreatedChoice = {
+export const CREATED_CHOICE: z.infer<typeof CreatedChoiceSchema> = {
   id: null,
   content: '',
 };
 
-export const CREATED_RECRUITMENT: ICreatedRecruitment = {
+export const CREATED_RECRUITMENT: z.infer<typeof CreatedRecruitmentSchema> = {
   id: null,
   title: '',
   description: '',
-  deadline: '',
+  deadlineDate: '',
+  deadlineTime: '',
   sections: [
     {
       id: null,

@@ -1,52 +1,64 @@
-import CopyCodeButton from '../../../../components/shared/copy-code-button.tsx';
-import { Button } from '../../../../components/ui/button.tsx';
-import FooterContainer from '../../../../components/shared/footer-container.tsx';
+import { Button } from '../../../../components/shadcn/button.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Dialog from '../../../../components/shared/dialog.tsx';
+import CrewsDialog from '../../../../components/molecule/crews-dialog.tsx';
 import useDialog from '../../../../hooks/use-dialog.ts';
 import { useForm } from 'react-hook-form';
 import {
   isFilledInput,
-  isProperNewDeadline,
+  isProperTime,
 } from '../../../../lib/utils/validation.ts';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
+import {
+  convertDateAndTimeToDeadline,
+  convertDeadlineToDateAndTime,
+} from '../../../../lib/utils/convert.ts';
+import { findFirstErrorMessage } from '../../../../lib/utils/utils.ts';
+import { z } from 'zod';
+import { DateAndTimeSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
+import React from 'react';
+import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
+import Loading from '../../../../components/shared/loading.tsx';
 
-type FormType = { deadline: string };
+const times = Array.from(
+  { length: 24 },
+  (_, i) => `${i.toString().padStart(2, '0')}:00`,
+);
 
 const FooterSection = ({
   recruiting,
-  recruitmentCode,
   deadline,
 }: {
   recruiting: boolean;
-  recruitmentCode: string;
   deadline: string;
 }) => {
   const queryClient = useQueryClient();
+  const { changeDeadline } = useAdminApi();
+  const { toast } = useToast();
+  const dialogReturns = useDialog();
+
   const handleEvaluateRecruitmentClick = async () => {
     await queryClient.invalidateQueries({
       queryKey: ['recruitmentProgress'],
     });
   };
 
-  const dialogProps = useDialog();
-
-  const { register, handleSubmit } = useForm<FormType>({
-    defaultValues: { deadline: '' },
+  const { register, handleSubmit, getValues } = useForm<
+    z.infer<typeof DateAndTimeSchema>
+  >({
+    defaultValues: convertDeadlineToDateAndTime(deadline),
   });
 
-  const { changeDeadline } = useAdminApi();
   const changeMutation = useMutation({ mutationFn: changeDeadline });
 
-  const { toast } = useToast();
-  const onSubmit = async (data: FormType) => {
+  const onSubmit = async (data: z.infer<typeof DateAndTimeSchema>) => {
     try {
       await changeMutation.mutateAsync(data);
       await queryClient.invalidateQueries({
         queryKey: ['recruitmentInProgressDetail'],
       });
+      dialogReturns.toggleOpen();
     } catch (e) {
       printCustomError(e, 'onSubmit');
       toast({
@@ -56,53 +68,98 @@ const FooterSection = ({
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onError = (error: any) => {
-    error.deadline.message &&
+  const onError = (errors: object) => {
+    const msg = findFirstErrorMessage(errors);
+
+    msg &&
       toast({
-        title: error.deadline.message,
+        title: msg,
         state: 'information',
       });
   };
 
   return (
     <>
-      <FooterContainer className="flex w-full justify-end">
-        <div className="flex items-center gap-4">
-          <CopyCodeButton variant="gray" size="lg" code={recruitmentCode} />
-          {recruiting ? (
-            <Button size="lg" onClick={() => dialogProps.toggleOpen()}>
-              마감기간 연장
-            </Button>
-          ) : (
-            <Button size="lg" onClick={handleEvaluateRecruitmentClick}>
-              지원서 평가
-            </Button>
-          )}
-        </div>
-      </FooterContainer>
-      <Dialog {...dialogProps} action={handleSubmit(onSubmit, onError)}>
-        <div className="w-full">
-          <p className="mb-2 w-full text-sm font-bold text-crews-b06">
-            마감 일자
+      {changeMutation.isPending && <Loading />}
+      <CrewsFooter>
+        <Button size="lg" onClick={() => dialogReturns.toggleOpen()}>
+          마감기간 연장
+        </Button>
+
+        <Button
+          size="lg"
+          disabled={recruiting}
+          onClick={handleEvaluateRecruitmentClick}
+        >
+          지원서 평가
+        </Button>
+      </CrewsFooter>
+      <CrewsDialog {...dialogReturns} action={handleSubmit(onSubmit, onError)}>
+        <div className="mb-6 flex flex-col gap-2 text-center">
+          <p className="text-2xl font-semibold">⏰ 마감 기간 연장</p>
+          <p className="text-sm font-light">
+            기간 연장 후 단축은 불가능하니 주의해주세요.
           </p>
-          <div className="flex gap-2">
+        </div>
+
+        <div className="flex flex-col gap-6">
+          <div className="w-full">
+            <Label>마감 일자</Label>
             <input
-              maxLength={11}
-              placeholder="마감 일자 : YY-MM-DD-HH"
-              className="w-full text-base text-crews-bk01 placeholder:text-crews-g03"
-              {...register('deadline', {
+              {...register('deadlineDate', {
                 validate: {
-                  isFilledInput: (v) =>
-                    isFilledInput(v, '마감 시간이 작성되지 않았어요.'),
-                  isProperNewDeadline: (v) => isProperNewDeadline(v, deadline),
+                  validateIfFilled: (v) =>
+                    isFilledInput(v, '마감 일자가 선택되지 않았어요.'),
                 },
               })}
+              className="w-full text-base text-crews-bk01 placeholder:text-crews-g03"
+              type="date"
             />
           </div>
+
+          <div className="w-full">
+            <Label>마감 시간</Label>
+            <select
+              className="-ml-1 w-full text-base"
+              {...register('deadlineTime', {
+                validate: {
+                  validateIfFilled: (v) =>
+                    isFilledInput(v, '마감 시간이 선택되지 않았어요.'),
+                  validateIfProperTime: (v) => {
+                    if (!getValues('deadlineDate')) return '';
+
+                    return isProperTime(
+                      deadline,
+                      convertDateAndTimeToDeadline({
+                        deadlineDate: getValues('deadlineDate'),
+                        deadlineTime: v,
+                      }),
+                      '마감 기간은 연장만 가능합니다.',
+                    );
+                  },
+                },
+              })}
+              defaultValue=""
+            >
+              <option value="" disabled hidden>
+                마감 시간을 선택해주세요.
+              </option>
+              {times.map((time) => (
+                <option key={time} value={time}>
+                  {time}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-      </Dialog>
+      </CrewsDialog>
     </>
+  );
+};
+
+const Label = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <p className="mb-2 w-full text-sm font-bold text-crews-b06">{children}</p>
   );
 };
 

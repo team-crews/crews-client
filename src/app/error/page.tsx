@@ -1,6 +1,6 @@
 import Container from '../../components/shared/container.tsx';
 import FaceSadTearIcon from '../../assets/icons/face-sad-tear-icon.svg?react';
-import { Button } from '../../components/ui/button.tsx';
+import { Button } from '../../components/shadcn/button.tsx';
 import { useNavigate } from 'react-router-dom';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;

@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import WithNullableIdSchema from './nullable-id-schema.ts';
 
 export const BaseQuestionSchema = z.object({
   id: z.number(),
@@ -12,7 +11,9 @@ export const ChoiceSchema = z.object({
   id: z.number(),
   content: z.string(),
 });
-export const CreatedChoiceSchema = WithNullableIdSchema(ChoiceSchema);
+export const CreatedChoiceSchema = ChoiceSchema.extend({
+  id: ChoiceSchema.shape.id.nullable(),
+});
 
 export const SelectiveQuestionSchema = BaseQuestionSchema.extend({
   type: z.literal('SELECTIVE'),
@@ -21,9 +22,8 @@ export const SelectiveQuestionSchema = BaseQuestionSchema.extend({
   maximumSelection: z.number(),
   choices: z.array(ChoiceSchema),
 });
-export const CreatedSelectiveQuestionSchema = WithNullableIdSchema(
-  SelectiveQuestionSchema,
-).extend({
+export const CreatedSelectiveQuestionSchema = SelectiveQuestionSchema.extend({
+  id: SelectiveQuestionSchema.shape.id.nullable(),
   choices: z.array(CreatedChoiceSchema),
 });
 
@@ -38,9 +38,9 @@ export const NarrativeQuestionSchema = BaseQuestionSchema.extend({
      */
   choices: z.array(z.any()).length(0),
 });
-export const CreatedNarrativeQuestionSchema = WithNullableIdSchema(
-  NarrativeQuestionSchema,
-);
+export const CreatedNarrativeQuestionSchema = NarrativeQuestionSchema.extend({
+  id: NarrativeQuestionSchema.shape.id.nullable(),
+});
 
 export const QuestionSchema = z.union([
   SelectiveQuestionSchema,

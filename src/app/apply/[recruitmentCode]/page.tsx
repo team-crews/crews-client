@@ -13,10 +13,7 @@ import { QuestionType } from '../../../lib/enums';
 import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { ISaveApplication } from '../../../lib/types/models/i-application.ts';
 import { useToast } from '../../../hooks/use-toast';
-import FooterContainer from '../../../components/shared/footer-container';
-import { Button } from '../../../components/ui/button';
 import ApplySectionHeader from './_components/apply-section-header';
 import {
   convertToFormApplication,
@@ -25,8 +22,11 @@ import {
 } from './_utils/utils';
 import { useSectionSelection } from './_hooks/use-section-selection';
 import { printCustomError } from '../../../lib/utils/error';
-import { IQuestion } from '../../../lib/types/models/i-question.ts';
 import { useChoiceMap } from './_hooks/use-choice-map.tsx';
+import { Button } from '../../../components/shadcn/button.tsx';
+import { z } from 'zod';
+import { QuestionSchema } from '../../../lib/types/schemas/question-schema.ts';
+import { ISaveApplication } from '../../../lib/types/schemas/application-schema.ts';
 
 export type IFormApplication = {
   sections: {
@@ -93,7 +93,6 @@ const Page = () => {
   useEffect(() => {
     // 저장된 지원서가 존재하면, initialize
     if (application && isChoiceMapReady) {
-      //Convert IReadApplication to IFormApplication
       const formApplication: IFormApplication = convertToFormApplication(
         application,
         choiceMap,
@@ -304,11 +303,9 @@ const Page = () => {
                 </>
               )}
             </div>
-            <FooterContainer className="flex w-full justify-end">
-              <Button type="submit" size="lg" disabled={!ableToSubmit}>
-                {ableToSubmit ? '제출하기' : '모집 기간이 아닙니다.'}
-              </Button>
-            </FooterContainer>
+            <Button type="submit" size="lg" disabled={!ableToSubmit}>
+              {ableToSubmit ? '제출하기' : '모집 기간이 아닙니다.'}
+            </Button>
           </form>
         </div>
       </Container>
@@ -322,7 +319,7 @@ const RenderQuestion = ({
   questionIndex,
   sectionIndex,
 }: {
-  question: IQuestion;
+  question: z.infer<typeof QuestionSchema>;
   questionIndex: number;
   sectionIndex: number;
 }) => {

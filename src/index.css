@@ -12,6 +12,7 @@
 
 a {
     text-decoration: none;
+    cursor: pointer;
 }
 
 svg {
@@ -44,7 +45,6 @@ input[type='number'] {
 }
 
 textarea {
-    border: none;
     overflow: auto;
     outline: none;
 

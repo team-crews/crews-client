@@ -4,17 +4,19 @@ import {
   Route,
 } from 'react-router-dom';
 import RootLayout from './app/layout.tsx';
-import AuthRouteWrapper from './components/wrapper/auth-redirect-wrapper.tsx';
 import LandingPage from './app/page.tsx';
 import SignInPage from './app/sign-in/page.tsx';
+import SignUpPage from './app/sign-up/page.tsx';
 import RecruitmentPage from './app/recruitment/[recruitmentCode]/page.tsx';
-import ApplyPage from './app/apply/[recruitmentCode]/page.tsx';
-import RecruitPage from './app/recruit/page.tsx';
 import ErrorPage from './app/error/page.tsx';
-import ResponsiveWrapper from './components/wrapper/responsive-wrapper.tsx';
+import MobileRestrictionWrapper from './components/wrapper/mobile-restriction-wrapper.tsx';
 import * as Sentry from '@sentry/react';
 
 import RootErrorBoundary from './components/root-error-boundary.tsx';
+import ApplyPage from './app/apply/[recruitmentCode]/page.tsx';
+import RecruitPage from './app/recruit/page.tsx';
+import AuthRedirectWrapper from './components/wrapper/auth-redirect-wrapper.tsx';
+import TryLoginWrapper from './components/wrapper/try-login-wrapper.tsx';
 
 const sentryCreateBrowserRouter =
   Sentry.wrapCreateBrowserRouter(createBrowserRouter);
@@ -22,22 +24,25 @@ const sentryCreateBrowserRouter =
 const router: ReturnType<typeof createBrowserRouter> =
   sentryCreateBrowserRouter(
     createRoutesFromElements(
-      <Route
-        element={<ResponsiveWrapper />}
-        errorElement={<RootErrorBoundary />}
-      >
+      <Route element={<TryLoginWrapper />} errorElement={<RootErrorBoundary />}>
         <Route element={<RootLayout />}>
-          <Route element={<AuthRouteWrapper />}>
+          <Route element={<MobileRestrictionWrapper />}>
             <Route path="/" element={<LandingPage />} />
             <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+
+            <Route path="recruitment" element={<RecruitmentPage />} />
 
             <Route
-              path="recruitment/:recruitmentCode"
-              element={<RecruitmentPage />}
-            />
+              element={<AuthRedirectWrapper availableRoles={['APPLICANT']} />}
+            >
+              <Route path="apply/:recruitmentCode" element={<ApplyPage />} />
+            </Route>
 
-            <Route path="apply/:recruitmentCode" element={<ApplyPage />} />
-            <Route path="recruit" element={<RecruitPage />} />
+            <Route element={<AuthRedirectWrapper availableRoles={['ADMIN']} />}>
+              <Route path="recruit" element={<RecruitPage />} />
+            </Route>
+
             <Route path="error" element={<ErrorPage />} />
           </Route>
         </Route>

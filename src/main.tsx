@@ -14,6 +14,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import * as Sentry from '@sentry/react';
 import { useEffect } from 'react';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +25,7 @@ const queryClient = new QueryClient({
   },
 });
 
-if (import.meta.env.MODE !== 'development') {
+if (import.meta.env.PROD) {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     integrations: [
@@ -51,6 +52,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
+    <ReactQueryDevtools initialIsOpen={import.meta.env.DEV} position="right" />
   </QueryClientProvider>,
   // </React.StrictMode>,
 );
