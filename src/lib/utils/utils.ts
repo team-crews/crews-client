@@ -46,15 +46,23 @@ export function extractRole(token: string) {
 export function findSelectedSection(
   answersBySection: z.infer<typeof AnswersBySectionSchema>[],
 ): number[] {
-  return answersBySection.reduce((acc: number[], ansBySec) => {
-    if (
-      ansBySec.answers.some((ans) => {
-        if (ans.type === 'NARRATIVE' && ans.content !== null) return true;
-        if (ans.type === 'SELECTIVE' && ans.choiceIds !== null) return true;
-        return false;
-      })
-    )
-      acc.push(ansBySec.sectionId);
-    return acc;
-  }, []);
+  const selectedSections = answersBySection.reduce(
+    (acc: number[], ansBySec) => {
+      if (
+        ansBySec.answers.some((ans) => {
+          if (ans.type === 'NARRATIVE' && ans.content !== null) return true;
+          if (ans.type === 'SELECTIVE' && ans.choiceIds !== null) return true;
+          return false;
+        })
+      )
+        acc.push(ansBySec.sectionId);
+      return acc;
+    },
+    [],
+  );
+
+  if (answersBySection.length > 1 && selectedSections.length === 1)
+    selectedSections.push(1);
+
+  return selectedSections;
 }
