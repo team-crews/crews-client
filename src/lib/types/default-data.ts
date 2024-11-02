@@ -6,6 +6,32 @@ import {
   CreatedSelectiveQuestionSchema,
 } from './schemas/question-schema.ts';
 import { CreatedSectionSchema } from './schemas/section-schema.ts';
+import {
+  NarrativeAnswerSchema,
+  SelectiveAnswerSchema,
+} from './schemas/application-schema.ts';
+
+export const CREATED_NARRATIVE_ANSWER = (
+  questionId: number,
+): z.infer<typeof NarrativeAnswerSchema> => {
+  return {
+    questionId,
+    content: null,
+    choiceIds: null,
+    type: 'NARRATIVE',
+  };
+};
+
+export const CREATED_SELECTIVE_ANSWER = (
+  questionId: number,
+): z.infer<typeof SelectiveAnswerSchema> => {
+  return {
+    questionId,
+    content: null,
+    choiceIds: [],
+    type: 'SELECTIVE',
+  };
+};
 
 export const CREATED_NARRATIVE_QUESTION: z.infer<
   typeof CreatedNarrativeQuestionSchema

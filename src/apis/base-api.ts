@@ -1,6 +1,7 @@
 import { baseInstance } from './instance.ts';
 import { z } from 'zod';
 import { ReadRecruitmentByCodeResponseSchema } from './response-body-schema.ts';
+import { convertSeoulToUTC } from '../lib/utils/convert.ts';
 
 /*
    Apis that don't use authentication which means that non-user clients may also call these.
@@ -13,5 +14,10 @@ export async function readRecruitmentByCode(
   const response = await baseInstance.get(
     `recruitments?code=${recruitmentCode}`,
   );
-  return ReadRecruitmentByCodeResponseSchema.parse(response.data);
+
+  if (ReadRecruitmentByCodeResponseSchema.parse(response.data)) {
+    response.data.deadline = convertSeoulToUTC(response.data.deadline);
+  }
+
+  return response.data;
 }

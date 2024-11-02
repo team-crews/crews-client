@@ -16,7 +16,7 @@ export const convertToFormApplication = (
       sectionId: section.sectionId,
       answers: section.answers.map((answer) => {
         if (answer.type === 'SELECTIVE') {
-          // choiceMap에 존재하는 choiceId 중, 선택된 choiceId는 choiceId로, 아닌 경우는 false로 변환
+          // choiceMap 에 존재하는 choiceId 중, 선택된 choiceId는 choiceId로, 아닌 경우는 false 로 변환
           const convertedChoiceIds = choiceMap[answer.questionId].map(
             (choiceId) =>
               answer.choiceIds?.includes(choiceId) ? choiceId : false,
@@ -41,19 +41,22 @@ export const convertToFormApplication = (
   };
 };
 
+// const filteredChoiceIds =
+//   (
+//     answer.choiceIds?.filter(
+//       (choiceId) => choiceId !== false,
+//     ) as number[]
+//   ).map((choiceId) => Number(choiceId)) || [];
+
 export const convertToSaveApplication = (
   sections: IFormApplication['sections'],
 ): ISaveApplication['sections'] => {
-  const convertedSections = sections.map((section) => ({
+  return sections.map((section) => ({
     sectionId: section.sectionId,
     answers: section.answers.map((answer) => {
       if (answer.type === 'SELECTIVE') {
         const filteredChoiceIds =
-          (
-            answer.choiceIds?.filter(
-              (choiceId) => choiceId !== false,
-            ) as number[]
-          ).map((choiceId) => Number(choiceId)) || [];
+          answer.choiceIds?.filter(Boolean).map(Number) || [];
 
         return {
           questionId: answer.questionId,
@@ -70,8 +73,6 @@ export const convertToSaveApplication = (
       }
     }),
   }));
-
-  return convertedSections;
 };
 
 /**
@@ -87,7 +88,7 @@ export const filterSelectedAnswer = (
   selectedSectionIndex: number,
   isOnlySharedSection: boolean,
 ): IFormApplication['sections'] => {
-  const filteredAnswers = sections.map((section, index) => {
+  return sections.map((section, index) => {
     const isSharedSection = index === SHARED_SECTION_INDEX;
     const isSelectedSection =
       !isOnlySharedSection && index === selectedSectionIndex;
@@ -98,24 +99,21 @@ export const filterSelectedAnswer = (
       return {
         ...section,
         answers: section.answers.map((answer) => {
-          if (answer.type === 'NARRATIVE') {
+          if (answer.type === 'NARRATIVE')
             return {
               ...answer,
               content: null,
             };
-          } else if (answer.type === 'SELECTIVE') {
+          else if (answer.type === 'SELECTIVE')
             return {
               ...answer,
               choiceIds: [],
             };
-          }
           return answer; // 기본적으로 answer 그대로 반환
         }),
       };
     }
   });
-
-  return filteredAnswers;
 };
 
 export const getInitialSectionSelection = (
@@ -126,7 +124,7 @@ export const getInitialSectionSelection = (
 ) => {
   if (!applicationSections || !recruitmentSections) return 1;
 
-  // answers에 답변이 있는 첫 번째 section 찾기
+  // answers 에 답변이 있는 첫 번째 section 찾기
   const initialSectionIndex = applicationSections
     .slice(1)
     .findIndex((section) =>

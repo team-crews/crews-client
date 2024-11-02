@@ -34,3 +34,17 @@ export const useChoiceMap = ({ recruitment }: UseChoiceMapParams) => {
     isChoiceMapReady,
   };
 };
+
+export const generateChoiceMap = (
+  recruitment: z.infer<typeof RecruitmentSchema>,
+) => {
+  const choiceMap: ChoiceMap = recruitment.sections.reduce((acc, section) => {
+    section.questions.forEach((question) => {
+      if (question.type === 'SELECTIVE' && question.choices.length > 0) {
+        acc[question.id] = question.choices.map((choice) => choice.id);
+      }
+    });
+    return acc;
+  }, {} as ChoiceMap);
+  return choiceMap;
+};

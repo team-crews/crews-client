@@ -14,7 +14,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import * as Sentry from '@sentry/react';
 import { useEffect } from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,7 +51,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
-    <ReactQueryDevtools initialIsOpen={import.meta.env.DEV} position="right" />
+    {/*<ReactQueryDevtools initialIsOpen={import.meta.env.DEV} position="left" />*/}
   </QueryClientProvider>,
   // </React.StrictMode>,
 );

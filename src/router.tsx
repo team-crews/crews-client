@@ -8,12 +8,11 @@ import LandingPage from './app/page.tsx';
 import SignInPage from './app/sign-in/page.tsx';
 import SignUpPage from './app/sign-up/page.tsx';
 import RecruitmentPage from './app/recruitment/[recruitmentCode]/page.tsx';
-import ErrorPage from './app/error/page.tsx';
 import MobileRestrictionWrapper from './components/wrapper/mobile-restriction-wrapper.tsx';
 import * as Sentry from '@sentry/react';
 
 import RootErrorBoundary from './components/root-error-boundary.tsx';
-import ApplyPage from './app/apply/[recruitmentCode]/page.tsx';
+import ApplyPage from './app/apply/[recruitmentCode]/page-wrapper.tsx';
 import RecruitPage from './app/recruit/page.tsx';
 import AuthRedirectWrapper from './components/wrapper/auth-redirect-wrapper.tsx';
 import TryLoginWrapper from './components/wrapper/try-login-wrapper.tsx';
@@ -42,8 +41,6 @@ const router: ReturnType<typeof createBrowserRouter> =
             <Route element={<AuthRedirectWrapper availableRoles={['ADMIN']} />}>
               <Route path="recruit" element={<RecruitPage />} />
             </Route>
-
-            <Route path="error" element={<ErrorPage />} />
           </Route>
         </Route>
       </Route>,
