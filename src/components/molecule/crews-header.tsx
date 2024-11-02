@@ -1,6 +1,6 @@
 import AnchorIcon from '../../assets/icons/anchor-icon.svg?react';
 import CircleUserIcon from '../../assets/icons/circle-user-icon.svg?react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useSession from '../../hooks/use-session.ts';
 import { cn } from '../../lib/utils/utils.ts';
 import { useMutation } from '@tanstack/react-query';
@@ -17,12 +17,10 @@ const CrewsHeader = () => {
   const signOutMutation = useMutation({ mutationFn: signOut });
 
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   const handleSignOutClick = async () => {
     try {
       await signOutMutation.mutateAsync();
-      navigate('/', { state: { logout: true } });
 
       toast({
         title: `안녕히가세요 👋`,
