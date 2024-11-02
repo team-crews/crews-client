@@ -6,13 +6,13 @@ import { z } from 'zod';
 import { RecruitmentSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
 import { ApplicationDetailSchema } from '../../../../lib/types/schemas/application-schema.ts';
 
-interface UseSectionSelectionParams {
-  recruitment: z.infer<typeof RecruitmentSchema> | undefined;
-  application: z.infer<typeof ApplicationDetailSchema> | undefined;
+type UseSectionSelectionParams = {
+  recruitment?: z.infer<typeof RecruitmentSchema>;
+  application?: z.infer<typeof ApplicationDetailSchema>;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   clearErrors: UseFormClearErrors<any>;
-}
+};
 
 export const useSectionSelection = ({
   recruitment,
@@ -23,24 +23,23 @@ export const useSectionSelection = ({
   const sharedSection = recruitment?.sections[SHARED_SECTION_INDEX];
 
   // 초기 focus 섹션 index
-  const initalSectionSelections = getInitialSectionSelection(
+  const initialSectionSelections = getInitialSectionSelection(
     application?.sections,
     recruitment?.sections,
   );
 
   // 선택된 섹션 index
   const [selectedSectionIndex, setSelectedSectionIndex] = useState<number>(
-    initalSectionSelections,
+    initialSectionSelections,
   );
 
   // 선택된 섹션
   const selectedSection = recruitment?.sections[selectedSectionIndex];
-
   const isOnlySharedSection = recruitment?.sections.length === 1;
 
   useEffect(() => {
-    setSelectedSectionIndex(initalSectionSelections);
-  }, [initalSectionSelections]);
+    setSelectedSectionIndex(initialSectionSelections);
+  }, [initialSectionSelections]);
 
   const handleSectionSelectionChange = (index: number) => {
     setSelectedSectionIndex(index);

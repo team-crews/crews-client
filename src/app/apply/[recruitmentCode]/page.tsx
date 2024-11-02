@@ -1,11 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { Navigate, useParams } from 'react-router-dom';
-
 import Container from '../../../components/shared/container';
-import useApplicantApi from '../../../apis/applicant-api';
-
-import Loading from '../../../components/shared/loading';
-import { readRecruitmentByCode } from '../../../apis/base-api';
 import ApplySectionBox from './_components/apply-section-box';
 import ApplyNarrativeBox from './_components/apply-narrative-box';
 import ApplySelectiveBox from './_components/apply-selective-box';
@@ -13,22 +6,28 @@ import { QuestionType } from '../../../lib/enums';
 import HeaderSection from './_components/header-section';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { useToast } from '../../../hooks/use-toast';
 import ApplySectionHeader from './_components/apply-section-header';
 import {
   convertToFormApplication,
-  convertToSaveApplication,
-  filterSelectedAnswer,
+  getInitialSectionSelection,
 } from './_utils/utils';
-import { useSectionSelection } from './_hooks/use-section-selection';
-import { printCustomError } from '../../../lib/utils/error';
-import { useChoiceMap } from './_hooks/use-choice-map.tsx';
-import { Button } from '../../../components/shadcn/button.tsx';
 import { z } from 'zod';
 import { QuestionSchema } from '../../../lib/types/schemas/question-schema.ts';
-import { ISaveApplication } from '../../../lib/types/schemas/application-schema.ts';
+import {
+  CREATED_NARRATIVE_ANSWER,
+  CREATED_SELECTIVE_ANSWER,
+} from '../../../lib/types/default-data.ts';
+import { ReadApplicationResponseSchema } from '../../../apis/response-body-schema.ts';
+import FooterSection from './_components/footer-section.tsx';
+import { generateChoiceMap } from './_hooks/use-choice-map.tsx';
+import { RecruitmentSchema } from '../../../lib/types/schemas/recruitment-schema.ts';
 
 export type IFormApplication = {
+  /*
+    ReadMe
+    - 기본적으로 ApplicationDetailSchema 와 동일
+    - choiceIds field 에 선택되지 않은 선택지에 대하여 false 를 채우기 위해 boolean type 포함
+   */
   sections: {
     sectionId: number;
     answers: {
@@ -40,85 +39,50 @@ export type IFormApplication = {
   }[];
 };
 
-const untouchedFieldIndex = {
-  name: 0,
-  studentNumber: 1,
-  major: 2,
-};
-
-const defaultUntouchedField = {
-  name: 'DEFAULT_NAME',
-  studentNumber: 'DEFAULT_STUDENT_NUMBER',
-  major: 'DEFAULT_MAJOR',
-};
-
 const defaultApplication: IFormApplication = {
   sections: [],
 };
 
 export const SHARED_SECTION_INDEX = 0;
 
-const Page = () => {
-  const { toast } = useToast();
-
-  const [ableToSubmit, setAbleToSubmit] = useState<boolean>(false);
-
-  const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
-
-  const { readApplication, saveApplication } = useApplicantApi(
-    recruitmentCode!,
-  );
-
-  const { data: recruitment, ...recruitmentQuery } = useQuery({
-    queryKey: ['recruitmentByCode', recruitmentCode],
-    queryFn: () => readRecruitmentByCode(recruitmentCode!),
-    enabled: !!recruitmentCode,
-  });
-
-  const { data: application, ...applicationQuery } = useQuery({
-    queryKey: ['readApplication', recruitmentCode],
-    queryFn: () => readApplication(),
-    enabled: !!recruitmentCode,
-  });
-
-  const { choiceMap, isChoiceMapReady } = useChoiceMap({ recruitment });
-
-  /**
-   * Hook Form Control
-   */
+const Page = ({
+  recruitment,
+  application,
+}: {
+  recruitment: z.infer<typeof RecruitmentSchema>;
+  application: z.infer<typeof ReadApplicationResponseSchema>;
+}) => {
   const methods = useForm<IFormApplication>({
     defaultValues: defaultApplication,
   });
 
+  const [selectedSectionIdx, setSelectedSectionIdx] = useState<number>(1);
+  const handleSectionSelectionChange = (idx: number) => {
+    methods.clearErrors(`sections.${selectedSectionIdx}.answers`);
+    setSelectedSectionIdx(idx);
+  };
+
   useEffect(() => {
-    // 저장된 지원서가 존재하면, initialize
-    if (application && isChoiceMapReady) {
+    if (application) {
+      // 저장된 지원서 존재
       const formApplication: IFormApplication = convertToFormApplication(
         application,
-        choiceMap,
+        generateChoiceMap(recruitment),
+      );
+
+      setSelectedSectionIdx(
+        getInitialSectionSelection(application.sections, recruitment.sections),
       );
 
       methods.reset(formApplication);
     } else {
-      // 저장된 지원서가 없다면, 각 답변에 대한 초기값 initialize
+      // 저장된 지원서 부재
       const initialSections = recruitment?.sections.map((section) => ({
         sectionId: section.id,
         answers: section.questions.map((question) => {
-          if (question.type === QuestionType.NARRATIVE) {
-            return {
-              questionId: question.id,
-              content: null,
-              choiceIds: null,
-              type: QuestionType.NARRATIVE,
-            };
-          } else {
-            return {
-              questionId: question.id,
-              content: null,
-              choiceIds: [],
-              type: QuestionType.SELECTIVE,
-            };
-          }
+          return question.type === 'NARRATIVE'
+            ? CREATED_NARRATIVE_ANSWER(question.id)
+            : CREATED_SELECTIVE_ANSWER(question.id);
         }),
       }));
 
@@ -126,194 +90,84 @@ const Page = () => {
         sections: initialSections || [],
       });
     }
-  }, [
-    application,
-    choiceMap,
-    isChoiceMapReady,
-    methods,
-    recruitment?.sections,
-  ]);
-
-  useEffect(() => {
-    if (recruitment) {
-      const now = new Date().getTime(); // 현재 시간
-      const deadline = new Date(recruitment.deadline).getTime(); // 마감일
-
-      if (now > deadline) {
-        setAbleToSubmit(false); // 마감일이 지났으면 제출 불가능
-      } else {
-        setAbleToSubmit(true); // 마감일이 지나지 않았으면 제출 가능
-      }
-    }
-  }, [recruitment]);
-
-  /**
-   *  Section Selection Control
-   */
-  const {
-    sharedSection,
-    selectedSectionIndex,
-    selectedSection,
-    isOnlySharedSection,
-    handleSectionSelectionChange,
-  } = useSectionSelection({
-    recruitment,
-    application,
-    clearErrors: methods.clearErrors,
-  });
-
-  const saveMutate = useMutation({
-    mutationFn: (requestBody: ISaveApplication) => saveApplication(requestBody),
-  });
-
-  const onSubmit = async (data: IFormApplication) => {
-    if (!sharedSection) {
-      onFormError();
-      return;
-    }
-
-    // // 선택된 섹션에 해당하는 질문만 필터링
-    const selectedSectionAnswers = filterSelectedAnswer(
-      data.sections,
-      selectedSectionIndex,
-      isOnlySharedSection,
-    );
-
-    // IFormApplication to ISaveApplication
-    const convertedAnswers = convertToSaveApplication(selectedSectionAnswers);
-
-    const name = methods.getValues(
-      `sections.${SHARED_SECTION_INDEX}.answers.${untouchedFieldIndex.name}.content`,
-    );
-    const studentNumber = methods.getValues(
-      `sections.${SHARED_SECTION_INDEX}.answers.${untouchedFieldIndex.studentNumber}.content`,
-    );
-    const major = methods.getValues(
-      `sections.${SHARED_SECTION_INDEX}.answers.${untouchedFieldIndex.major}.content`,
-    );
-
-    const requestBody = {
-      id: application?.id || null,
-      studentNumber: studentNumber || defaultUntouchedField.studentNumber,
-      name: name || defaultUntouchedField.name,
-      major: major || defaultUntouchedField.major,
-      sections: convertedAnswers,
-      recruitmentCode: recruitmentCode!,
-    };
-
-    try {
-      const response = await saveMutate.mutateAsync(requestBody);
-
-      // ISaveApplication to IFormApplication
-      const convertedApplication = convertToFormApplication(
-        response,
-        choiceMap,
-      );
-
-      methods.reset(convertedApplication);
-
-      toast({
-        title: '지원서 저장이 완료되었습니다.',
-        state: 'success',
-      });
-    } catch (e) {
-      printCustomError(e, 'saveApplication');
-
-      toast({
-        title: '예기치 못한 오류가 발생했습니다.',
-        state: 'error',
-      });
-    }
-  };
-
-  const onFormError = () => {
-    toast({
-      title: '입력을 다시 확인해주세요.',
-      state: 'error',
-    });
-  };
-
-  const isRecruitmentError =
-    recruitmentQuery.error || !recruitment || !sharedSection;
-
-  if (applicationQuery.isFetching || recruitmentQuery.isFetching)
-    return <Loading />;
-  else if (isRecruitmentError) {
-    printCustomError(recruitmentQuery.error, 'readQuery');
-    return <Navigate to="/error" replace />;
-  } else if (applicationQuery.isError) {
-    printCustomError(applicationQuery.error, 'readApplication');
-
-    return <Navigate to="/error" replace />;
-  }
+  }, [application, methods, recruitment]);
 
   return (
-    <FormProvider {...methods}>
-      <Container className="mx-auto w-[600px]">
-        <div className="flex flex-col py-24">
-          <HeaderSection />
-          <form onSubmit={methods.handleSubmit(onSubmit, onFormError)}>
-            <div className="mt-6 flex flex-col gap-8">
-              <ApplySectionBox
-                key={sharedSection.id}
-                name={sharedSection.name}
-                description={sharedSection.description}
-              >
-                <div className="flex flex-col gap-8">
-                  {sharedSection.questions.map((question, index) => (
+    <Container className="flex h-auto flex-col gap-8 py-8">
+      <HeaderSection />
+      <FormProvider {...methods}>
+        <form>
+          <div className="flex flex-col gap-8">
+            <ApplySectionBox
+              key={recruitment.sections[SHARED_SECTION_INDEX].id}
+              name={recruitment.sections[SHARED_SECTION_INDEX].name}
+              description={
+                recruitment.sections[SHARED_SECTION_INDEX].description
+              }
+            >
+              <div className="flex flex-col gap-8">
+                {recruitment.sections[SHARED_SECTION_INDEX].questions.map(
+                  (question, index) => (
                     <RenderQuestion
                       key={question.id}
                       question={question}
                       questionIndex={index}
                       sectionIndex={SHARED_SECTION_INDEX}
                     />
-                  ))}
-                </div>
-              </ApplySectionBox>
-              {selectedSection && (
-                <>
-                  <p className="mt-4 text-base font-semibold text-crews-bk01">
-                    제출 시 선택된 섹션의 내용만이 저장됩니다.
-                  </p>
-                  <div className="flex w-full flex-col">
-                    <ApplySectionHeader
-                      sections={recruitment.sections}
-                      selectionIndex={selectedSectionIndex}
-                      handleSelectionChange={handleSectionSelectionChange}
-                    />
+                  ),
+                )}
+              </div>
+            </ApplySectionBox>
+            {recruitment.sections[selectedSectionIdx] && (
+              <>
+                <p className="mt-4 text-base font-semibold text-crews-bk01">
+                  제출 시 선택된 섹션의 내용만이 저장됩니다.
+                </p>
+                <div className="flex w-full flex-col">
+                  <ApplySectionHeader
+                    sections={recruitment.sections}
+                    selectionIndex={selectedSectionIdx}
+                    handleSelectionChange={handleSectionSelectionChange}
+                  />
 
-                    <ApplySectionBox
-                      key={selectedSection.id}
-                      name={selectedSection.name}
-                      description={selectedSection.description}
-                      isSelectable={true}
-                    >
-                      <div className="flex flex-col gap-8">
-                        {selectedSection.questions.map((question, index) => (
+                  <ApplySectionBox
+                    key={recruitment.sections[selectedSectionIdx].id}
+                    name={recruitment.sections[selectedSectionIdx].name}
+                    description={
+                      recruitment.sections[selectedSectionIdx].description
+                    }
+                    isSelectable={true}
+                  >
+                    <div className="flex flex-col gap-8">
+                      {recruitment.sections[selectedSectionIdx].questions.map(
+                        (question, index) => (
                           <RenderQuestion
                             key={question.id}
                             question={question}
                             questionIndex={index}
-                            sectionIndex={selectedSectionIndex}
+                            sectionIndex={selectedSectionIdx}
                           />
-                        ))}
-                      </div>
-                    </ApplySectionBox>
-                  </div>
-                </>
-              )}
-            </div>
-            <Button type="submit" size="lg" disabled={!ableToSubmit}>
-              {ableToSubmit ? '제출하기' : '모집 기간이 아닙니다.'}
-            </Button>
-          </form>
-        </div>
-      </Container>
-    </FormProvider>
+                        ),
+                      )}
+                    </div>
+                  </ApplySectionBox>
+                </div>
+              </>
+            )}
+          </div>
+        </form>
+        <FooterSection
+          application={application}
+          recruitment={recruitment}
+          selectedSectionIdx={selectedSectionIdx}
+          isOnlySharedSection={recruitment.sections.length === 1}
+          deadline={recruitment.deadline}
+        />
+      </FormProvider>
+    </Container>
   );
 };
 
-// 질문 타입별 확장성을 위한 컴포넌트 렌더링
 const RenderQuestion = ({
   question,
   questionIndex,
