@@ -9,6 +9,11 @@ import useAdminApi from '../../../../apis/admin-api.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { z } from 'zod';
 import { ProgressSchema } from '../../../../lib/types/schemas/progress-schema.ts';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '../../../../components/shadcn/tooltip.tsx';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
 
@@ -79,7 +84,18 @@ const FooterSection = ({
         <Loading />
       ) : null}
       <CrewsFooter>
-        <Button size="lg">CSV 추출</Button>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button size="lg" disabled>
+              CSV 추출
+            </Button>
+          </TooltipTrigger>
+
+          <TooltipContent>
+            <p>서비스 준비중 🙇🏻</p>
+          </TooltipContent>
+        </Tooltip>
+
         <Button
           size="lg"
           disabled={progress === 'ANNOUNCED'}

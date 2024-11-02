@@ -4,14 +4,18 @@ import AdminSignIn from './_components/admin-sign-in.tsx';
 import ApplicantSignIn from './_components/applicant-sign-in.tsx';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../../components/shadcn/tooltip.tsx';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '../../components/shadcn/tooltip.tsx';
 import { z } from 'zod';
 import { RoleSchema } from '../../lib/types/schemas/role-schema.ts';
 
 const Page = () => {
   const location = useLocation();
   const [loginType, setLoginType] = useState<z.infer<typeof RoleSchema>>(
-    location.state?.loginType ?? 'APPLICANT'
+    location.state?.loginType ?? 'APPLICANT',
   );
 
   const toggleLoginType = () => {
@@ -20,8 +24,7 @@ const Page = () => {
 
   return (
     <Container className="flex items-center justify-center">
-      <section
-        className="w-full max-w-[650px] rounded-md border border-crews-g01 px-32 py-40 shadow-custom-light-shadow">
+      <section className="w-full max-w-[650px] rounded-md border border-crews-g01 px-32 py-40 shadow-custom-light-shadow">
         <div className="mb-6 flex flex-col items-center text-3xl tracking-widest">
           <p className="font-bold">
             {loginType === 'APPLICANT' ? '지원자' : '모집자'}
@@ -61,7 +64,7 @@ const Page = () => {
               <p className="hover:underline">비밀번호 찾기</p>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>개발중입니다 😅</p>
+              <p className="font-normal text-crews-bk01">서비스 준비중 🙇🏻</p>
             </TooltipContent>
           </Tooltip>
         </div>
