@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
   },
 });
 
-if (import.meta.env.MODE !== 'development') {
+if (import.meta.env.PROD) {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     integrations: [
@@ -51,6 +51,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
+    {/*<ReactQueryDevtools initialIsOpen={import.meta.env.DEV} position="left" />*/}
   </QueryClientProvider>,
-  // </React.StrictMode>
+  // </React.StrictMode>,
 );

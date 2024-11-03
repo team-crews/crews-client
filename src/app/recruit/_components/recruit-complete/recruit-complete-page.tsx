@@ -5,35 +5,41 @@ import ApplicationOverviewSection from './details/application-overview-section.t
 import { useQuery } from '@tanstack/react-query';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import usePassedApplicationIds from './details/usePassedApplicationIds.ts';
-import { IProgress } from '../../../../lib/model/i-progress.ts';
 import Loading from '../../../../components/shared/loading.tsx';
 import FooterSection from './footer-section.tsx';
+import { throwCustomError } from '../../../../lib/utils/error.ts';
+import { z } from 'zod';
+import { ProgressSchema } from '../../../../lib/types/schemas/progress-schema.ts';
 
-const RecruitCompletePage = ({ progress }: { progress: IProgress }) => {
+const RecruitCompletePage = ({
+  progress,
+}: {
+  progress: z.infer<typeof ProgressSchema>;
+}) => {
   const { readApplicationOverviews } = useAdminApi();
-  const queryResults = useQuery({
+  const readQuery = useQuery({
     queryKey: ['applicationOverviews'],
     queryFn: readApplicationOverviews,
   });
 
   const { passApplicationIds, passId, unpassId } = usePassedApplicationIds(
-    queryResults.data ?? null,
+    readQuery.data ?? null,
   );
 
-  if (queryResults.isFetching || !passApplicationIds || !queryResults.data)
+  if (readQuery.isFetching || readQuery.isPending || !passApplicationIds)
     return <Loading />;
-  else
+  else if (readQuery.isSuccess)
     return (
-      <Container>
+      <Container className="flex h-auto flex-col gap-8 py-8">
         <HeaderSection />
-        <div className="my-8 flex flex-col gap-8">
+        <div className="flex flex-col gap-8">
           <CompetitionRateSection
             passedNumber={passApplicationIds.length}
-            totalNumber={queryResults.data.length}
+            totalNumber={readQuery.data.length}
           />
           <ApplicationOverviewSection
             progress={progress}
-            applicationOverviews={queryResults.data}
+            applicationOverviews={readQuery.data}
             passedApplicationIds={passApplicationIds}
             passId={passId}
             unpassId={unpassId}
@@ -45,6 +51,7 @@ const RecruitCompletePage = ({ progress }: { progress: IProgress }) => {
         />
       </Container>
     );
+  else throwCustomError(readQuery.error, 'readApplicationOverviews');
 };
 
 export default RecruitCompletePage;

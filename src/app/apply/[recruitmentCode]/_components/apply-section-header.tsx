@@ -1,9 +1,10 @@
-import { ISection } from '../../../../lib/model/i-section';
-import { cn } from '../../../../lib/utils';
+import { cn } from '../../../../lib/utils/utils.ts';
 import { SHARED_SECTION_INDEX } from '../page';
+import { z } from 'zod';
+import { SectionSchema } from '../../../../lib/types/schemas/section-schema.ts';
 
 interface ApplySectionHeaderProps {
-  sections: ISection[];
+  sections: z.infer<typeof SectionSchema>[];
   selectionIndex: number;
   handleSelectionChange: (index: number) => void;
 }

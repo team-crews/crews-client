@@ -1,16 +1,11 @@
 import useAuthInstance from './instance.ts';
+
+import { z } from 'zod';
 import {
-  // IReadApplicationResponse,
-  ISaveApplicationResponse,
-  // isIReadApplicationResponse,
-  // isISaveApplicationResponse,
-} from '../lib/model/i-response-body.ts';
-import {
-  // ICreatedApplication,
-  ISaveApplicationRequest,
-  ITempReadApplicationResponse,
-} from '../lib/model/i-application.ts';
-import { throwCustomError } from '../lib/utils/error.ts';
+  ReadApplicationResponseSchema,
+  SaveApplicationResponseSchema,
+} from './response-body-schema.ts';
+import { ISaveApplication } from '../lib/types/schemas/application-schema.ts';
 
 const useApplicantApi = (recruitmentCode: string) => {
   const { authInstance } = useAuthInstance();
@@ -24,32 +19,20 @@ const useApplicantApi = (recruitmentCode: string) => {
     Assume role check is completed in require-auth wrapper.
    */
 
-  async function readApplication(): Promise<ITempReadApplicationResponse> {
-    try {
-      const response = await authInstance.get(
-        `/applications/mine?code=${recruitmentCode}`,
-      );
-
-      // if (isIReadApplicationResponse(response.data))
-      return response.data;
-      throw new Error('[ResponseTypeMismatch] Unexpected response format');
-    } catch (e) {
-      throwCustomError(e, 'readApplication');
-    }
+  async function readApplication(): Promise<
+    z.infer<typeof ReadApplicationResponseSchema>
+  > {
+    const response = await authInstance.get(
+      `/applications/mine?code=${recruitmentCode}`,
+    );
+    return ReadApplicationResponseSchema.parse(response.data);
   }
 
   async function saveApplication(
-    requestBody: ISaveApplicationRequest,
-  ): Promise<ISaveApplicationResponse> {
-    try {
-      const response = await authInstance.post('applications', requestBody);
-
-      // if (isISaveApplicationResponse(response.data))
-      return response.data;
-      throw new Error('[ResponseTypeMismatch] Unexpected response format');
-    } catch (e) {
-      throwCustomError(e, 'saveApplication');
-    }
+    requestBody: ISaveApplication,
+  ): Promise<z.infer<typeof SaveApplicationResponseSchema>> {
+    const response = await authInstance.post('applications', requestBody);
+    return SaveApplicationResponseSchema.parse(response.data);
   }
 
   return { readApplication, saveApplication };

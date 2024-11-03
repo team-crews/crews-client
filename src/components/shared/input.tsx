@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import { cn } from '../../lib/utils.ts';
+import { cn } from '../../lib/utils/utils.ts';
 import CircleXMarkIcon from '../../assets/icons/circle-x-mark-icon.svg?react';
 import EyeSlashIcon from '../../assets/icons/eye-slash-icon.svg?react';
 import EyeIcon from '../../assets/icons/eye-icon.svg?react';
@@ -10,18 +10,17 @@ import { cva, VariantProps } from 'class-variance-authority';
 export type InputState = 'error' | 'filled' | 'empty';
 
 const variants = cva(
-  'w-full rounded-md p-2.5 text-sm font-medium outline-2 placeholder:font-normal placeholder:text-crews-g04 focus:bg-crews-b02 focus:outline focus:outline-crews-b04',
+  'w-full rounded py-2 text-sm font-normal text-crews-bk02 outline outline-1 indent-2 outline-crews-g03 placeholder:font-normal placeholder:text-crews-g04 focus:bg-crews-b02 focus:outline-2 focus:outline-crews-b04',
   {
     variants: {
       state: {
-        empty: 'bg-crews-g01',
-        filled: 'outline outline-crews-g01 bg-crews-w01',
+        default: '',
         error:
-          'outline outline-crews-r02 bg-crews-r01 focus:outline-crews-r02 focus:bg-crews-r01 animation-shake',
+          'outline outline-crews-r02 bg-crews-r01 focus:outline-crews-r02 focus:bg-crews-r01 ',
       },
     },
     defaultVariants: {
-      state: 'empty',
+      state: 'default',
     },
   },
 );

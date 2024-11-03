@@ -1,30 +1,23 @@
 import { baseInstance } from './instance.ts';
-import {
-  IReadRecruitmentByCodeResponse,
-  // isIReadRecruitmentByCodeResponse,
-} from '../lib/model/i-response-body.ts';
-import { throwCustomError } from '../lib/utils/error.ts';
+import { z } from 'zod';
+import { ReadRecruitmentByCodeResponseSchema } from './response-body-schema.ts';
+import { convertSeoulToUTC } from '../lib/utils/convert.ts';
 
 /*
    Apis that don't use authentication which means that non-user clients may also call these.
    (No need to set credentials)
   */
 
-async function readRecruitmentByCode(
+export async function readRecruitmentByCode(
   recruitmentCode: string,
-): Promise<IReadRecruitmentByCodeResponse> {
-  try {
-    const response = await baseInstance.get(
-      `recruitments?code=${recruitmentCode}`,
-    );
+): Promise<z.infer<typeof ReadRecruitmentByCodeResponseSchema>> {
+  const response = await baseInstance.get(
+    `recruitments?code=${recruitmentCode}`,
+  );
 
-    /** FIXME: isIReadRecruitmentByCodeResponse have too many false values, so I have to comment this lines. */
-    // if (isIReadRecruitmentByCodeResponse(response.data))
-    return response.data;
-    // throw new Error('[ResponseTypeMismatch] Unexpected response format');
-  } catch (e) {
-    throwCustomError(e, 'readRecruitmentByCode');
+  if (ReadRecruitmentByCodeResponseSchema.parse(response.data)) {
+    response.data.deadline = convertSeoulToUTC(response.data.deadline);
   }
-}
 
-export { readRecruitmentByCode };
+  return response.data;
+}

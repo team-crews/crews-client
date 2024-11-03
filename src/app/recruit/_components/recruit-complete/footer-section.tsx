@@ -1,13 +1,19 @@
-import FooterContainer from '../../../../components/shared/footer-container.tsx';
-import { Button } from '../../../../components/ui/button.tsx';
-import Dialog from '../../../../components/shared/dialog.tsx';
+import { Button } from '../../../../components/shadcn/button.tsx';
+import CrewsDialog from '../../../../components/molecule/crews-dialog.tsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import useDialog from '../../../../hooks/use-dialog.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
 import Loading from '../../../../components/shared/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
-import { IProgress } from '../../../../lib/model/i-progress.ts';
+import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
+import { z } from 'zod';
+import { ProgressSchema } from '../../../../lib/types/schemas/progress-schema.ts';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '../../../../components/shadcn/tooltip.tsx';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
 
@@ -16,7 +22,7 @@ const FooterSection = ({
   progress,
 }: {
   passApplicationIds: number[];
-  progress: IProgress;
+  progress: z.infer<typeof ProgressSchema>;
 }) => {
   const { saveEvaluation, sendEvaluationMail } = useAdminApi();
 
@@ -77,7 +83,19 @@ const FooterSection = ({
       queryClient.isFetching({ queryKey: ['recruitmentProgress'] }) ? (
         <Loading />
       ) : null}
-      <FooterContainer className="flex w-full justify-end">
+      <CrewsFooter>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button size="lg" disabled>
+              CSV 추출
+            </Button>
+          </TooltipTrigger>
+
+          <TooltipContent>
+            <p>서비스 준비중 🙇🏻</p>
+          </TooltipContent>
+        </Tooltip>
+
         <Button
           size="lg"
           disabled={progress === 'ANNOUNCED'}
@@ -92,8 +110,8 @@ const FooterSection = ({
         >
           평가 완료
         </Button>
-      </FooterContainer>
-      <Dialog
+      </CrewsFooter>
+      <CrewsDialog
         {...dialogProps}
         action={handleSendConfirmClick}
         className="w-80 p-4 text-center"
@@ -119,7 +137,7 @@ const FooterSection = ({
             에 피드백을 남겨주세요 🥹
           </p>
         </div>
-      </Dialog>
+      </CrewsDialog>
     </>
   );
 };

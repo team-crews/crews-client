@@ -3,14 +3,14 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from '../shared/toast.tsx';
+} from '../shadcn/toast.tsx';
 import { useToast } from '../../hooks/use-toast.ts';
 
 export function Toaster() {
   const { toasts } = useToast();
 
   return (
-    <ToastProvider duration={1500}>
+    <ToastProvider duration={3000}>
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast key={id} {...props}>

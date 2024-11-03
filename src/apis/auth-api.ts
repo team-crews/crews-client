@@ -1,63 +1,72 @@
 import useAuthInstance, { baseInstance } from './instance.ts';
+import { z } from 'zod';
 import {
-  ILoginResponse,
-  ILogoutResponse,
-  isILoginResponse,
-  isILogoutResponse,
-} from '../lib/model/i-response-body.ts';
-import { throwCustomError } from '../lib/utils/error.ts';
+  LoginResponseSchema,
+  LogoutResponseSchema,
+} from './response-body-schema.ts';
 
-async function adminLogin(requestBody: {
+/*
+  ReadMe
+  - adminSignUp is only allowed in dev mode for convenience
+  - usage of this function should be strictly managed
+ */
+
+async function adminSignUp(requestBody: {
   clubName: string;
   password: string;
-}): Promise<ILoginResponse> {
-  try {
-    const response = await baseInstance.post('/auth/admin/login', requestBody, {
-      withCredentials: true,
-    });
+}): Promise<z.infer<typeof LoginResponseSchema>> {
+  if (!import.meta.env.DEV)
+    throw new Error('adminSignUp should never be called');
 
-    if (isILoginResponse(response.data)) return response.data;
-    throw new Error('[ResponseTypeMismatch] Unexpected response format');
-  } catch (e) {
-    throwCustomError(e, 'adminLogin');
-  }
+  const response = await baseInstance.post('/auth/admin/register', requestBody);
+  return LoginResponseSchema.parse(response.data);
 }
 
-async function applicantLogin(requestBody: {
+async function adminSignIn(requestBody: {
+  clubName: string;
+  password: string;
+}): Promise<z.infer<typeof LoginResponseSchema>> {
+  const response = await baseInstance.post('/auth/admin/login', requestBody);
+  return LoginResponseSchema.parse(response.data);
+}
+
+async function applicantSignUp(requestBody: {
   email: string;
   password: string;
-}): Promise<ILoginResponse> {
-  try {
-    const response = await baseInstance.post(
-      '/auth/applicant/login',
-      requestBody,
-      {
-        withCredentials: true,
-      },
-    );
-
-    if (isILoginResponse(response.data)) return response.data;
-    throw new Error('[ResponseTypeMismatch] Unexpected response format');
-  } catch (e) {
-    throwCustomError(e, 'applicantLogin');
-  }
+}): Promise<z.infer<typeof LoginResponseSchema>> {
+  const response = await baseInstance.post(
+    '/auth/applicant/register',
+    requestBody,
+  );
+  return LoginResponseSchema.parse(response.data);
 }
 
-const useLogout = () => {
+async function applicantSignIn(requestBody: {
+  email: string;
+  password: string;
+}): Promise<z.infer<typeof LoginResponseSchema>> {
+  const response = await baseInstance.post(
+    '/auth/applicant/login',
+    requestBody,
+  );
+  return LoginResponseSchema.parse(response.data);
+}
+
+const useSignOut = () => {
   const { authInstance } = useAuthInstance();
 
-  async function logout(): Promise<ILogoutResponse> {
-    try {
-      const response = await authInstance.post('/auth/logout');
-
-      if (isILogoutResponse(response.data)) return response.data;
-      throw new Error('[ResponseTypeMismatch] Unexpected response format');
-    } catch (e) {
-      throwCustomError(e, 'logout');
-    }
+  async function signOut(): Promise<z.infer<typeof LogoutResponseSchema>> {
+    const response = await authInstance.post('/auth/logout');
+    return LogoutResponseSchema.parse(response.data);
   }
 
-  return { logout };
+  return { signOut };
 };
 
-export { adminLogin, applicantLogin, useLogout };
+export {
+  adminSignUp,
+  adminSignIn,
+  applicantSignUp,
+  applicantSignIn,
+  useSignOut,
+};

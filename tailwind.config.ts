@@ -21,6 +21,10 @@ const config = {
       },
     },
     screens: CrewsBreakpoints,
+    boxShadow: {
+      'custom-shadow': '0px -10px 50px 0px rgba(0, 0, 0, 0.1)',
+      'custom-light-shadow': '0px -10px 50px 0px rgba(200, 200, 200, 0.2)',
+    },
     extend: {
       keyframes: {
         'accordion-down': {

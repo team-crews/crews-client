@@ -1,12 +1,16 @@
-import { IRecruitment } from '../../lib/model/i-recruitment.ts';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
+import { z } from 'zod';
+import { RecruitmentSchema } from '../../lib/types/schemas/recruitment-schema.ts';
 
 const RecruitMetaBox = ({
   title,
   description,
   deadline,
-}: Pick<IRecruitment, 'title' | 'description' | 'deadline'>) => {
+}: Pick<
+  z.infer<typeof RecruitmentSchema>,
+  'title' | 'description' | 'deadline'
+>) => {
   useEffect(() => {
     const textarea = document.querySelector(
       '#meta-textarea',
