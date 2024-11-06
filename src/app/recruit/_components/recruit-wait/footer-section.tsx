@@ -1,5 +1,5 @@
 import { Button } from '../../../../components/shadcn/button.tsx';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import CrewsDialog from '../../../../components/molecule/crews-dialog.tsx';
 import useDialog from '../../../../hooks/use-dialog.ts';
 import { useForm } from 'react-hook-form';
@@ -20,6 +20,8 @@ import { DateAndTimeSchema } from '../../../../lib/types/schemas/recruitment-sch
 import React from 'react';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import Loading from '../../../../components/shared/loading.tsx';
+import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
+import REQUEST_ID from '../../../../apis/request-id.ts';
 
 const times = Array.from(
   { length: 24 },
@@ -50,7 +52,10 @@ const FooterSection = ({
     defaultValues: convertDeadlineToDateAndTime(deadline),
   });
 
-  const changeMutation = useMutation({ mutationFn: changeDeadline });
+  const changeMutation = useAtomicMutation({
+    mutationFn: changeDeadline,
+    requestId: REQUEST_ID.changeDeadline,
+  });
 
   const onSubmit = async (data: z.infer<typeof DateAndTimeSchema>) => {
     try {

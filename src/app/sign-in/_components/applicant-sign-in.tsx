@@ -13,8 +13,9 @@ import {
   isProperPassword,
 } from '../../../lib/utils/validation.ts';
 import { findFirstErrorMessage } from '../../../lib/utils/utils.ts';
-import { useMutation } from '@tanstack/react-query';
 import Loading from '../../../components/shared/loading.tsx';
+import useAtomicMutation from '../../../hooks/use-atomic-mutation.ts';
+import REQUEST_ID from '../../../apis/request-id.ts';
 
 type ApplyInputs = {
   email: string;
@@ -35,8 +36,9 @@ const ApplicantSignIn = () => {
     },
   });
 
-  const mutation = useMutation({
+  const mutation = useAtomicMutation({
     mutationFn: (formData: ApplyInputs) => applicantSignIn(formData),
+    requestId: REQUEST_ID['applicantSignIn'],
   });
 
   const onSubmit: SubmitHandler<ApplyInputs> = async (data) => {

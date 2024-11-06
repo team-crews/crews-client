@@ -1,6 +1,6 @@
 import { Button } from '../../../../components/shadcn/button.tsx';
 import CrewsDialog from '../../../../components/molecule/crews-dialog.tsx';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import useDialog from '../../../../hooks/use-dialog.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
@@ -14,6 +14,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../../../../components/shadcn/tooltip.tsx';
+import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
+import REQUEST_ID from '../../../../apis/request-id.ts';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
 
@@ -26,15 +28,17 @@ const FooterSection = ({
 }) => {
   const { saveEvaluation, sendEvaluationMail } = useAdminApi();
 
-  const saveMutation = useMutation({
+  const saveMutation = useAtomicMutation({
     mutationFn: () => {
       if (!passApplicationIds) throw new Error();
       return saveEvaluation({ passApplicationIds });
     },
+    requestId: REQUEST_ID.saveEvaluation,
   });
 
-  const sendMutation = useMutation({
+  const sendMutation = useAtomicMutation({
     mutationFn: sendEvaluationMail,
+    requestId: REQUEST_ID.sendEvaluationMail,
   });
 
   const { toast } = useToast();
