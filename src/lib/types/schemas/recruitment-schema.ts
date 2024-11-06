@@ -32,8 +32,6 @@ export const DateAndTimeSchema = CreatedRecruitmentSchema.pick({
   deadlineTime: true,
 });
 
-export const RecruitmentSearchSchema = z.array(
-  z.object({
-    title: z.string(),
-  }),
-);
+export const RecruitmentSearchResultSchema = z.object({
+  title: z.string(),
+});
