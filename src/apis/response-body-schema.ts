@@ -3,6 +3,7 @@ import { ProgressSchema } from '../lib/types/schemas/progress-schema.ts';
 import {
   CreatedRecruitmentSchema,
   RecruitmentSchema,
+  RecruitmentSearchSchema,
 } from '../lib/types/schemas/recruitment-schema.ts';
 import {
   ApplicationDetailSchema,
@@ -59,3 +60,7 @@ export const ReadApplicationResponseSchema =
 export const SaveApplicationResponseSchema = ApplicationDetailSchema;
 
 export const ReadRecruitmentByCodeResponseSchema = RecruitmentSchema;
+
+export const ReadRecruitmentSearchResponseSchema = z.array(
+  RecruitmentSearchSchema,
+);
