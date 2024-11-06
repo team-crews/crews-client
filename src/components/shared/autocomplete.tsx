@@ -64,13 +64,11 @@ const Autocomplete = ({
     }
   };
 
-  const handleBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
-    e.stopPropagation();
+  const handleBlur = () => {
     setShowOptions(false);
   };
 
-  const handleFocus: React.FocusEventHandler<HTMLInputElement> = (e) => {
-    e.stopPropagation();
+  const handleFocus = () => {
     setShowOptions(true);
   };
 
