@@ -25,7 +25,10 @@ export async function readRecruitmentByCode(
   return response.data;
 }
 
-export async function readRecruitmentSearch(prefix: string, limit: number) {
+export async function readRecruitmentSearch(
+  prefix: string,
+  limit: number,
+): Promise<z.infer<typeof ReadRecruitmentSearchResponseSchema>> {
   const response = await baseInstance.get(
     `recruitments/search?prefix=${prefix}&limit=${limit}`,
   );
