@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import useDialog from '../../../../hooks/use-dialog.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
-import Loading from '../../../../components/shared/loading.tsx';
+import Loading from '../../../../components/atom/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { z } from 'zod';

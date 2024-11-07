@@ -19,7 +19,7 @@ import { z } from 'zod';
 import { DateAndTimeSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
 import React from 'react';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
-import Loading from '../../../../components/shared/loading.tsx';
+import Loading from '../../../../components/atom/loading.tsx';
 import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
 
 const times = Array.from(

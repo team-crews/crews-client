@@ -1,7 +1,7 @@
 import { useNavigate, useRouteError } from 'react-router-dom';
 import React from 'react';
 import * as Sentry from '@sentry/react';
-import Container from './shared/container.tsx';
+import Container from './atom/container.tsx';
 import { getErrorMessage } from '../lib/utils/error.ts';
 import FaceSadTearIcon from '../assets/icons/face-sad-tear-icon.svg?react';
 

@@ -1,4 +1,4 @@
-import Container from '../../../../components/shared/container.tsx';
+import Container from '../../../../components/atom/container.tsx';
 import RecruitMetaBox from '../../../../components/recruitment-view/recruit-meta-box.tsx';
 import SectionBoxes from '../../../../components/recruitment-view/section-boxes.tsx';
 import HeaderSection from './header-section.tsx';

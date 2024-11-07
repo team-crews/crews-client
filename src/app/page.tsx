@@ -1,6 +1,6 @@
 import LandingRecruit from '../assets/images/landing-recruit.png';
 import LandingApply from '../assets/images/landing-apply.png';
-import Container from '../components/shared/container.tsx';
+import Container from '../components/atom/container.tsx';
 import { Link } from 'react-router-dom';
 import LookupRecruitmentForm from './lookup-recruitment-form.tsx';
 

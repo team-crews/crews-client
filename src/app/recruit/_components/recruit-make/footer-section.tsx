@@ -4,7 +4,7 @@ import useAdminApi from '../../../../apis/admin-api.ts';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
 import { useFormContext } from 'react-hook-form';
-import Loading from '../../../../components/shared/loading.tsx';
+import Loading from '../../../../components/atom/loading.tsx';
 import { findFirstErrorMessage } from '../../../../lib/utils/utils.ts';
 import { z } from 'zod';
 import {

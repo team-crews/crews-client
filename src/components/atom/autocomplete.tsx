@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import Input from './input';
-import { cn } from '../../lib/utils/utils';
+import Input from './input.tsx';
+import { cn } from '../../lib/utils/utils.ts';
 
 /**
  * Autocomplete component options

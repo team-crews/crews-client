@@ -1,11 +1,11 @@
-import Container from '../../../../components/shared/container.tsx';
+import Container from '../../../../components/atom/container.tsx';
 import HeaderSection from './header-section.tsx';
 import CompetitionRateSection from './details/competition-rate-section.tsx';
 import ApplicationOverviewSection from './details/application-overview-section.tsx';
 import { useQuery } from '@tanstack/react-query';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import usePassedApplicationIds from './details/usePassedApplicationIds.ts';
-import Loading from '../../../../components/shared/loading.tsx';
+import Loading from '../../../../components/atom/loading.tsx';
 import FooterSection from './footer-section.tsx';
 import { throwCustomError } from '../../../../lib/utils/error.ts';
 import { z } from 'zod';

@@ -7,7 +7,7 @@ import useAutosizeTextarea from '../../../../../hooks/use-autosize-textarea.ts';
 import { z } from 'zod';
 import { CreatedRecruitmentSchema } from '../../../../../lib/types/schemas/recruitment-schema.ts';
 import React from 'react';
-import Container from '../../../../../components/shared/container.tsx';
+import Container from '../../../../../components/atom/container.tsx';
 import dayjs from 'dayjs';
 import { convertDateAndTimeToDeadline } from '../../../../../lib/utils/convert.ts';
 

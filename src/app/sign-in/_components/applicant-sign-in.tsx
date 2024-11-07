@@ -3,7 +3,7 @@ import { useToast } from '../../../hooks/use-toast.ts';
 import { useState } from 'react';
 import useSession from '../../../hooks/use-session.ts';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Input from '../../../components/shared/input.tsx';
+import Input from '../../../components/atom/input.tsx';
 import { Button } from '../../../components/shadcn/button.tsx';
 import { applicantSignIn } from '../../../apis/auth-api.ts';
 import { printCustomError } from '../../../lib/utils/error.ts';
@@ -13,7 +13,7 @@ import {
   isProperPassword,
 } from '../../../lib/utils/validation.ts';
 import { findFirstErrorMessage } from '../../../lib/utils/utils.ts';
-import Loading from '../../../components/shared/loading.tsx';
+import Loading from '../../../components/atom/loading.tsx';
 import useAtomicMutation from '../../../hooks/use-atomic-mutation.ts';
 
 type ApplyInputs = {

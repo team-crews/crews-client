@@ -1,4 +1,4 @@
-import Container from '../../components/shared/container.tsx';
+import Container from '../../components/atom/container.tsx';
 import Seperator from '../../components/shadcn/seperator.tsx';
 import AdminSignIn from './_components/admin-sign-in.tsx';
 import ApplicantSignIn from './_components/applicant-sign-in.tsx';

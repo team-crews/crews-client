@@ -12,7 +12,7 @@ import PlusIcon from '../../../../../assets/icons/plus-icon.svg?react';
 import QuestionTextarea from './question-textarea.tsx';
 import ChoiceSection from './choice-section.tsx';
 import OptionSection from './option-section.tsx';
-import Container from '../../../../../components/shared/container.tsx';
+import Container from '../../../../../components/atom/container.tsx';
 import { QuestionType } from '../../../../../lib/enums.ts';
 import { cn } from '../../../../../lib/utils/utils.ts';
 import { useToast } from '../../../../../hooks/use-toast.ts';

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import Container from '../../components/shared/container.tsx';
+import Container from '../../components/atom/container.tsx';
 import Seperator from '../../components/shadcn/seperator.tsx';
 import { useState } from 'react';
 import ApplicantSignUp from './_components/applicant-sign-up.tsx';

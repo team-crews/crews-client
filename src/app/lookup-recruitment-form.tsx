@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { RecruitmentSearchResultSchema } from '../lib/types/schemas/recruitment-schema.ts';
 import Autocomplete, {
   AutocompleteOption,
-} from '../components/shared/autocomplete.tsx';
+} from '../components/atom/autocomplete.tsx';
 import useDebounce from '../hooks/use-debounce.ts';
 
 const READ_RECRUITMENT_SEARCH_QUERY_KEY = 'readRecruitmentSearch';

@@ -1,11 +1,11 @@
-import Container from '../../../components/shared/container.tsx';
+import Container from '../../../components/atom/container.tsx';
 import ApplyForm from './_components/apply-form.tsx';
 
 import InfoSection from './_components/info-section.tsx';
 import { readRecruitmentByCode } from '../../../apis/base-api.ts';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import Loading from '../../../components/shared/loading.tsx';
+import Loading from '../../../components/atom/loading.tsx';
 import {
   printCustomError,
   throwCustomError,

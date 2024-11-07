@@ -1,4 +1,4 @@
-import Container from '../../../components/shared/container';
+import Container from '../../../components/atom/container.tsx';
 import ApplySectionBox from './_components/apply-section-box';
 import ApplyNarrativeBox from './_components/apply-narrative-box';
 import ApplySelectiveBox from './_components/apply-selective-box';

@@ -1,5 +1,5 @@
-import Container from '../shared/container.tsx';
-import Typography from '../shared/typography.tsx';
+import Container from '../atom/container.tsx';
+import Typography from '../atom/typography.tsx';
 import { z } from 'zod';
 import {
   AnswerSchema,
