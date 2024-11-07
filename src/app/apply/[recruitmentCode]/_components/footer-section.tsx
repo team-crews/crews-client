@@ -28,7 +28,6 @@ import {
   TooltipTrigger,
 } from '../../../../components/shadcn/tooltip.tsx';
 import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
-import REQUEST_ID from '../../../../apis/request-id.ts';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -66,7 +65,7 @@ const FooterSection = ({
 
   const saveMutate = useAtomicMutation({
     mutationFn: (requestBody: ISaveApplication) => saveApplication(requestBody),
-    requestId: REQUEST_ID.saveApplication,
+    requestName: 'saveApplication',
   });
 
   useEffect(() => {

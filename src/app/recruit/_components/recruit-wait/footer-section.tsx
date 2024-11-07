@@ -21,7 +21,6 @@ import React from 'react';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import Loading from '../../../../components/shared/loading.tsx';
 import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
-import REQUEST_ID from '../../../../apis/request-id.ts';
 
 const times = Array.from(
   { length: 24 },
@@ -54,7 +53,7 @@ const FooterSection = ({
 
   const changeMutation = useAtomicMutation({
     mutationFn: changeDeadline,
-    requestId: REQUEST_ID.changeDeadline,
+    requestName: 'changeDeadline',
   });
 
   const onSubmit = async (data: z.infer<typeof DateAndTimeSchema>) => {

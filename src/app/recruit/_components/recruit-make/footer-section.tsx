@@ -15,7 +15,6 @@ import { convertDateAndTimeToDeadline } from '../../../../lib/utils/convert.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { SaveRecruitmentRequestSchema } from '../../../../apis/response-body-schema.ts';
 import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
-import REQUEST_ID from '../../../../apis/request-id.ts';
 
 const FooterSection = ({
   updateRecruitment,
@@ -31,12 +30,12 @@ const FooterSection = ({
   const saveMutation = useAtomicMutation({
     mutationFn: (requestBody: z.infer<typeof SaveRecruitmentRequestSchema>) =>
       saveRecruitment(requestBody),
-    requestId: REQUEST_ID['saveRecruitment'],
+    requestName: 'saveRecruitment',
   });
 
   const startMutation = useAtomicMutation({
     mutationFn: startRecruitment,
-    requestId: REQUEST_ID['start'],
+    requestName: 'startRecruitment',
   });
 
   const { toast } = useToast();

@@ -15,7 +15,6 @@ import {
   isProperPassword,
 } from '../../../lib/utils/validation.ts';
 import useAtomicMutation from '../../../hooks/use-atomic-mutation.ts';
-import REQUEST_ID from '../../../apis/request-id.ts';
 
 type RecruitInputs = {
   clubName: string;
@@ -37,7 +36,7 @@ const AdminSignIn = () => {
 
   const mutation = useAtomicMutation({
     mutationFn: (data: RecruitInputs) => adminSignIn(data),
-    requestId: REQUEST_ID.adminSignIn,
+    requestName: 'adminSignIn',
   });
 
   const onSubmit: SubmitHandler<RecruitInputs> = async (data) => {

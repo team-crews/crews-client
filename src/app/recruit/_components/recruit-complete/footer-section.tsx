@@ -15,7 +15,6 @@ import {
   TooltipTrigger,
 } from '../../../../components/shadcn/tooltip.tsx';
 import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
-import REQUEST_ID from '../../../../apis/request-id.ts';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
 
@@ -33,12 +32,12 @@ const FooterSection = ({
       if (!passApplicationIds) throw new Error();
       return saveEvaluation({ passApplicationIds });
     },
-    requestId: REQUEST_ID.saveEvaluation,
+    requestName: 'saveEvaluation',
   });
 
   const sendMutation = useAtomicMutation({
     mutationFn: sendEvaluationMail,
-    requestId: REQUEST_ID.sendEvaluationMail,
+    requestName: 'sendEvaluationMail',
   });
 
   const { toast } = useToast();

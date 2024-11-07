@@ -11,7 +11,7 @@ type OptionType<TData, TError, TVariables, TContext> = UseMutationOptions<
   TVariables,
   TContext
 > & {
-  requestId: number;
+  requestName: string;
 };
 
 /**
@@ -41,13 +41,13 @@ function useAtomicMutation<
   return useMutation({
     ...options,
     onMutate: async (variables) => {
-      const isCallableRequest = startRequest(options.requestId);
+      const isCallableRequest = startRequest(options.requestName);
       if (!isCallableRequest) throw new Error('중복된 요청');
 
       if (options.onMutate) return await options.onMutate(variables);
     },
     onSuccess: async (data, variables, context) => {
-      endRequest(options.requestId);
+      endRequest(options.requestName);
 
       if (options.onSuccess)
         return await options.onSuccess(data, variables, context);
@@ -56,15 +56,15 @@ function useAtomicMutation<
 }
 
 const useAtomicRequest = () => {
-  const requestIdSet = useRef(new Set<number>());
+  const requestIdSet = useRef(new Set<string>());
 
-  const startRequest = (requestId: number) => {
+  const startRequest = (requestId: string) => {
     if (requestIdSet.current.has(requestId)) return false;
     requestIdSet.current.add(requestId);
     return true;
   };
 
-  const endRequest = (requestId: number) => {
+  const endRequest = (requestId: string) => {
     requestIdSet.current.delete(requestId);
   };
 

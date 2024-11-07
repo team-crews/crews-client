@@ -4,7 +4,6 @@ import { adminSignUp } from '../../../apis/auth-api.ts';
 import { useNavigate } from 'react-router-dom';
 import useSession from '../../../hooks/use-session.ts';
 import useAtomicMutation from '../../../hooks/use-atomic-mutation.ts';
-import REQUEST_ID from '../../../apis/request-id.ts';
 
 const AdminSignUp = () => {
   return (
@@ -41,7 +40,7 @@ const DevAdminSignUp = () => {
 
   const mutation = useAtomicMutation({
     mutationFn: (data: AdminSignUpForm) => adminSignUp(data),
-    requestId: REQUEST_ID.adminSignUp,
+    requestName: 'adminSignUp',
   });
 
   const navigate = useNavigate();

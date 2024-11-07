@@ -15,7 +15,6 @@ import {
 import { findFirstErrorMessage } from '../../../lib/utils/utils.ts';
 import Loading from '../../../components/shared/loading.tsx';
 import useAtomicMutation from '../../../hooks/use-atomic-mutation.ts';
-import REQUEST_ID from '../../../apis/request-id.ts';
 
 type ApplyInputs = {
   email: string;
@@ -38,7 +37,7 @@ const ApplicantSignIn = () => {
 
   const mutation = useAtomicMutation({
     mutationFn: (formData: ApplyInputs) => applicantSignIn(formData),
-    requestId: REQUEST_ID['applicantSignIn'],
+    requestName: 'applicantSignIn',
   });
 
   const onSubmit: SubmitHandler<ApplyInputs> = async (data) => {

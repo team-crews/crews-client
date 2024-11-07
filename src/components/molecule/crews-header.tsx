@@ -7,7 +7,6 @@ import { useToast } from '../../hooks/use-toast.ts';
 import { printCustomError } from '../../lib/utils/error.ts';
 import { useSignOut } from '../../apis/auth-api.ts';
 import useAtomicMutation from '../../hooks/use-atomic-mutation.ts';
-import REQUEST_ID from '../../apis/request-id.ts';
 
 const CrewsHeader = () => {
   const location = useLocation();
@@ -17,7 +16,7 @@ const CrewsHeader = () => {
   const { signOut } = useSignOut();
   const signOutMutation = useAtomicMutation({
     mutationFn: signOut,
-    requestId: REQUEST_ID['signOut'],
+    requestName: 'signOut',
   });
 
   const { toast } = useToast();
