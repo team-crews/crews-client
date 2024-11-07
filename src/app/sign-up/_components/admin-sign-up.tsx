@@ -1,9 +1,10 @@
 import CommentIcon from '../../../assets/icons/comment-icon.svg?react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
 import { adminSignUp } from '../../../apis/auth-api.ts';
 import { useNavigate } from 'react-router-dom';
 import useSession from '../../../hooks/use-session.ts';
+import useAtomicMutation from '../../../hooks/use-atomic-mutation.ts';
+import REQUEST_ID from '../../../apis/request-id.ts';
 
 const AdminSignUp = () => {
   return (
@@ -38,8 +39,9 @@ const DevAdminSignUp = () => {
     },
   });
 
-  const mutation = useMutation({
+  const mutation = useAtomicMutation({
     mutationFn: (data: AdminSignUpForm) => adminSignUp(data),
+    requestId: REQUEST_ID.adminSignUp,
   });
 
   const navigate = useNavigate();

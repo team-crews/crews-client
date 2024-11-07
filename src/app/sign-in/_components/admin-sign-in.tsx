@@ -8,13 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import useSession from '../../../hooks/use-session.ts';
 import { printCustomError } from '../../../lib/utils/error.ts';
 import { findFirstErrorMessage } from '../../../lib/utils/utils.ts';
-import { useMutation } from '@tanstack/react-query';
 import Loading from '../../../components/shared/loading.tsx';
 import {
   isFilledInput,
   isProperClubName,
   isProperPassword,
 } from '../../../lib/utils/validation.ts';
+import useAtomicMutation from '../../../hooks/use-atomic-mutation.ts';
+import REQUEST_ID from '../../../apis/request-id.ts';
 
 type RecruitInputs = {
   clubName: string;
@@ -34,8 +35,9 @@ const AdminSignIn = () => {
     },
   });
 
-  const mutation = useMutation({
+  const mutation = useAtomicMutation({
     mutationFn: (data: RecruitInputs) => adminSignIn(data),
+    requestId: REQUEST_ID.adminSignIn,
   });
 
   const onSubmit: SubmitHandler<RecruitInputs> = async (data) => {

@@ -1,5 +1,5 @@
 import { Button } from '../../../../components/shadcn/button.tsx';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
@@ -14,6 +14,8 @@ import {
 import { convertDateAndTimeToDeadline } from '../../../../lib/utils/convert.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { SaveRecruitmentRequestSchema } from '../../../../apis/response-body-schema.ts';
+import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
+import REQUEST_ID from '../../../../apis/request-id.ts';
 
 const FooterSection = ({
   updateRecruitment,
@@ -26,13 +28,15 @@ const FooterSection = ({
   const queryClient = useQueryClient();
   const { saveRecruitment, startRecruitment } = useAdminApi();
 
-  const saveMutation = useMutation({
+  const saveMutation = useAtomicMutation({
     mutationFn: (requestBody: z.infer<typeof SaveRecruitmentRequestSchema>) =>
       saveRecruitment(requestBody),
+    requestId: REQUEST_ID['saveRecruitment'],
   });
 
-  const startMutation = useMutation({
+  const startMutation = useAtomicMutation({
     mutationFn: startRecruitment,
+    requestId: REQUEST_ID['start'],
   });
 
   const { toast } = useToast();

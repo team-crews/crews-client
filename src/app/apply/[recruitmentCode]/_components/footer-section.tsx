@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Button } from '../../../../components/shadcn/button.tsx';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { useToast } from '../../../../hooks/use-toast.ts';
-import { useMutation } from '@tanstack/react-query';
 import { ISaveApplication } from '../../../../lib/types/schemas/application-schema.ts';
 import {
   convertToFormApplication,
@@ -28,6 +27,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../../../../components/shadcn/tooltip.tsx';
+import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
+import REQUEST_ID from '../../../../apis/request-id.ts';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -63,8 +64,9 @@ const FooterSection = ({
   const [recruiting, setRecruiting] = useState(true);
   const [diff, setDiff] = useState<number>(dayjs(deadline).diff(dayjs()));
 
-  const saveMutate = useMutation({
+  const saveMutate = useAtomicMutation({
     mutationFn: (requestBody: ISaveApplication) => saveApplication(requestBody),
+    requestId: REQUEST_ID.saveApplication,
   });
 
   useEffect(() => {
