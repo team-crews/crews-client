@@ -9,7 +9,7 @@ import Loading from '../../../../components/atom/loading.tsx';
 import FooterSection from './footer-section.tsx';
 import { throwCustomError } from '../../../../lib/utils/error.ts';
 import { z } from 'zod';
-import { ProgressSchema } from '../../../../lib/types/schemas/progress-schema.ts';
+import { ProgressSchema } from '../../../../lib/schemas/progress-schema.ts';
 
 const RecruitCompletePage = ({
   progress,

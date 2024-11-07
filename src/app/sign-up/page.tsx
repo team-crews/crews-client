@@ -5,7 +5,7 @@ import { useState } from 'react';
 import ApplicantSignUp from './_components/applicant-sign-up.tsx';
 import AdminSignUp from './_components/admin-sign-up.tsx';
 import { z } from 'zod';
-import { RoleSchema } from '../../lib/types/schemas/role-schema.ts';
+import { RoleSchema } from '../../lib/schemas/role-schema.ts';
 
 const Page = () => {
   const location = useLocation();

@@ -1,7 +1,7 @@
 import { cn } from '../../../../lib/utils/utils.ts';
 import React from 'react';
 import { z } from 'zod';
-import { SectionSchema } from '../../../../lib/types/schemas/section-schema.ts';
+import { SectionSchema } from '../../../../lib/schemas/section-schema.ts';
 import ReadonlyTextarea from '../../../../components/atom/readonly-textarea.tsx';
 
 interface ApplySectionBoxProps

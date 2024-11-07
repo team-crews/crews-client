@@ -5,7 +5,7 @@ import {
 } from '../../../../../lib/utils/validation.ts';
 import useAutosizeTextarea from '../../../../../hooks/use-autosize-textarea.ts';
 import { z } from 'zod';
-import { CreatedRecruitmentSchema } from '../../../../../lib/types/schemas/recruitment-schema.ts';
+import { CreatedRecruitmentSchema } from '../../../../../lib/schemas/recruitment-schema.ts';
 import React from 'react';
 import Container from '../../../../../components/atom/container.tsx';
 import dayjs from 'dayjs';

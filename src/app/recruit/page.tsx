@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import Loading from '../../components/atom/loading.tsx';
 import { throwCustomError } from '../../lib/utils/error.ts';
 import { z } from 'zod';
-import { ProgressSchema } from '../../lib/types/schemas/progress-schema.ts';
+import { ProgressSchema } from '../../lib/schemas/progress-schema.ts';
 
 const Page = () => {
   const { readRecruitmentProgress } = useAdminApi();

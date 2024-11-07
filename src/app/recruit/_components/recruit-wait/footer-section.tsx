@@ -16,7 +16,7 @@ import {
 } from '../../../../lib/utils/convert.ts';
 import { findFirstErrorMessage } from '../../../../lib/utils/utils.ts';
 import { z } from 'zod';
-import { DateAndTimeSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
+import { DateAndTimeSchema } from '../../../../lib/schemas/recruitment-schema.ts';
 import React from 'react';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import Loading from '../../../../components/atom/loading.tsx';

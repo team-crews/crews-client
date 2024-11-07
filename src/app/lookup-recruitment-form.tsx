@@ -4,7 +4,7 @@ import { readRecruitmentSearch } from '../apis/base-api.ts';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { z } from 'zod';
-import { RecruitmentSearchResultSchema } from '../lib/types/schemas/recruitment-schema.ts';
+import { RecruitmentSearchResultSchema } from '../lib/schemas/recruitment-schema.ts';
 import Autocomplete, {
   AutocompleteOption,
 } from '../components/atom/autocomplete.tsx';

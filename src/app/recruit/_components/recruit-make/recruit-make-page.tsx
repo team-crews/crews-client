@@ -9,12 +9,12 @@ import { useEffect } from 'react';
 import Loading from '../../../../components/atom/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
-import { CREATED_RECRUITMENT } from '../../../../lib/types/default-data.ts';
+import { CREATED_RECRUITMENT } from '../../../../lib/schemas/default-data.ts';
 import { z } from 'zod';
 import {
   CreatedRecruitmentSchema,
   RecruitmentSchema,
-} from '../../../../lib/types/schemas/recruitment-schema.ts';
+} from '../../../../lib/schemas/recruitment-schema.ts';
 import { throwCustomError } from '../../../../lib/utils/error.ts';
 import {
   convertRecruitmentToCreatedRecruitment,

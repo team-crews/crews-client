@@ -5,12 +5,12 @@ import {
   AnswerSchema,
   NarrativeAnswerSchema,
   SelectiveAnswerSchema,
-} from '../../lib/types/schemas/application-schema.ts';
+} from '../../lib/schemas/application-schema.ts';
 import {
   NarrativeQuestionSchema,
   QuestionSchema,
   SelectiveQuestionSchema,
-} from '../../lib/types/schemas/question-schema.ts';
+} from '../../lib/schemas/question-schema.ts';
 
 const QuestionBoxes = ({
   questions,

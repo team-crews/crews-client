@@ -10,7 +10,7 @@ import { z } from 'zod';
 import {
   CreatedRecruitmentSchema,
   RecruitmentSchema,
-} from '../../../../lib/types/schemas/recruitment-schema.ts';
+} from '../../../../lib/schemas/recruitment-schema.ts';
 import { convertDateAndTimeToDeadline } from '../../../../lib/utils/convert.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { SaveRecruitmentRequestSchema } from '../../../../apis/response-body-schema.ts';

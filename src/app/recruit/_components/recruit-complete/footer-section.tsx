@@ -8,7 +8,7 @@ import Loading from '../../../../components/atom/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { z } from 'zod';
-import { ProgressSchema } from '../../../../lib/types/schemas/progress-schema.ts';
+import { ProgressSchema } from '../../../../lib/schemas/progress-schema.ts';
 import {
   Tooltip,
   TooltipContent,

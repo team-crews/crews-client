@@ -3,7 +3,7 @@ import RecruitMetaBox from '../../../../components/recruitment-view/recruit-meta
 import SectionBoxes from '../../../../components/recruitment-view/section-boxes.tsx';
 import HeaderSection from './header-section.tsx';
 import { z } from 'zod';
-import { RecruitmentSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
+import { RecruitmentSchema } from '../../../../lib/schemas/recruitment-schema.ts';
 
 const InfoSection = ({
   recruitment,

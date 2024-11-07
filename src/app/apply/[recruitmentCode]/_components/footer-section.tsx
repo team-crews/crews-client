@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '../../../../components/shadcn/button.tsx';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { useToast } from '../../../../hooks/use-toast.ts';
-import { ISaveApplication } from '../../../../lib/types/schemas/application-schema.ts';
+import { ISaveApplication } from '../../../../lib/schemas/application-schema.ts';
 import {
   convertToFormApplication,
   convertToSaveApplication,
@@ -13,7 +13,7 @@ import { z } from 'zod';
 import {
   DeadlineSchema,
   RecruitmentSchema,
-} from '../../../../lib/types/schemas/recruitment-schema.ts';
+} from '../../../../lib/schemas/recruitment-schema.ts';
 import { useFormContext } from 'react-hook-form';
 import useApplicantApi from '../../../../apis/applicant-api.ts';
 import { useParams } from 'react-router-dom';

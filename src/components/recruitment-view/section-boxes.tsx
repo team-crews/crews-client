@@ -1,10 +1,10 @@
 import QuestionBoxes from './question-boxes.tsx';
 import { z } from 'zod';
-import { SectionSchema } from '../../lib/types/schemas/section-schema.ts';
+import { SectionSchema } from '../../lib/schemas/section-schema.ts';
 import {
   AnswersBySectionSchema,
   AnswerSchema,
-} from '../../lib/types/schemas/application-schema.ts';
+} from '../../lib/schemas/application-schema.ts';
 import { findSelectedSection } from '../../lib/utils/utils.ts';
 import ReadonlyTextarea from '../atom/readonly-textarea.tsx';
 
