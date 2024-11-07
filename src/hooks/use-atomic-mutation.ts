@@ -42,15 +42,15 @@ function useAtomicMutation<
     ...options,
     onMutate: async (variables) => {
       const isCallableRequest = startRequest(options.requestName);
-      if (!isCallableRequest) throw new Error('중복된 요청');
+      if (!isCallableRequest) return Promise.reject(new Error('중복된 요청'));
 
       if (options.onMutate) return await options.onMutate(variables);
     },
-    onSuccess: async (data, variables, context) => {
+    onSettled: async (data, error, variables, context) => {
       endRequest(options.requestName);
 
-      if (options.onSuccess)
-        return await options.onSuccess(data, variables, context);
+      if (options.onSettled)
+        return await options.onSettled(data, error, variables, context);
     },
   });
 }
