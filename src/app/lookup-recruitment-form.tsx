@@ -44,7 +44,6 @@ const LookupRecruitmentForm = () => {
   });
 
   const handleSelect = (option: AutocompleteOption) => {
-    //TODO: Implement navigation to recruitment page
     navigate('/recruitment/info?title=' + option.value);
     resetField('searchCrew');
   };
@@ -62,7 +61,7 @@ const LookupRecruitmentForm = () => {
   const options = !isEmpty ? getOptions(data) : [];
 
   return (
-    <Form action="/recruitment">
+    <Form>
       <Autocomplete
         options={options}
         registerReturns={register('searchCrew')}

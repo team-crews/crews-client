@@ -1,9 +1,8 @@
 import { z } from 'zod';
 
 import SectionBoxes from '../../../../components/recruitment-view/section-boxes';
-import Container from '../../../../components/shared/container';
-
-import { SectionSchema } from '../../../../lib/types/schemas/section-schema';
+import { SectionSchema } from '../../../../lib/schemas/section-schema.ts';
+import Container from '../../../../components/atom/container.tsx';
 
 interface InfoSectionProps {
   sections: z.infer<typeof SectionSchema>[];

@@ -27,7 +27,10 @@ const ApplySectionBox = ({
         <p className="w-full bg-inherit text-base font-bold text-crews-w01">
           {name}
         </p>
-        <ReadonlyTextarea name="WINTER_IS_GOD" value={description} />
+        <ReadonlyTextarea
+          name={'WINTER_IS_GOD' + crypto.randomUUID()}
+          value={description}
+        />
       </div>
       <div className="flex h-fit w-full flex-col gap-4 bg-crews-b01 p-4">
         {children}

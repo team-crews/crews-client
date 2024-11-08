@@ -76,12 +76,13 @@ const Autocomplete = ({
     <div className="relative">
       <Input
         className="mb-20 mt-12 py-2"
-        placeholder="동아리명"
+        placeholder="모집 공고 검색"
         registerReturns={registerReturns}
         clearInput={onClearInput}
         onKeyDown={handleKeyDown}
         onBlurCapture={handleBlur}
         onFocusCapture={handleFocus}
+        autoComplete="on"
       />
       <ul
         className={cn(

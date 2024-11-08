@@ -60,7 +60,7 @@ const FooterSection = ({
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
   const { saveApplication } = useApplicantApi(recruitmentCode!);
 
-  const [recruiting, setRecruiting] = useState(true);
+  const [recruiting, setRecruiting] = useState(false);
   const [diff, setDiff] = useState<number>(dayjs(deadline).diff(dayjs()));
 
   const saveMutate = useAtomicMutation({
@@ -69,8 +69,9 @@ const FooterSection = ({
   });
 
   useEffect(() => {
-    if (!recruiting) return;
+    setRecruiting(true);
 
+    if (!recruiting) return;
     const interval = setInterval(() => {
       const diff = dayjs(deadline).diff(dayjs());
       if (diff <= 0) {

@@ -7,8 +7,8 @@ import RootLayout from './app/layout.tsx';
 import LandingPage from './app/page.tsx';
 import SignInPage from './app/sign-in/page.tsx';
 import SignUpPage from './app/sign-up/page.tsx';
-import RecruitmentPage from './app/recruitment/[recruitmentCode]/page.tsx';
 import RecruitmentInfoPage from './app/recruitment/info/page.tsx';
+import RecruitmentPage from './app/recruitment/info/page.tsx';
 
 import MobileRestrictionWrapper from './components/wrapper/mobile-restriction-wrapper.tsx';
 import * as Sentry from '@sentry/react';

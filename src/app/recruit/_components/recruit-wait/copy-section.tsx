@@ -10,7 +10,7 @@ const CopySection = ({ recruitmentCode }: { recruitmentCode: string }) => {
   > = async () => {
     try {
       await navigator.clipboard.writeText(
-        `https://join-crews.site/apply/${recruitmentCode}`,
+        `https://join-crews.site/recruitment/info?recruitmentCode=${recruitmentCode}`,
       );
       toast({
         title: '복사가 완료되었습니다.',
