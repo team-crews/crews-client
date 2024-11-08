@@ -64,3 +64,5 @@ export const ReadRecruitmentByCodeResponseSchema = RecruitmentSchema;
 export const ReadRecruitmentSearchResponseSchema = z.array(
   RecruitmentSearchResultSchema,
 );
+
+export const ReadRecruitmentSearchByResponseSchema = RecruitmentSchema;

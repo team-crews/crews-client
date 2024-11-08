@@ -95,7 +95,7 @@ const Autocomplete = ({
             <li
               className={`cursor-pointer rounded`}
               key={index}
-              onClick={() => handleItemClick(item)}
+              onMouseDown={() => handleItemClick(item)}
               onMouseEnter={() => setHighlightedIndex(index)}
               onMouseLeave={() => setHighlightedIndex(-1)}
             >

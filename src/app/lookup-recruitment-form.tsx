@@ -1,4 +1,4 @@
-import { Form } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { readRecruitmentSearch } from '../apis/base-api.ts';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
@@ -19,6 +19,8 @@ type RecruitmentSearchResult = z.infer<typeof RecruitmentSearchResultSchema>;
 const DEBOUNCE_DELAY = 150;
 
 const LookupRecruitmentForm = () => {
+  const navigate = useNavigate();
+
   const { watch, register, resetField } = useForm<{
     searchCrew: string;
   }>({
@@ -43,7 +45,7 @@ const LookupRecruitmentForm = () => {
 
   const handleSelect = (option: AutocompleteOption) => {
     //TODO: Implement navigation to recruitment page
-    console.log(option);
+    navigate('/recruitment/info?title=' + option.value);
     resetField('searchCrew');
   };
 
