@@ -2,6 +2,7 @@ import { baseInstance } from './instance.ts';
 import { z } from 'zod';
 import {
   ReadRecruitmentByCodeResponseSchema,
+  ReadRecruitmentSearchByResponseSchema,
   ReadRecruitmentSearchResponseSchema,
 } from './response-body-schema.ts';
 import { convertSeoulToUTC } from '../lib/utils/convert.ts';
@@ -34,4 +35,14 @@ export async function readRecruitmentSearch(
   );
 
   return ReadRecruitmentSearchResponseSchema.parse(response.data);
+}
+
+export async function readRecruitmentSearchBy(
+  title: string,
+): Promise<z.infer<typeof ReadRecruitmentSearchByResponseSchema>> {
+  const response = await baseInstance.get(
+    `recruitments/search-by?title=${title}`,
+  );
+
+  return response.data;
 }
