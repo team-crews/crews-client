@@ -44,9 +44,5 @@ export async function readRecruitmentSearchBy(
     `recruitments/search-by?title=${title}`,
   );
 
-  // if (ReadRecruitmentByCodeResponseSchema.parse(response.data)) {
-  //   response.data.deadline = convertSeoulToUTC(response.data.deadline);
-  // }
-
   return response.data;
 }
