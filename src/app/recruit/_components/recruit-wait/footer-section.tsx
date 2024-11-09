@@ -63,10 +63,13 @@ const FooterSection = ({
         queryKey: ['recruitmentInProgressDetail'],
       });
       dialogReturns.toggleOpen();
-    } catch (e) {
-      printCustomError(e, 'onSubmit');
+      // FixMe
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      printCustomError(e, 'applicantLogin');
+
       toast({
-        title: '예상하지 못한 오류가 발생하였습니다.',
+        title: e?.response?.data?.message || '예기치 못한 문제가 발생했습니다.',
         state: 'error',
       });
     }

@@ -16,10 +16,13 @@ const CopySection = ({ recruitmentCode }: { recruitmentCode: string }) => {
         title: '복사가 완료되었습니다.',
         state: 'success',
       });
-    } catch (e) {
-      printCustomError(e, 'handleClipboardClick');
+      // FixMe
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      printCustomError(e, 'applicantLogin');
+
       toast({
-        title: '예기치 못한 오류가 발생했습니다.',
+        title: e?.response?.data?.message || '예기치 못한 문제가 발생했습니다.',
         state: 'error',
       });
     }

@@ -82,7 +82,6 @@ const Autocomplete = ({
         onKeyDown={handleKeyDown}
         onBlurCapture={handleBlur}
         onFocusCapture={handleFocus}
-        autoComplete="on"
       />
       <ul
         className={cn(
