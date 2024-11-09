@@ -1,12 +1,12 @@
 import { useFormContext } from 'react-hook-form';
-import Container from '../../../../components/shared/container';
-import Typography from '../../../../components/shared/typography';
+import Container from '../../../../components/atom/container.tsx';
+import Typography from '../../../../components/atom/typography.tsx';
 
 import ApplyChoiceBox from './apply-choice-box';
 import { useState } from 'react';
 import { IFormApplication } from '../page.tsx';
 import { z } from 'zod';
-import { QuestionSchema } from '../../../../lib/types/schemas/question-schema.ts';
+import { QuestionSchema } from '../../../../lib/schemas/question-schema.ts';
 
 interface ApplySelectiveBoxProps {
   question: z.infer<typeof QuestionSchema>;

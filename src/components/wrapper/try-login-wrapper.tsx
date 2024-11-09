@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Loading from '../shared/loading.tsx';
+import Loading from '../atom/loading.tsx';
 import useRefreshToken from '../../hooks/use-refresh-token.ts';
 import { printCustomError } from '../../lib/utils/error.ts';
 import { Outlet } from 'react-router-dom';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
-import { ApplicationOverviewSchema } from '../../../../../lib/types/schemas/application-schema.ts';
+import { ApplicationOverviewSchema } from '../../../../../lib/schemas/application-schema.ts';
 
 const usePassedApplicationIds = (
   data: z.infer<typeof ApplicationOverviewSchema>[] | null,

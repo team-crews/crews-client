@@ -1,10 +1,10 @@
 import QuestionBoxes from './question-boxes.tsx';
 import { z } from 'zod';
-import { SectionSchema } from '../../lib/types/schemas/section-schema.ts';
+import { SectionSchema } from '../../lib/schemas/section-schema.ts';
 import {
   AnswersBySectionSchema,
   AnswerSchema,
-} from '../../lib/types/schemas/application-schema.ts';
+} from '../../lib/schemas/application-schema.ts';
 import { findSelectedSection } from '../../lib/utils/utils.ts';
 import ReadonlyTextarea from '../atom/readonly-textarea.tsx';
 
@@ -21,7 +21,10 @@ const SectionBox = ({
         <p className="w-full bg-inherit text-base font-bold text-crews-w01">
           {section.name}
         </p>
-        <ReadonlyTextarea name="KARINA_IS_GOD" value={section.description} />
+        <ReadonlyTextarea
+          name={'KARINA_IS_GOD' + crypto.randomUUID()}
+          value={section.description}
+        />
       </div>
 
       <div className="flex h-fit w-full flex-col gap-4 bg-crews-b01 p-4">

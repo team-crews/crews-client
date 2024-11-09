@@ -5,7 +5,7 @@ import { TooltipProvider } from '../components/shadcn/tooltip.tsx';
 
 const RootLayout = () => {
   return (
-    <div className="h-dvh w-dvw">
+    <div className="w-dvw">
       <TooltipProvider delayDuration={0}>
         <CrewsHeader />
         <Outlet />

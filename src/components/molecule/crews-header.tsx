@@ -3,10 +3,10 @@ import CircleUserIcon from '../../assets/icons/circle-user-icon.svg?react';
 import { Link, useLocation } from 'react-router-dom';
 import useSession from '../../hooks/use-session.ts';
 import { cn } from '../../lib/utils/utils.ts';
-import { useMutation } from '@tanstack/react-query';
 import { useToast } from '../../hooks/use-toast.ts';
 import { printCustomError } from '../../lib/utils/error.ts';
 import { useSignOut } from '../../apis/auth-api.ts';
+import useAtomicMutation from '../../hooks/use-atomic-mutation.ts';
 
 const CrewsHeader = () => {
   const location = useLocation();
@@ -14,7 +14,10 @@ const CrewsHeader = () => {
   const { accessToken, role, username, clearSession } = useSession();
 
   const { signOut } = useSignOut();
-  const signOutMutation = useMutation({ mutationFn: signOut });
+  const signOutMutation = useAtomicMutation({
+    mutationFn: signOut,
+    requestName: 'signOut',
+  });
 
   const { toast } = useToast();
 
@@ -28,10 +31,13 @@ const CrewsHeader = () => {
       });
 
       clearSession();
-    } catch (e) {
-      printCustomError(e, 'handleSignOutClick');
+      // FixMe
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      printCustomError(e, 'applicantLogin');
+
       toast({
-        title: '예기치 못한 문제가 발생하였습니다.',
+        title: e?.response?.data?.message || '예기치 못한 문제가 발생했습니다.',
         state: 'error',
       });
     }

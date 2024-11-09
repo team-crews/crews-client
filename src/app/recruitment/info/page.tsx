@@ -1,29 +1,38 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { readRecruitmentSearchBy } from '../../../apis/base-api';
+import {
+  readRecruitmentByCode,
+  readRecruitmentByTitle,
+} from '../../../apis/base-api';
 import { useQuery } from '@tanstack/react-query';
-import Loading from '../../../components/shared/loading';
-import { printCustomError, throwCustomError } from '../../../lib/utils/error';
-import Container from '../../../components/shared/container';
+import { throwCustomError } from '../../../lib/utils/error';
 import { Button } from '../../../components/shadcn/button';
-
-import InfoSection from './_components/info-section';
-
-import ViewSection from './_components/view-section';
 import CrewsFooter from '../../../components/molecule/crews-footer';
 
 import useDialog from '../../../hooks/use-dialog';
 import PreviewDialog from './_components/preview-dialog';
+import Container from '../../../components/atom/container.tsx';
+import HeaderSection from './_components/header-section.tsx';
+import RecruitMetaBox from '../../../components/recruitment-view/recruit-meta-box.tsx';
+import SectionBoxes from '../../../components/recruitment-view/section-boxes.tsx';
+
+function Loading() {
+  return null;
+}
 
 const Page = () => {
   const navigate = useNavigate();
   const dialogReturns = useDialog();
 
   const [searchParams] = useSearchParams();
-  const title = searchParams.get('title');
+  const title = searchParams.get('title') || '';
+  const recruitmentCode = searchParams.get('recruitmentCode') || '';
 
   const readQuery = useQuery({
     queryKey: ['recruitmentSearchBy', title],
-    queryFn: () => readRecruitmentSearchBy(title!),
+    queryFn: () => {
+      if (title) return readRecruitmentByTitle(title);
+      else return readRecruitmentByCode(recruitmentCode);
+    },
   });
 
   const handlePreviewClick = () => {
@@ -37,8 +46,10 @@ const Page = () => {
   if (readQuery.isFetching || readQuery.isPending) return <Loading />;
   else if (readQuery.isSuccess) {
     return (
-      <Container className="flex h-auto w-full justify-center gap-4 overflow-scroll px-4 pb-8 pt-16">
-        <ViewSection
+      <Container className="mx-auto flex h-auto w-[600px] flex-col gap-8 py-8 pt-24">
+        <HeaderSection />
+
+        <RecruitMetaBox
           title={readQuery.data.title}
           description={readQuery.data.description}
           deadline={readQuery.data.deadline}
@@ -54,20 +65,8 @@ const Page = () => {
         </CrewsFooter>
 
         <PreviewDialog {...dialogReturns}>
-          <InfoSection sections={readQuery.data.sections} />
+          <SectionBoxes sections={readQuery.data.sections} />
         </PreviewDialog>
-      </Container>
-    );
-  } else if (printCustomError(readQuery.error, 'readQuery') === 404) {
-    return (
-      <Container className="flex flex-col items-center justify-center gap-2">
-        <p className="text-xl font-semibold text-crews-b05">
-          존재하지 않는 모집 공고입니다 😂
-        </p>
-        <p>모집 공고 제목을 다시 확인해주세요.</p>
-        <Button onClick={() => navigate(-1)} size="sm">
-          돌아가기
-        </Button>
       </Container>
     );
   } else throwCustomError(readQuery.error, 'readRecruitmentProgress');

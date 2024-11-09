@@ -1,20 +1,20 @@
 import { FormProvider, useForm } from 'react-hook-form';
 
 import SectionBoxes from './details/section-boxes.tsx';
-import Container from '../../../../components/shared/container.tsx';
+import Container from '../../../../components/atom/container.tsx';
 import HeaderSection from './header-section.tsx';
 import FooterSection from './footer-section.tsx';
 import RecruitMetaSection from './details/recruit-meta-section.tsx';
 import { useEffect } from 'react';
-import Loading from '../../../../components/shared/loading.tsx';
+import Loading from '../../../../components/atom/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
-import { CREATED_RECRUITMENT } from '../../../../lib/types/default-data.ts';
+import { CREATED_RECRUITMENT } from '../../../../lib/schemas/default-data.ts';
 import { z } from 'zod';
 import {
   CreatedRecruitmentSchema,
   RecruitmentSchema,
-} from '../../../../lib/types/schemas/recruitment-schema.ts';
+} from '../../../../lib/schemas/recruitment-schema.ts';
 import { throwCustomError } from '../../../../lib/utils/error.ts';
 import {
   convertRecruitmentToCreatedRecruitment,

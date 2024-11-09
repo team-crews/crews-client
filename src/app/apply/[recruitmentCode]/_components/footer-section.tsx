@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '../../../../components/shadcn/button.tsx';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { useToast } from '../../../../hooks/use-toast.ts';
-import { useMutation } from '@tanstack/react-query';
-import { ISaveApplication } from '../../../../lib/types/schemas/application-schema.ts';
+import { ISaveApplication } from '../../../../lib/schemas/application-schema.ts';
 import {
   convertToFormApplication,
   convertToSaveApplication,
@@ -14,7 +13,7 @@ import { z } from 'zod';
 import {
   DeadlineSchema,
   RecruitmentSchema,
-} from '../../../../lib/types/schemas/recruitment-schema.ts';
+} from '../../../../lib/schemas/recruitment-schema.ts';
 import { useFormContext } from 'react-hook-form';
 import useApplicantApi from '../../../../apis/applicant-api.ts';
 import { useParams } from 'react-router-dom';
@@ -28,6 +27,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../../../../components/shadcn/tooltip.tsx';
+import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -60,16 +60,18 @@ const FooterSection = ({
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
   const { saveApplication } = useApplicantApi(recruitmentCode!);
 
-  const [recruiting, setRecruiting] = useState(true);
+  const [recruiting, setRecruiting] = useState(false);
   const [diff, setDiff] = useState<number>(dayjs(deadline).diff(dayjs()));
 
-  const saveMutate = useMutation({
+  const saveMutate = useAtomicMutation({
     mutationFn: (requestBody: ISaveApplication) => saveApplication(requestBody),
+    requestName: 'saveApplication',
   });
 
   useEffect(() => {
-    if (!recruiting) return;
+    setRecruiting(true);
 
+    if (!recruiting) return;
     const interval = setInterval(() => {
       const diff = dayjs(deadline).diff(dayjs());
       if (diff <= 0) {
@@ -126,11 +128,13 @@ const FooterSection = ({
         title: '지원서 저장이 완료되었습니다.',
         state: 'success',
       });
-    } catch (e) {
-      printCustomError(e, 'saveApplication');
+      // FixMe
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      printCustomError(e, 'applicantLogin');
 
       toast({
-        title: '예기치 못한 오류가 발생했습니다.',
+        title: e?.response?.data?.message || '예기치 못한 문제가 발생했습니다.',
         state: 'error',
       });
     }
@@ -158,7 +162,7 @@ const FooterSection = ({
           </TooltipTrigger>
 
           <TooltipContent>
-            <p>마감까지 {formatNumberTime(diff)}</p>
+            <p>⏰ 마감까지 {formatNumberTime(diff)}</p>
           </TooltipContent>
         </Tooltip>
       </CrewsFooter>

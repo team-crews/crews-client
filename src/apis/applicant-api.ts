@@ -5,7 +5,7 @@ import {
   ReadApplicationResponseSchema,
   SaveApplicationResponseSchema,
 } from './response-body-schema.ts';
-import { ISaveApplication } from '../lib/types/schemas/application-schema.ts';
+import { ISaveApplication } from '../lib/schemas/application-schema.ts';
 
 const useApplicantApi = (recruitmentCode: string) => {
   const { authInstance } = useAuthInstance();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import Input from './input';
-import { cn } from '../../lib/utils/utils';
+import Input from './input.tsx';
+import { cn } from '../../lib/utils/utils.ts';
 
 /**
  * Autocomplete component options
@@ -75,8 +75,7 @@ const Autocomplete = ({
   return (
     <div className="relative">
       <Input
-        className="mb-20 mt-12 py-2"
-        placeholder="동아리명"
+        placeholder="모집 공고 검색"
         registerReturns={registerReturns}
         clearInput={onClearInput}
         onKeyDown={handleKeyDown}

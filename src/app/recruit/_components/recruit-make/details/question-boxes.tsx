@@ -12,17 +12,17 @@ import PlusIcon from '../../../../../assets/icons/plus-icon.svg?react';
 import QuestionTextarea from './question-textarea.tsx';
 import ChoiceSection from './choice-section.tsx';
 import OptionSection from './option-section.tsx';
-import Container from '../../../../../components/shared/container.tsx';
+import Container from '../../../../../components/atom/container.tsx';
 import { QuestionType } from '../../../../../lib/enums.ts';
 import { cn } from '../../../../../lib/utils/utils.ts';
 import { useToast } from '../../../../../hooks/use-toast.ts';
 import {
   CREATED_NARRATIVE_QUESTION,
   CREATED_SELECTIVE_QUESTION,
-} from '../../../../../lib/types/default-data.ts';
+} from '../../../../../lib/schemas/default-data.ts';
 import { Button } from '../../../../../components/shadcn/button.tsx';
 import { z } from 'zod';
-import { CreatedRecruitmentSchema } from '../../../../../lib/types/schemas/recruitment-schema.ts';
+import { CreatedRecruitmentSchema } from '../../../../../lib/schemas/recruitment-schema.ts';
 
 const buttonDefaultStyle: string = 'h-4 w-4 cursor-pointer text-crews-g06';
 

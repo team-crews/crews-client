@@ -1,4 +1,4 @@
-import Container from '../../../components/shared/container';
+import Container from '../../../components/atom/container.tsx';
 import ApplySectionBox from './_components/apply-section-box';
 import ApplyNarrativeBox from './_components/apply-narrative-box';
 import ApplySelectiveBox from './_components/apply-selective-box';
@@ -12,15 +12,15 @@ import {
   getInitialSectionSelection,
 } from './_utils/utils';
 import { z } from 'zod';
-import { QuestionSchema } from '../../../lib/types/schemas/question-schema.ts';
+import { QuestionSchema } from '../../../lib/schemas/question-schema.ts';
 import {
   CREATED_NARRATIVE_ANSWER,
   CREATED_SELECTIVE_ANSWER,
-} from '../../../lib/types/default-data.ts';
+} from '../../../lib/schemas/default-data.ts';
 import { ReadApplicationResponseSchema } from '../../../apis/response-body-schema.ts';
 import FooterSection from './_components/footer-section.tsx';
 import { generateChoiceMap } from './_hooks/use-choice-map.tsx';
-import { RecruitmentSchema } from '../../../lib/types/schemas/recruitment-schema.ts';
+import { RecruitmentSchema } from '../../../lib/schemas/recruitment-schema.ts';
 
 export type IFormApplication = {
   /*

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { RecruitmentSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
+import { RecruitmentSchema } from '../../../../lib/schemas/recruitment-schema.ts';
 
 // interface UseChoiceMapParams {
 //   recruitment: z.infer<typeof RecruitmentSchema> | undefined;

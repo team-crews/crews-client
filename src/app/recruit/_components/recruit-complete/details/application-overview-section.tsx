@@ -1,7 +1,7 @@
 import OverviewCard from './overveiw-card.tsx';
 import { z } from 'zod';
-import { ProgressSchema } from '../../../../../lib/types/schemas/progress-schema.ts';
-import { ApplicationOverviewSchema } from '../../../../../lib/types/schemas/application-schema.ts';
+import { ProgressSchema } from '../../../../../lib/schemas/progress-schema.ts';
+import { ApplicationOverviewSchema } from '../../../../../lib/schemas/application-schema.ts';
 
 type Props = {
   progress: z.infer<typeof ProgressSchema>;

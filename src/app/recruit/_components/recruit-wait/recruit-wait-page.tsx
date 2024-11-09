@@ -4,9 +4,9 @@ import DeadlineSection from './deadline-section.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import Loading from '../../../../components/shared/loading.tsx';
+import Loading from '../../../../components/atom/loading.tsx';
 import { throwCustomError } from '../../../../lib/utils/error.ts';
-import Container from '../../../../components/shared/container.tsx';
+import Container from '../../../../components/atom/container.tsx';
 import FooterSection from './footer-section.tsx';
 import CopySection from './copy-section.tsx';
 

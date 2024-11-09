@@ -4,7 +4,7 @@ import { z } from 'zod';
 import {
   ChoiceSchema,
   QuestionSchema,
-} from '../../../../lib/types/schemas/question-schema.ts';
+} from '../../../../lib/schemas/question-schema.ts';
 
 interface ApplyChoiceBoxProps {
   choice: z.infer<typeof ChoiceSchema>;

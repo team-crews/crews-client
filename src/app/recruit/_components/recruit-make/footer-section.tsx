@@ -1,19 +1,20 @@
 import { Button } from '../../../../components/shadcn/button.tsx';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
 import { useFormContext } from 'react-hook-form';
-import Loading from '../../../../components/shared/loading.tsx';
+import Loading from '../../../../components/atom/loading.tsx';
 import { findFirstErrorMessage } from '../../../../lib/utils/utils.ts';
 import { z } from 'zod';
 import {
   CreatedRecruitmentSchema,
   RecruitmentSchema,
-} from '../../../../lib/types/schemas/recruitment-schema.ts';
+} from '../../../../lib/schemas/recruitment-schema.ts';
 import { convertDateAndTimeToDeadline } from '../../../../lib/utils/convert.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { SaveRecruitmentRequestSchema } from '../../../../apis/response-body-schema.ts';
+import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
 
 const FooterSection = ({
   updateRecruitment,
@@ -26,13 +27,15 @@ const FooterSection = ({
   const queryClient = useQueryClient();
   const { saveRecruitment, startRecruitment } = useAdminApi();
 
-  const saveMutation = useMutation({
+  const saveMutation = useAtomicMutation({
     mutationFn: (requestBody: z.infer<typeof SaveRecruitmentRequestSchema>) =>
       saveRecruitment(requestBody),
+    requestName: 'saveRecruitment',
   });
 
-  const startMutation = useMutation({
+  const startMutation = useAtomicMutation({
     mutationFn: startRecruitment,
+    requestName: 'startRecruitment',
   });
 
   const { toast } = useToast();
@@ -80,10 +83,13 @@ const FooterSection = ({
       await queryClient.invalidateQueries({
         queryKey: ['recruitmentProgress'],
       });
-    } catch (e) {
-      printCustomError(e, 'handleStartRecruitmentClick');
+      // FixMe
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      printCustomError(e, 'applicantLogin');
+
       toast({
-        title: '예기치 못한 문제가 발생했습니다.',
+        title: e?.response?.data?.message || '예기치 못한 문제가 발생했습니다.',
         state: 'error',
       });
     }

@@ -1,13 +1,13 @@
-import Container from '../../components/shared/container.tsx';
+import Container from '../../components/atom/container.tsx';
 import RecruitWaitPage from './_components/recruit-wait/recruit-wait-page.tsx';
 import RecruitCompletePage from './_components/recruit-complete/recruit-complete-page.tsx';
 import RecruitMakePage from './_components/recruit-make/recruit-make-page.tsx';
 import useAdminApi from '../../apis/admin-api.ts';
 import { useQuery } from '@tanstack/react-query';
-import Loading from '../../components/shared/loading.tsx';
+import Loading from '../../components/atom/loading.tsx';
 import { throwCustomError } from '../../lib/utils/error.ts';
 import { z } from 'zod';
-import { ProgressSchema } from '../../lib/types/schemas/progress-schema.ts';
+import { ProgressSchema } from '../../lib/schemas/progress-schema.ts';
 
 const Page = () => {
   const { readRecruitmentProgress } = useAdminApi();

@@ -4,10 +4,10 @@ import { readRecruitmentSearch } from '../apis/base-api.ts';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { z } from 'zod';
-import { RecruitmentSearchResultSchema } from '../lib/types/schemas/recruitment-schema.ts';
+import { RecruitmentSearchResultSchema } from '../lib/schemas/recruitment-schema.ts';
 import Autocomplete, {
   AutocompleteOption,
-} from '../components/shared/autocomplete.tsx';
+} from '../components/atom/autocomplete.tsx';
 import useDebounce from '../hooks/use-debounce.ts';
 
 const READ_RECRUITMENT_SEARCH_QUERY_KEY = 'readRecruitmentSearch';
@@ -44,7 +44,6 @@ const LookupRecruitmentForm = () => {
   });
 
   const handleSelect = (option: AutocompleteOption) => {
-    //TODO: Implement navigation to recruitment page
     navigate('/recruitment/info?title=' + option.value);
     resetField('searchCrew');
   };
@@ -62,7 +61,7 @@ const LookupRecruitmentForm = () => {
   const options = !isEmpty ? getOptions(data) : [];
 
   return (
-    <Form action="/recruitment">
+    <Form>
       <Autocomplete
         options={options}
         registerReturns={register('searchCrew')}

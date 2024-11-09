@@ -1,7 +1,7 @@
 import { useNavigate, useRouteError } from 'react-router-dom';
 import React from 'react';
 import * as Sentry from '@sentry/react';
-import Container from './shared/container.tsx';
+import Container from './atom/container.tsx';
 import { getErrorMessage } from '../lib/utils/error.ts';
 import FaceSadTearIcon from '../assets/icons/face-sad-tear-icon.svg?react';
 
@@ -29,12 +29,12 @@ const RootErrorBoundary = () => {
             문제가 지속해서 발생할 경우{' '}
             <a
               className="font-semibold text-crews-b05 underline hover:text-crews-b06"
-              href={import.meta.env.VITE_KAKAO_OPEN_CHAT}
+              href={import.meta.env.VITE_SLASHPAGE}
               target="_blank"
             >
-              여기
+              고객센터
             </a>
-            를 눌러 관리자에게 문의해주세요.
+            의 버그 리포트에 문의해주세요.
           </p>
 
           <button

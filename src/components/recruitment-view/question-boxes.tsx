@@ -1,16 +1,16 @@
-import Container from '../shared/container.tsx';
-import Typography from '../shared/typography.tsx';
+import Container from '../atom/container.tsx';
+import Typography from '../atom/typography.tsx';
 import { z } from 'zod';
 import {
   AnswerSchema,
   NarrativeAnswerSchema,
   SelectiveAnswerSchema,
-} from '../../lib/types/schemas/application-schema.ts';
+} from '../../lib/schemas/application-schema.ts';
 import {
   NarrativeQuestionSchema,
   QuestionSchema,
   SelectiveQuestionSchema,
-} from '../../lib/types/schemas/question-schema.ts';
+} from '../../lib/schemas/question-schema.ts';
 
 const QuestionBoxes = ({
   questions,
@@ -142,7 +142,7 @@ const NarrativeBox = ({
         <textarea
           rows={3}
           className="w-full rounded-lg p-2 text-xs outline outline-1 outline-crews-g02 placeholder:font-light placeholder:text-crews-g03"
-          readOnly
+          disabled
           placeholder="이곳에 답변을 입력해주세요."
           value={answer?.content ?? ''}
         />

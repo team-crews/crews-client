@@ -4,7 +4,7 @@ import {
   DateAndTimeSchema,
   DeadlineSchema,
   RecruitmentSchema,
-} from '../types/schemas/recruitment-schema.ts';
+} from '../schemas/recruitment-schema.ts';
 import dayjs from 'dayjs';
 
 import utc from 'dayjs/plugin/utc';
