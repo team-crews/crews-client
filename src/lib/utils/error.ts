@@ -66,7 +66,6 @@ export function throwCustomError(e: unknown, errorFunctionName: string): never {
 // FixMe
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getErrorMessage(error: any): string {
-  console.log(error);
   if (isRouteErrorResponse(error)) {
     if (error.status === 404) return '페이지를 찾을 수 없습니다';
   }

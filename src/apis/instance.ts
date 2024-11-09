@@ -26,10 +26,8 @@ const useAuthInstance = () => {
   useEffect(() => {
     const requestIntercept = authInstance.interceptors.request.use(
       (config) => {
-        console.log();
         if (!config.headers?.Authorization)
           config.headers.Authorization = accessToken;
-
         return config;
       },
       (e) => {
@@ -44,14 +42,14 @@ const useAuthInstance = () => {
       async (error) => {
         const prevRequest = error?.config;
 
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
+        if (error?.response?.status === 401 && !prevRequest?.sent) {
           prevRequest.sent = true; // Prevent Infinite Loop
 
           prevRequest.headers['Authorization'] = await refresh();
           return authInstance(prevRequest);
         }
 
-        if (error?.response?.status === 403) clearSession();
+        if (error?.response?.status === 401) clearSession();
         return Promise.reject(error);
       },
     );
