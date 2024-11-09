@@ -69,12 +69,12 @@ const Input = ({
     >
       <input
         className={cn(variants({ state }))}
+        autoComplete="off"
         {...registerReturns}
         {...props}
         type={customInputType}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        autoComplete="off"
       />
       {focus && (
         <div className="absolute right-2 top-1/2 flex -translate-y-1/2 transform gap-2 text-crews-g04">

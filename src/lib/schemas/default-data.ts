@@ -1,15 +1,15 @@
-import { CreatedRecruitmentSchema } from './schemas/recruitment-schema.ts';
+import { CreatedRecruitmentSchema } from './recruitment-schema.ts';
 import { z } from 'zod';
 import {
   CreatedChoiceSchema,
   CreatedNarrativeQuestionSchema,
   CreatedSelectiveQuestionSchema,
-} from './schemas/question-schema.ts';
-import { CreatedSectionSchema } from './schemas/section-schema.ts';
+} from './question-schema.ts';
+import { CreatedSectionSchema } from './section-schema.ts';
 import {
   NarrativeAnswerSchema,
   SelectiveAnswerSchema,
-} from './schemas/application-schema.ts';
+} from './application-schema.ts';
 
 export const CREATED_NARRATIVE_ANSWER = (
   questionId: number,

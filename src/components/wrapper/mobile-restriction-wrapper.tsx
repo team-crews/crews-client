@@ -2,7 +2,7 @@ import useBreakpoints from '../../hooks/use-breakpoints.ts';
 import { Outlet } from 'react-router-dom';
 
 import AnchorIcon from '../../assets/icons/anchor-icon.svg?react';
-import Container from '../shared/container.tsx';
+import Container from '../atom/container.tsx';
 
 const MobileRestrictionWrapper = () => {
   const { isSmaller } = useBreakpoints({ breakpoint: 'md' });

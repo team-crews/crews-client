@@ -1,4 +1,4 @@
-import Container from '../../components/shared/container.tsx';
+import Container from '../../components/atom/container.tsx';
 import Seperator from '../../components/shadcn/seperator.tsx';
 import AdminSignIn from './_components/admin-sign-in.tsx';
 import ApplicantSignIn from './_components/applicant-sign-in.tsx';
@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from '../../components/shadcn/tooltip.tsx';
 import { z } from 'zod';
-import { RoleSchema } from '../../lib/types/schemas/role-schema.ts';
+import { RoleSchema } from '../../lib/schemas/role-schema.ts';
 
 const Page = () => {
   const location = useLocation();
@@ -23,7 +23,7 @@ const Page = () => {
   };
 
   return (
-    <Container className="flex items-center justify-center">
+    <Container className="flex h-dvh items-center justify-center">
       <section className="w-full max-w-[650px] rounded-md border border-crews-g01 px-32 py-40 shadow-custom-light-shadow">
         <div className="mb-6 flex flex-col items-center text-3xl tracking-widest">
           <p className="font-bold">

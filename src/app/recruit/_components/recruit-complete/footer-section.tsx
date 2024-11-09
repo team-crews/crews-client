@@ -1,19 +1,20 @@
 import { Button } from '../../../../components/shadcn/button.tsx';
 import CrewsDialog from '../../../../components/molecule/crews-dialog.tsx';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../../hooks/use-toast.ts';
 import useDialog from '../../../../hooks/use-dialog.ts';
 import { printCustomError } from '../../../../lib/utils/error.ts';
-import Loading from '../../../../components/shared/loading.tsx';
+import Loading from '../../../../components/atom/loading.tsx';
 import useAdminApi from '../../../../apis/admin-api.ts';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
 import { z } from 'zod';
-import { ProgressSchema } from '../../../../lib/types/schemas/progress-schema.ts';
+import { ProgressSchema } from '../../../../lib/schemas/progress-schema.ts';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '../../../../components/shadcn/tooltip.tsx';
+import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
 
@@ -26,15 +27,17 @@ const FooterSection = ({
 }) => {
   const { saveEvaluation, sendEvaluationMail } = useAdminApi();
 
-  const saveMutation = useMutation({
+  const saveMutation = useAtomicMutation({
     mutationFn: () => {
       if (!passApplicationIds) throw new Error();
       return saveEvaluation({ passApplicationIds });
     },
+    requestName: 'saveEvaluation',
   });
 
-  const sendMutation = useMutation({
+  const sendMutation = useAtomicMutation({
     mutationFn: sendEvaluationMail,
+    requestName: 'sendEvaluationMail',
   });
 
   const { toast } = useToast();
@@ -46,10 +49,13 @@ const FooterSection = ({
         title: '임시저장이 완료되었습니다.',
         state: 'success',
       });
-    } catch (e) {
-      printCustomError(e, 'handleSaveClick');
+      // FixMe
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      printCustomError(e, 'applicantLogin');
+
       toast({
-        title: '예기치 못한 오류가 발생했습니다.',
+        title: e?.response?.data?.message || '예기치 못한 문제가 발생했습니다.',
         state: 'error',
       });
     }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { formatNumberTime } from '../../../../lib/utils/utils.ts';
 import { z } from 'zod';
-import { DeadlineSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
+import { DeadlineSchema } from '../../../../lib/schemas/recruitment-schema.ts';
 
 const DeadlineSection = ({
   recruiting,

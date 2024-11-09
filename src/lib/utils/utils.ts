@@ -2,9 +2,9 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { FieldErrors } from 'react-hook-form';
 import { jwtDecode } from 'jwt-decode';
-import { RoleSchema } from '../types/schemas/role-schema.ts';
+import { RoleSchema } from '../schemas/role-schema.ts';
 import { z } from 'zod';
-import { AnswersBySectionSchema } from '../types/schemas/application-schema.ts';
+import { AnswersBySectionSchema } from '../schemas/application-schema.ts';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

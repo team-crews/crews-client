@@ -1,13 +1,14 @@
 import { z } from 'zod';
-import { ProgressSchema } from '../lib/types/schemas/progress-schema.ts';
+import { ProgressSchema } from '../lib/schemas/progress-schema.ts';
 import {
   CreatedRecruitmentSchema,
   RecruitmentSchema,
-} from '../lib/types/schemas/recruitment-schema.ts';
+  RecruitmentSearchResultSchema,
+} from '../lib/schemas/recruitment-schema.ts';
 import {
   ApplicationDetailSchema,
   ApplicationOverviewSchema,
-} from '../lib/types/schemas/application-schema.ts';
+} from '../lib/schemas/application-schema.ts';
 
 const NoResponseDataSchema = z.literal('');
 
@@ -59,3 +60,9 @@ export const ReadApplicationResponseSchema =
 export const SaveApplicationResponseSchema = ApplicationDetailSchema;
 
 export const ReadRecruitmentByCodeResponseSchema = RecruitmentSchema;
+
+export const ReadRecruitmentByTitleSchema = RecruitmentSchema;
+
+export const ReadRecruitmentSearchResponseSchema = z.array(
+  RecruitmentSearchResultSchema,
+);

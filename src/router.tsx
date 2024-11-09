@@ -7,7 +7,9 @@ import RootLayout from './app/layout.tsx';
 import LandingPage from './app/page.tsx';
 import SignInPage from './app/sign-in/page.tsx';
 import SignUpPage from './app/sign-up/page.tsx';
-import RecruitmentPage from './app/recruitment/[recruitmentCode]/page.tsx';
+import RecruitmentInfoPage from './app/recruitment/info/page.tsx';
+import RecruitmentPage from './app/recruitment/info/page.tsx';
+
 import MobileRestrictionWrapper from './components/wrapper/mobile-restriction-wrapper.tsx';
 import * as Sentry from '@sentry/react';
 
@@ -29,6 +31,8 @@ const router: ReturnType<typeof createBrowserRouter> =
             <Route path="/" element={<LandingPage />} />
             <Route path="/sign-in" element={<SignInPage />} />
             <Route path="/sign-up" element={<SignUpPage />} />
+
+            <Route path="recruitment/info" element={<RecruitmentInfoPage />} />
 
             <Route path="recruitment" element={<RecruitmentPage />} />
 

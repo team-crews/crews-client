@@ -4,12 +4,12 @@ import XMarkIcon from '../../../../../assets/icons/x-mark-icon.svg?react';
 import QuestionBoxes from './question-boxes.tsx';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
 import { useToast } from '../../../../../hooks/use-toast.ts';
-import { CREATED_SECTION } from '../../../../../lib/types/default-data.ts';
+import { CREATED_SECTION } from '../../../../../lib/schemas/default-data.ts';
 import { cn } from '../../../../../lib/utils/utils.ts';
 import useAutosizeTextarea from '../../../../../hooks/use-autosize-textarea.ts';
-import Container from '../../../../../components/shared/container.tsx';
+import Container from '../../../../../components/atom/container.tsx';
 import { z } from 'zod';
-import { CreatedRecruitmentSchema } from '../../../../../lib/types/schemas/recruitment-schema.ts';
+import { CreatedRecruitmentSchema } from '../../../../../lib/schemas/recruitment-schema.ts';
 
 const SectionBox = ({
   sectionIndex,

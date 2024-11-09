@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { z } from 'zod';
-import { RoleSchema } from '../../lib/types/schemas/role-schema.ts';
+import { RoleSchema } from '../../lib/schemas/role-schema.ts';
 
 type State = {
   username: string;
@@ -18,7 +18,7 @@ type Action = {
 const DEFAULT_SESSION: State = {
   username: '',
   accessToken: '',
-  role: 'APPLICANT'
+  role: 'APPLICANT',
 };
 
 const useSessionStore = create<State & Action>((set) => ({
@@ -26,7 +26,7 @@ const useSessionStore = create<State & Action>((set) => ({
   updateUsername: (username: string) => set(() => ({ username })),
   updateAccessToken: (accessToken) => set(() => ({ accessToken })),
   updateRole: (role) => set(() => ({ role })),
-  clearState: () => set(() => ({ ...DEFAULT_SESSION }))
+  clearState: () => set(() => ({ ...DEFAULT_SESSION })),
 }));
 
 export default useSessionStore;

@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import useSession from '../../hooks/use-session';
 import { z } from 'zod';
-import { RoleSchema } from '../../lib/types/schemas/role-schema.ts';
+import { RoleSchema } from '../../lib/schemas/role-schema.ts';
 
 const AuthRedirectWrapper = ({
   availableRoles,

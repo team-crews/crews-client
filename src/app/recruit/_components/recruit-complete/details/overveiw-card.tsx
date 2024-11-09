@@ -5,8 +5,8 @@ import { cn } from '../../../../../lib/utils/utils.ts';
 import useDialog from '../../../../../hooks/use-dialog.ts';
 import ApplicationDetailDialog from './application-detail-dialog.tsx';
 import { z } from 'zod';
-import { ProgressSchema } from '../../../../../lib/types/schemas/progress-schema.ts';
-import { ApplicationOverviewSchema } from '../../../../../lib/types/schemas/application-schema.ts';
+import { ProgressSchema } from '../../../../../lib/schemas/progress-schema.ts';
+import { ApplicationOverviewSchema } from '../../../../../lib/schemas/application-schema.ts';
 
 const OverviewCard = ({
   applicationOverview,

@@ -3,7 +3,7 @@ import { useToast } from '../../../hooks/use-toast.ts';
 import { useState } from 'react';
 import useSession from '../../../hooks/use-session.ts';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Input from '../../../components/shared/input.tsx';
+import Input from '../../../components/atom/input.tsx';
 import { Button } from '../../../components/shadcn/button.tsx';
 import { applicantSignIn } from '../../../apis/auth-api.ts';
 import { printCustomError } from '../../../lib/utils/error.ts';
@@ -13,8 +13,8 @@ import {
   isProperPassword,
 } from '../../../lib/utils/validation.ts';
 import { findFirstErrorMessage } from '../../../lib/utils/utils.ts';
-import { useMutation } from '@tanstack/react-query';
-import Loading from '../../../components/shared/loading.tsx';
+import Loading from '../../../components/atom/loading.tsx';
+import useAtomicMutation from '../../../hooks/use-atomic-mutation.ts';
 
 type ApplyInputs = {
   email: string;
@@ -35,8 +35,9 @@ const ApplicantSignIn = () => {
     },
   });
 
-  const mutation = useMutation({
+  const mutation = useAtomicMutation({
     mutationFn: (formData: ApplyInputs) => applicantSignIn(formData),
+    requestName: 'applicantSignIn',
   });
 
   const onSubmit: SubmitHandler<ApplyInputs> = async (data) => {
@@ -50,14 +51,14 @@ const ApplicantSignIn = () => {
       });
 
       navigate(`/`);
-    } catch (e) {
-      const errorStatus = printCustomError(e, 'applicantLogin');
 
-      let title = '예기치 못한 문제가 발생했습니다.';
-      if (errorStatus === 401) title = '잘못된 비밀번호입니다.';
+      // FixMe
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      printCustomError(e, 'applicantLogin');
 
       toast({
-        title,
+        title: e?.response?.data?.message || '예기치 못한 문제가 발생했습니다.',
         state: 'error',
       });
 

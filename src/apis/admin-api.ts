@@ -18,7 +18,7 @@ import {
   convertSeoulToUTC,
   convertUTCtoSeoul,
 } from '../lib/utils/convert.ts';
-import { DateAndTimeSchema } from '../lib/types/schemas/recruitment-schema.ts';
+import { DateAndTimeSchema } from '../lib/schemas/recruitment-schema.ts';
 
 const useAdminApi = () => {
   const { authInstance } = useAuthInstance();

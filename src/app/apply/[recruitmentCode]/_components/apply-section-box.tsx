@@ -1,7 +1,7 @@
 import { cn } from '../../../../lib/utils/utils.ts';
 import React from 'react';
 import { z } from 'zod';
-import { SectionSchema } from '../../../../lib/types/schemas/section-schema.ts';
+import { SectionSchema } from '../../../../lib/schemas/section-schema.ts';
 import ReadonlyTextarea from '../../../../components/atom/readonly-textarea.tsx';
 
 interface ApplySectionBoxProps
@@ -27,7 +27,10 @@ const ApplySectionBox = ({
         <p className="w-full bg-inherit text-base font-bold text-crews-w01">
           {name}
         </p>
-        <ReadonlyTextarea name="WINTER_IS_GOD" value={description} />
+        <ReadonlyTextarea
+          name={'WINTER_IS_GOD' + crypto.randomUUID()}
+          value={description}
+        />
       </div>
       <div className="flex h-fit w-full flex-col gap-4 bg-crews-b01 p-4">
         {children}

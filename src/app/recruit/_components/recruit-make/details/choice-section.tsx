@@ -6,9 +6,9 @@ import Separator from '../../../../../components/shadcn/seperator.tsx';
 import { useToast } from '../../../../../hooks/use-toast.ts';
 import { isFilledInput } from '../../../../../lib/utils/validation.ts';
 
-import { CREATED_CHOICE } from '../../../../../lib/types/default-data.ts';
+import { CREATED_CHOICE } from '../../../../../lib/schemas/default-data.ts';
 import { z } from 'zod';
-import { CreatedRecruitmentSchema } from '../../../../../lib/types/schemas/recruitment-schema.ts';
+import { CreatedRecruitmentSchema } from '../../../../../lib/schemas/recruitment-schema.ts';
 
 const ChoiceSection = ({
   sectionIndex,

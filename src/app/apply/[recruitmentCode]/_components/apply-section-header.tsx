@@ -1,7 +1,7 @@
 import { cn } from '../../../../lib/utils/utils.ts';
 import { SHARED_SECTION_INDEX } from '../page';
 import { z } from 'zod';
-import { SectionSchema } from '../../../../lib/types/schemas/section-schema.ts';
+import { SectionSchema } from '../../../../lib/schemas/section-schema.ts';
 
 interface ApplySectionHeaderProps {
   sections: z.infer<typeof SectionSchema>[];

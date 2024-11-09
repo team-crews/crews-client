@@ -2,8 +2,8 @@ import { useParams } from 'react-router-dom';
 import useApplicantApi from '../../../apis/applicant-api.ts';
 import { useQuery } from '@tanstack/react-query';
 import { readRecruitmentByCode } from '../../../apis/base-api.ts';
-import Loading from '../../../components/shared/loading.tsx';
-import Container from '../../../components/shared/container.tsx';
+import Loading from '../../../components/atom/loading.tsx';
+import Container from '../../../components/atom/container.tsx';
 import { throwCustomError } from '../../../lib/utils/error.ts';
 import Page from './page.tsx';
 

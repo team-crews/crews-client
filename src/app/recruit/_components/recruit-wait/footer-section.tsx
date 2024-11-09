@@ -1,5 +1,5 @@
 import { Button } from '../../../../components/shadcn/button.tsx';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import CrewsDialog from '../../../../components/molecule/crews-dialog.tsx';
 import useDialog from '../../../../hooks/use-dialog.ts';
 import { useForm } from 'react-hook-form';
@@ -16,10 +16,11 @@ import {
 } from '../../../../lib/utils/convert.ts';
 import { findFirstErrorMessage } from '../../../../lib/utils/utils.ts';
 import { z } from 'zod';
-import { DateAndTimeSchema } from '../../../../lib/types/schemas/recruitment-schema.ts';
+import { DateAndTimeSchema } from '../../../../lib/schemas/recruitment-schema.ts';
 import React from 'react';
 import CrewsFooter from '../../../../components/molecule/crews-footer.tsx';
-import Loading from '../../../../components/shared/loading.tsx';
+import Loading from '../../../../components/atom/loading.tsx';
+import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
 
 const times = Array.from(
   { length: 24 },
@@ -50,7 +51,10 @@ const FooterSection = ({
     defaultValues: convertDeadlineToDateAndTime(deadline),
   });
 
-  const changeMutation = useMutation({ mutationFn: changeDeadline });
+  const changeMutation = useAtomicMutation({
+    mutationFn: changeDeadline,
+    requestName: 'changeDeadline',
+  });
 
   const onSubmit = async (data: z.infer<typeof DateAndTimeSchema>) => {
     try {
@@ -59,10 +63,13 @@ const FooterSection = ({
         queryKey: ['recruitmentInProgressDetail'],
       });
       dialogReturns.toggleOpen();
-    } catch (e) {
-      printCustomError(e, 'onSubmit');
+      // FixMe
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      printCustomError(e, 'applicantLogin');
+
       toast({
-        title: '예상하지 못한 오류가 발생하였습니다.',
+        title: e?.response?.data?.message || '예기치 못한 문제가 발생했습니다.',
         state: 'error',
       });
     }

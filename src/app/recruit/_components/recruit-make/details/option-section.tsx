@@ -4,7 +4,7 @@ import { Switch } from '../../../../../components/shadcn/switch.tsx';
 import { QuestionType } from '../../../../../lib/enums.ts';
 import React from 'react';
 import { z } from 'zod';
-import { CreatedRecruitmentSchema } from '../../../../../lib/types/schemas/recruitment-schema.ts';
+import { CreatedRecruitmentSchema } from '../../../../../lib/schemas/recruitment-schema.ts';
 
 type OptionSectionProps = {
   sectionIndex: number;

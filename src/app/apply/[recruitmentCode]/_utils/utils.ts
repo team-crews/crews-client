@@ -1,11 +1,11 @@
 import { ChoiceMap } from '../_hooks/use-choice-map.tsx';
 import { IFormApplication, SHARED_SECTION_INDEX } from '../page';
 import { z } from 'zod';
-import { SectionSchema } from '../../../../lib/types/schemas/section-schema.ts';
+import { SectionSchema } from '../../../../lib/schemas/section-schema.ts';
 import {
   ApplicationDetailSchema,
   ISaveApplication,
-} from '../../../../lib/types/schemas/application-schema.ts';
+} from '../../../../lib/schemas/application-schema.ts';
 
 export const convertToFormApplication = (
   application: z.infer<typeof ApplicationDetailSchema>,

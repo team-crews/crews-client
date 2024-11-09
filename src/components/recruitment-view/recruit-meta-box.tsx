@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
 import { z } from 'zod';
-import { RecruitmentSchema } from '../../lib/types/schemas/recruitment-schema.ts';
+import { RecruitmentSchema } from '../../lib/schemas/recruitment-schema.ts';
 
 const RecruitMetaBox = ({
   title,
