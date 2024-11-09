@@ -75,7 +75,6 @@ const Autocomplete = ({
   return (
     <div className="relative">
       <Input
-        className="mb-20 mt-12 py-2"
         placeholder="모집 공고 검색"
         registerReturns={registerReturns}
         clearInput={onClearInput}

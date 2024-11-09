@@ -18,7 +18,7 @@ const Page = () => {
   };
 
   return (
-    <Container className="flex items-center justify-center">
+    <Container className="flex h-dvh items-center justify-center">
       <section className="w-full max-w-[650px] rounded-md border border-crews-g01 px-32 py-40 shadow-custom-light-shadow">
         <div className="mb-6 flex flex-col items-center text-3xl tracking-widest">
           <p className="font-bold">

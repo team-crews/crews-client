@@ -162,7 +162,7 @@ const FooterSection = ({
           </TooltipTrigger>
 
           <TooltipContent>
-            <p>마감까지 {formatNumberTime(diff)}</p>
+            <p>⏰ 마감까지 {formatNumberTime(diff)}</p>
           </TooltipContent>
         </Tooltip>
       </CrewsFooter>
