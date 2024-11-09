@@ -1,4 +1,3 @@
-import { Button } from '../../../../components/shadcn/button.tsx';
 import CrewsDialog from '../../../../components/molecule/crews-dialog.tsx';
 import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../../hooks/use-toast.ts';
@@ -15,6 +14,7 @@ import {
   TooltipTrigger,
 } from '../../../../components/shadcn/tooltip.tsx';
 import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
+import { Button } from '../../../../components/shadcn/button.tsx';
 
 const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
 
@@ -91,10 +91,12 @@ const FooterSection = ({
       ) : null}
       <CrewsFooter>
         <Tooltip>
-          <TooltipTrigger>
-            <Button size="lg" disabled>
-              CSV 추출
-            </Button>
+          <TooltipTrigger asChild>
+            <div>
+              <Button size="lg" disabled>
+                CSV 추출
+              </Button>
+            </div>
           </TooltipTrigger>
 
           <TooltipContent>
