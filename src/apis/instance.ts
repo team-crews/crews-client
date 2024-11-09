@@ -26,7 +26,6 @@ const useAuthInstance = () => {
   useEffect(() => {
     const requestIntercept = authInstance.interceptors.request.use(
       (config) => {
-        console.log();
         if (!config.headers?.Authorization)
           config.headers.Authorization = accessToken;
 
