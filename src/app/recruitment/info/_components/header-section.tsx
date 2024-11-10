@@ -10,8 +10,7 @@ const HeaderSection = () => {
         </div>
         <div className="flex flex-col gap-1 text-crews-g05">
           <p className="text-base font-light">
-            모집 공고를 조회합니다. 하단의 '지원하기'를 눌러 원하는 모집에
-            지원해보세요!
+            하단의 '지원하기'를 눌러 원하는 모집에 지원해보세요!
           </p>
           <p className="text-base font-light">
             또한 '지원서 미리보기'를 눌러 지원서의 내용을 확인할 수 있습니다.
