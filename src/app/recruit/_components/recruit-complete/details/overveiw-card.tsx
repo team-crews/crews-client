@@ -43,9 +43,9 @@ const OverviewCard = ({
         )}
       >
         <div className="text-sm font-semibold text-crews-bk01">
-          <p>{applicationOverview.studentNumber}</p>
-          <p>{applicationOverview.name}</p>
-          <p className="mt-1 text-xs text-crews-g05">
+          <p className="line-clamp-1">{applicationOverview.studentNumber}</p>
+          <p className="line-clamp-1">{applicationOverview.name}</p>
+          <p className="mt-1 line-clamp-1 text-xs text-crews-g05">
             {applicationOverview.major}
           </p>
         </div>

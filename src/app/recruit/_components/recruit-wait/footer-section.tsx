@@ -63,6 +63,11 @@ const FooterSection = ({
         queryKey: ['recruitmentInProgressDetail'],
       });
       dialogReturns.toggleOpen();
+
+      toast({
+        title: '마감 기간이 연장되었습니다.',
+        state: 'success',
+      });
       // FixMe
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {

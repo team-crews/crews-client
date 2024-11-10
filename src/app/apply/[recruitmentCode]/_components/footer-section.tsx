@@ -28,6 +28,7 @@ import {
   TooltipTrigger,
 } from '../../../../components/shadcn/tooltip.tsx';
 import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
+import { useQueryClient } from '@tanstack/react-query';
 
 const untouchedFieldIndex = {
   name: 0,
@@ -56,6 +57,7 @@ const FooterSection = ({
 }) => {
   const { toast } = useToast();
   const { handleSubmit, getValues, reset } = useFormContext<IFormApplication>();
+  const queryClient = useQueryClient();
 
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
   const { saveApplication } = useApplicantApi(recruitmentCode!);
@@ -117,12 +119,24 @@ const FooterSection = ({
 
     try {
       const response = await saveMutate.mutateAsync(requestBody);
-      const convertedApplication = convertToFormApplication(
-        response,
-        generateChoiceMap(recruitment),
-      );
 
-      reset(convertedApplication);
+      /*
+      FixMe
+        - 지금 response 를 바탕으로 다시 form reset 하는건 좋은데 문제가 최초 생성하는 지원서일 경우 지원서의 id도 다시 갱신되어야합니다
+        - 이에 대한 처리가 따로 없는데 뭔가 위에 로직을 고치기 애매해서 우선 그냥 invalidate 시켜야할 것 같습니다.
+       */
+      if (requestBody.id === null) {
+        await queryClient.invalidateQueries({
+          queryKey: ['readApplication', recruitmentCode],
+        });
+      } else {
+        const convertedApplication = convertToFormApplication(
+          response,
+          generateChoiceMap(recruitment),
+        );
+
+        reset(convertedApplication);
+      }
 
       toast({
         title: '지원서 저장이 완료되었습니다.',

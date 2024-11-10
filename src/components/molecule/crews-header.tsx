@@ -56,7 +56,7 @@ const CrewsHeader = () => {
           <p className="text-3xl font-semibold">Crews</p>
         </Link>
         <a href={import.meta.env.VITE_TEAM_INTRODUCE} target="_blank">
-          <p className="font-normal hover:underline">팀 소개</p>
+          <p className="font-normal hover:underline">팀 모집</p>
         </a>
         <a href={import.meta.env.VITE_GUIDE_BOOK} target="_blank">
           <p className="font-normal hover:underline">안내서</p>
