@@ -16,8 +16,6 @@ import {
 import useAtomicMutation from '../../../../hooks/use-atomic-mutation.ts';
 import { Button } from '../../../../components/shadcn/button.tsx';
 
-const url = import.meta.env.VITE_KAKAO_OPEN_CHAT;
-
 const FooterSection = ({
   passApplicationIds,
   progress,
@@ -73,10 +71,13 @@ const FooterSection = ({
         title: '메일 전송이 완료되었습니다.',
         state: 'success',
       });
-    } catch (e) {
-      printCustomError(e, 'handleSendConfirmClick');
+      // FixMe
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      printCustomError(e, 'applicantLogin');
+
       toast({
-        title: '예기치 못한 오류가 발생했습니다.',
+        title: e?.response?.data?.message || '예기치 못한 문제가 발생했습니다.',
         state: 'error',
       });
     }
@@ -124,25 +125,16 @@ const FooterSection = ({
         action={handleSendConfirmClick}
         className="w-80 p-4 text-center"
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 p-4">
           <p className="text-center text-lg font-light">
             <span className="text-xl font-bold text-crews-b05">
-              📮 합격 메일
+              📮 모집 결과 메일
             </span>{' '}
             을 발송합니다.
           </p>
           <p className="text-sm font-light text-crews-bk01">
-            메일 전송 후에도 지원자들의 지원서를 <br />
-            확인할 수 있지만
+            메일 전송 후에도 지원자들의 지원서를 확인할 수 있지만
             <span className="font-bold"> 메일 재전송은 불가합니다.</span>
-          </p>
-          <p className="text-xs font-light text-crews-bk01">
-            크루즈 서비스는 어떠셨나요?
-            <br />
-            <a href={url} className="text-crews-b05 underline" target="_blank">
-              오픈채팅
-            </a>
-            에 피드백을 남겨주세요 🥹
           </p>
         </div>
       </CrewsDialog>

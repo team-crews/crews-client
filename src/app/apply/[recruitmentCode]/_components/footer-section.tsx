@@ -62,7 +62,6 @@ const FooterSection = ({
   const { recruitmentCode } = useParams<{ recruitmentCode: string }>();
   const { saveApplication } = useApplicantApi(recruitmentCode!);
 
-  const [recruiting, setRecruiting] = useState(false);
   const [diff, setDiff] = useState<number>(dayjs(deadline).diff(dayjs()));
 
   const saveMutate = useAtomicMutation({
@@ -71,21 +70,14 @@ const FooterSection = ({
   });
 
   useEffect(() => {
-    setRecruiting(true);
+    if (diff <= 0) return;
 
-    if (!recruiting) return;
     const interval = setInterval(() => {
-      const diff = dayjs(deadline).diff(dayjs());
-      if (diff <= 0) {
-        setRecruiting(false);
-        setDiff(0);
-      } else {
-        setDiff(diff);
-      }
+      setDiff(dayjs(deadline).diff(dayjs()));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [deadline, recruiting]);
+  }, []);
 
   const onSubmit = async (data: IFormApplication) => {
     // 선택된 섹션에 해당하는 질문만 필터링
@@ -167,16 +159,20 @@ const FooterSection = ({
         <Tooltip>
           <TooltipTrigger>
             <Button
-              disabled={!recruiting}
+              disabled={diff <= 0}
               size="lg"
               onClick={handleSubmit(onSubmit, onFormError)}
             >
-              {recruiting ? '제출하기' : '모집 기간이 아닙니다.'}
+              {diff <= 0 ? '모집 기간이 아닙니다' : '제출하기'}
             </Button>
           </TooltipTrigger>
 
           <TooltipContent>
-            <p>⏰ 마감까지 {formatNumberTime(diff)}</p>
+            {diff <= 0 ? (
+              <p>⏰ 마감되었습니다!</p>
+            ) : (
+              <p>⏰ 마감까지 {formatNumberTime(diff)}</p>
+            )}
           </TooltipContent>
         </Tooltip>
       </CrewsFooter>
