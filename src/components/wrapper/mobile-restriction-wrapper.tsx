@@ -10,7 +10,10 @@ const MobileRestrictionWrapper = () => {
   // TODO: Remove this code block after responsive design is implemented
   const pathname = window.location.pathname;
 
-  const isResponsiveImplemented = pathname === '/';
+  const isResponsiveImplemented =
+    pathname === '/' ||
+    pathname === '/recruitment/info' ||
+    pathname === '/apply';
 
   if (isResponsiveImplemented) {
     return <Outlet />;
