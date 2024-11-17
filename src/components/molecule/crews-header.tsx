@@ -1,6 +1,6 @@
 import AnchorIcon from '../../assets/icons/anchor-icon.svg?react';
 import CircleUserIcon from '../../assets/icons/circle-user-icon.svg?react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useSession from '../../hooks/use-session.ts';
 import { cn } from '../../lib/utils/utils.ts';
 import { useToast } from '../../hooks/use-toast.ts';
@@ -32,8 +32,10 @@ const HeaderItems = [
 
 const CrewsHeader = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const { isSmaller: isMobile } = useBreakpoints({ breakpoint: 'md' });
+  const { isSmaller: isTablet } = useBreakpoints({ breakpoint: 'md' });
+  const { isSmaller: isMobile } = useBreakpoints({ breakpoint: 'sm' });
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -84,7 +86,7 @@ const CrewsHeader = () => {
           <p className="text-3xl font-semibold">Crews</p>
         </Link>
 
-        {!isMobile
+        {!isTablet
           ? HeaderItems.map((item, index) => (
               <a key={index} href={item.url} target="_blank">
                 <p className="font-normal hover:underline">{item.title}</p>
@@ -93,39 +95,42 @@ const CrewsHeader = () => {
           : null}
       </div>
 
-      <div
-        className={cn({
-          hidden: ['/sign-in', '/sign-up'].includes(location.pathname),
-        })}
-      >
-        {accessToken ? (
-          <div className="flex items-center gap-3 text-crews-bk01">
-            <div className="flex items-center gap-2">
-              <CircleUserIcon className="h-7 w-7" />
-              <p className="font-medium">{`${role === 'ADMIN' ? '운영진' : '지원자'} | ${username}`}</p>
+      {!isMobile ? (
+        <div
+          className={cn({
+            hidden: ['/sign-in', '/sign-up'].includes(location.pathname),
+          })}
+        >
+          {accessToken ? (
+            <div className="flex items-center gap-3 text-crews-bk01">
+              <div className="flex items-center gap-2">
+                <CircleUserIcon className="h-7 w-7" />
+                <p className="font-medium">{`${role === 'ADMIN' ? '운영진' : '지원자'} | ${username}`}</p>
+              </div>
+              <button onClick={handleSignOutClick}>
+                <p className="text-xs font-light underline">로그아웃</p>
+              </button>
             </div>
-            <button onClick={handleSignOutClick}>
-              <p className="text-xs font-light underline">로그아웃</p>
-            </button>
-          </div>
-        ) : (
-          <div className="flex flex-1 justify-end gap-2">
-            <Link
-              to="/sign-in"
-              className="rounded px-4 py-1 font-semibold text-crews-bk01 hover:bg-[#f0f0f0]"
-            >
-              로그인
-            </Link>
-            <Link
-              to="/sign-up"
-              className="rounded bg-crews-bk01 px-4 py-1 text-crews-w01 hover:opacity-70"
-            >
-              회원가입
-            </Link>
-          </div>
-        )}
-      </div>
-      {isMobile ? (
+          ) : (
+            <div className="flex flex-1 justify-end gap-2">
+              <Link
+                to="/sign-in"
+                className="rounded px-4 py-1 font-semibold text-crews-bk01 hover:bg-[#f0f0f0]"
+              >
+                로그인
+              </Link>
+              <Link
+                to="/sign-up"
+                className="rounded bg-crews-bk01 px-4 py-1 text-crews-w01 hover:opacity-70"
+              >
+                회원가입
+              </Link>
+            </div>
+          )}
+        </div>
+      ) : null}
+
+      {isTablet ? (
         isSidebarOpen ? (
           <XMarkIcon
             className="ml-4 h-5 w-5 cursor-pointer"
@@ -142,23 +147,93 @@ const CrewsHeader = () => {
           />
         )
       ) : null}
+
+      {/* Sidebar */}
       <CrewsSidebar
         isOpen={isSidebarOpen}
         onClose={() => {
           setIsSidebarOpen(false);
         }}
       >
-        <div className="flex flex-col gap-4 px-6 py-6">
-          {HeaderItems.map((item, index) => (
-            <a
-              key={index}
-              href={item.url}
-              target="_blank"
-              className="text-xl font-semibold text-crews-bk01 transition-colors duration-300 hover:text-crews-g05"
+        <div className="flex h-full flex-col justify-between">
+          <div className="flex flex-col">
+            <div
+              className={cn({
+                hidden: ['/sign-in', '/sign-up'].includes(location.pathname),
+              })}
             >
-              {item.title}
-            </a>
-          ))}
+              {accessToken && isMobile ? (
+                <div className="flex items-center gap-4 border-b-[1px] border-crews-g02 p-4 text-crews-bk01">
+                  <div className="flex items-center gap-2">
+                    <CircleUserIcon className="h-9 w-9" />
+                    <div className="flex flex-col text-[0.875rem]">
+                      <p className="font-semibold">
+                        {role === 'ADMIN' ? '운영진' : '지원자'}
+                      </p>
+                      <p className="text-crews-g06">{username}</p>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
+            {/* content section */}
+            <div className="p-2">
+              <div className="px-[0.75rem] py-[0.5rem] font-medium">
+                바로가기
+              </div>
+              <div className="flex flex-col">
+                {HeaderItems.map((item, index) => (
+                  <a
+                    key={index}
+                    href={item.url}
+                    target="_blank"
+                    className="px-[0.75rem] py-[0.5rem] text-[0.875rem] text-crews-bk01 transition-colors duration-300 hover:text-crews-g05"
+                  >
+                    {item.title}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* bottom section */}
+          <div className="border-t-[1px] border-crews-g02 p-2">
+            {!accessToken ? (
+              <div className="flex flex-1 justify-end gap-2">
+                <div
+                  className="cursor-pointer rounded px-4 py-1 font-semibold text-crews-bk01 hover:bg-[#f0f0f0]"
+                  onClick={() => {
+                    navigate('/sign-in');
+                    setIsSidebarOpen(false);
+                  }}
+                >
+                  로그인
+                </div>
+                <div
+                  className="cursor-pointer rounded bg-crews-bk01 px-4 py-1 text-crews-w01 hover:opacity-70"
+                  onClick={() => {
+                    navigate('/sign-up');
+                    setIsSidebarOpen(false);
+                  }}
+                >
+                  회원가입
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-1 justify-end gap-2">
+                <div
+                  className="cursor-pointer rounded bg-crews-bk01 px-4 py-1 text-crews-w01 hover:opacity-70"
+                  onClick={() => {
+                    handleSignOutClick();
+                    setIsSidebarOpen(false);
+                  }}
+                >
+                  로그아웃
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </CrewsSidebar>
     </header>
