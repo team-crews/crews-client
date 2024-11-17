@@ -198,8 +198,8 @@ const CrewsHeader = () => {
           </div>
 
           {/* bottom section */}
-          <div className="border-t-[1px] border-crews-g02 p-2">
-            {!accessToken ? (
+          {!accessToken && isMobile ? (
+            <div className="border-t-[1px] border-crews-g02 p-2">
               <div className="flex flex-1 justify-end gap-2">
                 <div
                   className="cursor-pointer rounded px-4 py-1 font-semibold text-crews-bk01 hover:bg-[#f0f0f0]"
@@ -220,7 +220,11 @@ const CrewsHeader = () => {
                   회원가입
                 </div>
               </div>
-            ) : (
+            </div>
+          ) : null}
+
+          {accessToken ? (
+            <div className="border-t-[1px] border-crews-g02 p-2">
               <div className="flex flex-1 justify-end gap-2">
                 <div
                   className="cursor-pointer rounded bg-crews-bk01 px-4 py-1 text-crews-w01 hover:opacity-70"
@@ -232,8 +236,8 @@ const CrewsHeader = () => {
                   로그아웃
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          ) : null}
         </div>
       </CrewsSidebar>
     </header>
