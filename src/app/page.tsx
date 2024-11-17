@@ -3,10 +3,19 @@ import LandingApply from '../assets/images/landing-apply.png';
 import Container from '../components/atom/container.tsx';
 import { Link } from 'react-router-dom';
 import LookupRecruitmentForm from './lookup-recruitment-form.tsx';
+import { cn } from '../lib/utils/utils.ts';
+import useBreakpoints from '../hooks/use-breakpoints.ts';
 
 const Page = () => {
+  const { isSmaller } = useBreakpoints({ breakpoint: 'md' });
+
   return (
-    <Container className="flex h-dvh overflow-hidden">
+    <Container
+      className={cn('flex h-dvh', {
+        'overflow-hidden': !isSmaller,
+        'flex-col': isSmaller,
+      })}
+    >
       <section className="flex flex-1 justify-center">
         <div className="mt-32 flex flex-col items-center">
           <div className="flex w-[350px] flex-col text-center">
@@ -24,7 +33,14 @@ const Page = () => {
               <LookupRecruitmentForm />
             </div>
           </div>
-          <img alt="지원서 예시" width={600} src={LandingApply} />
+          <div
+            className={cn({
+              'px-4': isSmaller,
+              'pb-4': isSmaller,
+            })}
+          >
+            <img alt="지원서 예시" width={600} src={LandingApply} />
+          </div>
         </div>
       </section>
 
@@ -49,12 +65,19 @@ const Page = () => {
               바로 모집 시작하기
             </Link>
           </div>
-          <img
-            alt="모집 예시"
-            width={600}
-            src={LandingRecruit}
-            className="shadow-custom-shadow"
-          />
+          <div
+            className={cn({
+              'px-4': isSmaller,
+              'pb-4': isSmaller,
+            })}
+          >
+            <img
+              alt="모집 예시"
+              width={600}
+              src={LandingRecruit}
+              className="shadow-custom-shadow"
+            />
+          </div>
         </div>
       </section>
     </Container>
