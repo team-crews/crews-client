@@ -7,7 +7,12 @@ import { useToast } from '../../hooks/use-toast.ts';
 import { printCustomError } from '../../lib/utils/error.ts';
 import { useSignOut } from '../../apis/auth-api.ts';
 import useAtomicMutation from '../../hooks/use-atomic-mutation.ts';
-import { SidebarTrigger } from '../shadcn/sidebar.tsx';
+import CrewsSidebar from './crews-sidebar.tsx';
+import { useState } from 'react';
+import useBreakpoints from '../../hooks/use-breakpoints.ts';
+
+import BarsIcon from '../../assets/icons/bars-icon.svg?react';
+import XMarkIcon from '../../assets/icons/x-mark-icon.svg?react';
 
 const HeaderItems = [
   {
@@ -26,6 +31,10 @@ const HeaderItems = [
 
 const CrewsHeader = () => {
   const location = useLocation();
+
+  const { isSmaller: isMobile } = useBreakpoints({ breakpoint: 'md' });
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const { accessToken, role, username, clearSession } = useSession();
 
@@ -71,11 +80,14 @@ const CrewsHeader = () => {
           <AnchorIcon className="h-7 w-7" />
           <p className="text-3xl font-semibold">Crews</p>
         </Link>
-        {HeaderItems.map((item, index) => (
-          <a key={index} href={item.url} target="_blank">
-            <p className="font-normal hover:underline">{item.title}</p>
-          </a>
-        ))}
+
+        {!isMobile
+          ? HeaderItems.map((item, index) => (
+              <a key={index} href={item.url} target="_blank">
+                <p className="font-normal hover:underline">{item.title}</p>
+              </a>
+            ))
+          : null}
       </div>
 
       <div
@@ -107,10 +119,45 @@ const CrewsHeader = () => {
             >
               회원가입
             </Link>
-            <SidebarTrigger />
           </div>
         )}
       </div>
+      {isMobile ? (
+        isSidebarOpen ? (
+          <XMarkIcon
+            className="ml-4 h-5 w-5 cursor-pointer"
+            onClick={() => {
+              setIsSidebarOpen(false);
+            }}
+          />
+        ) : (
+          <BarsIcon
+            className="ml-4 h-5 w-5 cursor-pointer"
+            onClick={() => {
+              setIsSidebarOpen(true);
+            }}
+          />
+        )
+      ) : null}
+      <CrewsSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => {
+          setIsSidebarOpen(false);
+        }}
+      >
+        <div className="flex flex-col gap-4 px-6 py-6">
+          {HeaderItems.map((item, index) => (
+            <a
+              key={index}
+              href={item.url}
+              target="_blank"
+              className="text-xl font-semibold text-crews-bk01 transition-colors duration-300 hover:text-crews-g05"
+            >
+              {item.title}
+            </a>
+          ))}
+        </div>
+      </CrewsSidebar>
     </header>
   );
 };
