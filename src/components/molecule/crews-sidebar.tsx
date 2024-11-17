@@ -16,7 +16,12 @@ const CrewsSidebar = ({
 }: CrewsSidebarProps) => {
   const { isSmaller } = useBreakpoints({ breakpoint: showBreakpoints });
 
+  // screen 다시 넓게 했을 시, sidebar close
   if (!isSmaller) {
+    if (isOpen) {
+      onClose();
+    }
+
     return null;
   }
 
