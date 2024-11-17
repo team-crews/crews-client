@@ -13,6 +13,7 @@ import useBreakpoints from '../../hooks/use-breakpoints.ts';
 
 import BarsIcon from '../../assets/icons/bars-icon.svg?react';
 import XMarkIcon from '../../assets/icons/x-mark-icon.svg?react';
+import useScrollLock from '../../hooks/use-scroll-lock.ts';
 
 const HeaderItems = [
   {
@@ -35,6 +36,8 @@ const CrewsHeader = () => {
   const { isSmaller: isMobile } = useBreakpoints({ breakpoint: 'md' });
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useScrollLock(isSidebarOpen);
 
   const { accessToken, role, username, clearSession } = useSession();
 
