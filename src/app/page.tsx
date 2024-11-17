@@ -34,12 +34,11 @@ const Page = () => {
             </div>
           </div>
           <div
-            className={cn({
-              'px-4': isSmaller,
+            className={cn('px-4', {
               'pb-4': isSmaller,
             })}
           >
-            <img alt="지원서 예시" width={600} src={LandingApply} />
+            <img alt="지원서 예시" width={640} src={LandingApply} />
           </div>
         </div>
       </section>
@@ -66,14 +65,13 @@ const Page = () => {
             </Link>
           </div>
           <div
-            className={cn({
-              'px-4': isSmaller,
+            className={cn('px-4', {
               'pb-4': isSmaller,
             })}
           >
             <img
               alt="모집 예시"
-              width={600}
+              width={640}
               src={LandingRecruit}
               className="shadow-custom-shadow"
             />
