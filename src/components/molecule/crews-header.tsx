@@ -151,6 +151,7 @@ const CrewsHeader = () => {
       {/* Sidebar */}
       <CrewsSidebar
         isOpen={isSidebarOpen}
+        showBreakpoints="md"
         onClose={() => {
           setIsSidebarOpen(false);
         }}

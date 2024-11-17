@@ -1,10 +1,25 @@
+import useBreakpoints from '../../hooks/use-breakpoints';
+import { CrewsBreakpoints } from '../../styles/breakpoints';
+
 interface CrewsSidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  showBreakpoints: keyof typeof CrewsBreakpoints;
   children?: React.ReactNode;
 }
 
-const CrewsSidebar = ({ isOpen, onClose, children }: CrewsSidebarProps) => {
+const CrewsSidebar = ({
+  isOpen,
+  onClose,
+  showBreakpoints,
+  children,
+}: CrewsSidebarProps) => {
+  const { isSmaller } = useBreakpoints({ breakpoint: showBreakpoints });
+
+  if (!isSmaller) {
+    return null;
+  }
+
   return (
     <>
       {/* Overlay */}
