@@ -21,6 +21,8 @@ import { ReadApplicationResponseSchema } from '../../../apis/response-body-schem
 import FooterSection from './_components/footer-section.tsx';
 import { generateChoiceMap } from './_hooks/use-choice-map.tsx';
 import { RecruitmentSchema } from '../../../lib/schemas/recruitment-schema.ts';
+import useBreakpoints from '../../../hooks/use-breakpoints.ts';
+import { cn } from '../../../lib/utils/utils.ts';
 
 export type IFormApplication = {
   /*
@@ -52,6 +54,8 @@ const Page = ({
   recruitment: z.infer<typeof RecruitmentSchema>;
   application: z.infer<typeof ReadApplicationResponseSchema>;
 }) => {
+  const { isSmaller } = useBreakpoints({ breakpoint: 'md' });
+
   const methods = useForm<IFormApplication>({
     defaultValues: defaultApplication,
   });
@@ -93,7 +97,11 @@ const Page = ({
   }, [application, methods, recruitment]);
 
   return (
-    <Container className="flex h-auto flex-col gap-8 py-8">
+    <Container
+      className={cn('flex h-auto flex-col gap-8 py-8', {
+        'px-4': isSmaller,
+      })}
+    >
       <HeaderSection />
       <FormProvider {...methods}>
         <form>

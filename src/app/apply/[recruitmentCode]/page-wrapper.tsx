@@ -30,7 +30,7 @@ const PageWrapper = () => {
     return <Loading />;
   else if (applicationQuery.isSuccess && recruitmentQuery.isSuccess)
     return (
-      <Container className="mx-auto w-[600px] pt-16">
+      <Container className="mx-auto max-w-[600px] pt-16">
         <Page
           recruitment={recruitmentQuery.data}
           application={applicationQuery.data}
