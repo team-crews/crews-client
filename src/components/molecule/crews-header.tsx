@@ -130,6 +130,7 @@ const CrewsHeader = () => {
         </div>
       ) : null}
 
+      {/* Sidebar open button, Tablet 사이즈부터 visible */}
       {isTablet ? (
         isSidebarOpen ? (
           <XMarkIcon
@@ -199,45 +200,45 @@ const CrewsHeader = () => {
           </div>
 
           {/* bottom section */}
-          {!accessToken && isMobile ? (
-            <div className="border-t-[1px] border-crews-g02 p-2">
-              <div className="flex flex-1 justify-end gap-2">
-                <div
-                  className="cursor-pointer rounded px-4 py-1 font-semibold text-crews-bk01 hover:bg-[#f0f0f0]"
-                  onClick={() => {
-                    navigate('/sign-in');
-                    setIsSidebarOpen(false);
-                  }}
-                >
-                  로그인
-                </div>
-                <div
-                  className="cursor-pointer rounded bg-crews-bk01 px-4 py-1 text-crews-w01 hover:opacity-70"
-                  onClick={() => {
-                    navigate('/sign-up');
-                    setIsSidebarOpen(false);
-                  }}
-                >
-                  회원가입
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          {accessToken ? (
-            <div className="border-t-[1px] border-crews-g02 p-2">
-              <div className="flex flex-1 justify-end gap-2">
-                <div
-                  className="cursor-pointer rounded bg-crews-bk01 px-4 py-1 text-crews-w01 hover:opacity-70"
-                  onClick={() => {
-                    handleSignOutClick();
-                    setIsSidebarOpen(false);
-                  }}
-                >
-                  로그아웃
+          {isMobile ? (
+            !accessToken ? (
+              <div className="border-t-[1px] border-crews-g02 p-2">
+                <div className="flex flex-1 justify-end gap-2">
+                  <div
+                    className="cursor-pointer rounded px-4 py-1 font-semibold text-crews-bk01 hover:bg-[#f0f0f0]"
+                    onClick={() => {
+                      navigate('/sign-in');
+                      setIsSidebarOpen(false);
+                    }}
+                  >
+                    로그인
+                  </div>
+                  <div
+                    className="cursor-pointer rounded bg-crews-bk01 px-4 py-1 text-crews-w01 hover:opacity-70"
+                    onClick={() => {
+                      navigate('/sign-up');
+                      setIsSidebarOpen(false);
+                    }}
+                  >
+                    회원가입
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="border-t-[1px] border-crews-g02 p-2">
+                <div className="flex flex-1 justify-end gap-2">
+                  <div
+                    className="cursor-pointer rounded bg-crews-bk01 px-4 py-1 text-crews-w01 hover:opacity-70"
+                    onClick={() => {
+                      handleSignOutClick();
+                      setIsSidebarOpen(false);
+                    }}
+                  >
+                    로그아웃
+                  </div>
+                </div>
+              </div>
+            )
           ) : null}
         </div>
       </CrewsSidebar>
