@@ -29,6 +29,9 @@ const router: ReturnType<typeof createBrowserRouter> =
         <Route element={<RootLayout />}>
           <Route path="/" element={<LandingPage />} />
 
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+
           <Route path="recruitment/info" element={<RecruitmentInfoPage />} />
 
           <Route
@@ -38,9 +41,6 @@ const router: ReturnType<typeof createBrowserRouter> =
           </Route>
 
           <Route element={<MobileRestrictionWrapper />}>
-            <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/sign-up" element={<SignUpPage />} />
-
             <Route path="recruitment" element={<RecruitmentPage />} />
 
             <Route element={<AuthRedirectWrapper availableRoles={['ADMIN']} />}>

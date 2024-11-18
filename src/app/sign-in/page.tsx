@@ -24,49 +24,55 @@ const Page = () => {
 
   return (
     <Container className="flex h-dvh items-center justify-center">
-      <section className="w-full max-w-[650px] rounded-md border border-crews-g01 px-32 py-40 shadow-custom-light-shadow">
-        <div className="mb-6 flex flex-col items-center text-3xl tracking-widest">
-          <p className="font-bold">
-            {loginType === 'APPLICANT' ? '지원자' : '모집자'}
-          </p>
-          <p>로그인</p>
-        </div>
+      <section className="flex w-full max-w-[650px] justify-center rounded-md border border-crews-g01 py-40 shadow-custom-light-shadow">
+        <div className="w-[26.5rem] px-[1rem]">
+          <div className="mb-6 flex flex-col items-center text-3xl tracking-widest">
+            <p className="font-bold">
+              {loginType === 'APPLICANT' ? '지원자' : '모집자'}
+            </p>
+            <p>로그인</p>
+          </div>
 
-        {loginType === 'APPLICANT' && <ApplicantSignIn />}
-        {loginType === 'ADMIN' && <AdminSignIn />}
+          {loginType === 'APPLICANT' && <ApplicantSignIn />}
+          {loginType === 'ADMIN' && <AdminSignIn />}
 
-        <div className="my-6 flex w-full items-center gap-2">
-          <Seperator
-            orientation="horizontal"
-            className="flex-grow bg-crews-g02"
-          />
-          <p className="text-xs text-crews-g02">or</p>
-          <Seperator
-            orientation="horizontal"
-            className="flex-grow bg-crews-g02"
-          />
-        </div>
+          <div className="my-6 flex w-full items-center gap-2">
+            <Seperator
+              orientation="horizontal"
+              className="flex-grow bg-crews-g02"
+            />
+            <p className="text-xs text-crews-g02">or</p>
+            <Seperator
+              orientation="horizontal"
+              className="flex-grow bg-crews-g02"
+            />
+          </div>
 
-        <button
-          onClick={toggleLoginType}
-          className="w-full rounded py-2 text-sm font-normal tracking-wide text-crews-bk01 outline outline-1 outline-crews-g03 hover:bg-crews-g01"
-        >
-          {loginType === 'APPLICANT' ? '모집자' : '지원자'}로 로그인
-        </button>
+          <button
+            onClick={toggleLoginType}
+            className="w-full rounded py-2 text-sm font-normal tracking-wide text-crews-bk01 outline outline-1 outline-crews-g03 hover:bg-crews-g01"
+          >
+            {loginType === 'APPLICANT' ? '모집자' : '지원자'}로 로그인
+          </button>
 
-        <div className="flex w-full items-center justify-center gap-2 py-3 text-sm font-thin text-crews-g05">
-          <Link to="/sign-up" state={{ loginType }} className="hover:underline">
-            회원가입
-          </Link>
-          <Seperator orientation="vertical" className="h-4 bg-crews-g02" />
-          <Tooltip>
-            <TooltipTrigger>
-              <p className="hover:underline">비밀번호 찾기</p>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p className="font-normal text-crews-bk01">서비스 준비중 🙇🏻</p>
-            </TooltipContent>
-          </Tooltip>
+          <div className="flex w-full items-center justify-center gap-2 py-3 text-sm font-thin text-crews-g05">
+            <Link
+              to="/sign-up"
+              state={{ loginType }}
+              className="hover:underline"
+            >
+              회원가입
+            </Link>
+            <Seperator orientation="vertical" className="h-4 bg-crews-g02" />
+            <Tooltip>
+              <TooltipTrigger>
+                <p className="hover:underline">비밀번호 찾기</p>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p className="font-normal text-crews-bk01">서비스 준비중 🙇🏻</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </div>
       </section>
     </Container>
