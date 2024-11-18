@@ -7,18 +7,6 @@ import Container from '../atom/container.tsx';
 const MobileRestrictionWrapper = () => {
   const { isSmaller } = useBreakpoints({ breakpoint: 'md' });
 
-  // TODO: Remove this code block after responsive design is implemented
-  const pathname = window.location.pathname;
-
-  const isApplyPage = pathname.startsWith('/apply/');
-
-  const isResponsiveImplemented =
-    pathname === '/' || pathname === '/recruitment/info' || isApplyPage;
-
-  if (isResponsiveImplemented) {
-    return <Outlet />;
-  }
-
   return (
     <>
       {isSmaller && (
