@@ -46,7 +46,7 @@ const Page = () => {
   if (readQuery.isFetching || readQuery.isPending) return <Loading />;
   else if (readQuery.isSuccess) {
     return (
-      <Container className="mx-auto flex h-auto w-[600px] flex-col gap-8 py-8 pt-24">
+      <Container className="mx-auto flex h-auto max-w-[640px] flex-col gap-8 px-[1rem] py-8 pt-24">
         <HeaderSection />
 
         <RecruitMetaBox

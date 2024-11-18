@@ -27,20 +27,21 @@ const router: ReturnType<typeof createBrowserRouter> =
     createRoutesFromElements(
       <Route element={<TryLoginWrapper />} errorElement={<RootErrorBoundary />}>
         <Route element={<RootLayout />}>
+          <Route path="/" element={<LandingPage />} />
+
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+
+          <Route path="recruitment/info" element={<RecruitmentInfoPage />} />
+
+          <Route
+            element={<AuthRedirectWrapper availableRoles={['APPLICANT']} />}
+          >
+            <Route path="apply/:recruitmentCode" element={<ApplyPage />} />
+          </Route>
+
           <Route element={<MobileRestrictionWrapper />}>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/sign-up" element={<SignUpPage />} />
-
-            <Route path="recruitment/info" element={<RecruitmentInfoPage />} />
-
             <Route path="recruitment" element={<RecruitmentPage />} />
-
-            <Route
-              element={<AuthRedirectWrapper availableRoles={['APPLICANT']} />}
-            >
-              <Route path="apply/:recruitmentCode" element={<ApplyPage />} />
-            </Route>
 
             <Route element={<AuthRedirectWrapper availableRoles={['ADMIN']} />}>
               <Route path="recruit" element={<RecruitPage />} />

@@ -26,7 +26,7 @@ const useBreakpoints = ({
       const screenWidth = window.innerWidth;
       const breakpointValue = Number.parseInt(CrewsBreakpoints[breakpoint], 10);
 
-      setIsSmaller(screenWidth < breakpointValue);
+      setIsSmaller(screenWidth <= breakpointValue);
     };
 
     handleResize();

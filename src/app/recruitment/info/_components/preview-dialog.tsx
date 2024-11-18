@@ -10,10 +10,11 @@ const PreviewDialog = ({ children, ...dialogProps }: Props) => {
   return (
     <CrewsDialog
       {...dialogProps}
+      className="w-[calc(100vw-1rem)] max-w-[48rem] rounded-lg"
       type="ALERT"
       action={() => dialogProps.toggleOpen()}
     >
-      <div className="w-[600px]">{children}</div>
+      <div className="w-full">{children}</div>
     </CrewsDialog>
   );
 };
