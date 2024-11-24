@@ -77,7 +77,10 @@ const CrewsHeader = () => {
     <header
       className={cn(
         'fixed left-0 top-0 z-10 flex w-dvw items-center px-6 py-3',
-        { 'border-b backdrop-blur': location.pathname !== '/' },
+        {
+          'border-b backdrop-blur': location.pathname !== '/',
+          'bg-crews-w01': isMobile || isTablet,
+        },
       )}
     >
       <div className="flex h-fit flex-1 items-center gap-10">
