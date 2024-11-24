@@ -15,8 +15,8 @@ async function adminSignUp(requestBody: {
   clubName: string;
   password: string;
 }): Promise<z.infer<typeof LoginResponseSchema>> {
-  if (!import.meta.env.DEV)
-    throw new Error('adminSignUp should never be called');
+  // if (!import.meta.env.DEV)
+  //   throw new Error('adminSignUp should never be called');
 
   const response = await baseInstance.post('/auth/admin/register', requestBody);
   return LoginResponseSchema.parse(response.data);

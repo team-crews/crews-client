@@ -3,8 +3,13 @@ export function isFilledInput(value: string, msg: string) {
   else return true;
 }
 
+export function isProperId(value: string, msg: string) {
+  if (value) if (!/^[a-zA-Z0-9]+$/.test(value)) return msg;
+  return true;
+}
+
 export function isProperEmail(value: string, msg: string) {
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return msg;
+  if (!/^[a-zA-Z0-9._%+-]+@[^\s@]+\.[^\s@]+$/.test(value)) return msg;
 
   if (
     !/\.(com|net|org|edu|gov|mil|int|co|biz|info|mobi|name|ly|io|me|ai)$/.test(
