@@ -2,10 +2,8 @@
 <br>
  <div align="center">
 <img width="1500" height="1766" alt="crews" src="https://github.com/user-attachments/assets/5672db19-24b5-4fdf-b1c2-6597e5385de6" />
-</br>
-<br>
  </div>
-<br>
+</br>
 
 안녕하세요! 크루즈 팀입니다 😃
 
